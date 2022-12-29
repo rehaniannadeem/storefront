@@ -37,7 +37,7 @@ const ProductSingleDetails: React.FC = () => {
   const {
     query: { slug },
   } = useRouter();
-  const productName = slug?.toString().split("-").join(" ");
+  const productName = slug?.toString().split("%").join(" ");
   // console.log(productName);
   //  const productName = slug;
   //console.log();
@@ -115,7 +115,7 @@ const ProductSingleDetails: React.FC = () => {
     }
   }, [quantity]);
   useEffect(() => {
-    console.log(attributes, "attribute");
+    
 
     {
       Object.keys(attributes).length != 0

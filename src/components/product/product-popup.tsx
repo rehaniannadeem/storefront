@@ -56,14 +56,14 @@ export default function ProductPopup() {
     }
   }, [quantity]);
   useEffect(() => {
-    console.log(attributes, "attribute");
+   
     {
       Object.keys(attributes).length != 0
         ? setIsSelected(true)
         : setIsSelected(false);
     }
     if (Object.keys(attributes).length != 0 && data.enable_stock == 1) {
-      if (attributes.variation_details[0].qty_available <= 0) {
+      if (attributes?.variation_details[0]?.qty_available <= 0) {
         setQuantity(0);
         // setIsDisable(true);
         setIsSelected(false);
@@ -184,7 +184,7 @@ export default function ProductPopup() {
 
   function navigateToProductPage() {
     closeModal();
-    router.push(`${ROUTES.PRODUCT}/${urlName}`, undefined, {
+    router.push(`${ROUTES.PRODUCT}/${name}`, undefined, {
       locale: router.locale,
     });
   }

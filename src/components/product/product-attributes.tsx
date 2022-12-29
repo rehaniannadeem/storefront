@@ -56,7 +56,7 @@ export const ProductAttributes: React.FC<Props> = ({
               {
                 textDecoration:
                   enable_stock == 1 &&
-                  attribute.variation_details[0].qty_available < quantity
+                  attribute?.variation_details[0]?.qty_available < quantity
                     ? "line-through"
                     : "none",
               }
