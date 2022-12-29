@@ -234,7 +234,7 @@ const ProductSingleDetails: React.FC = () => {
   console.log(attributes, "attributes");
   console.log(Object.keys(attributes).length, "quantity");
    console.log(product.enable_stock, "stock"); */
-  console.log(isDisable, "disable");
+  
 
   return (
     //block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start
@@ -251,15 +251,15 @@ const ProductSingleDetails: React.FC = () => {
           >
             {product?.gallery?.slice(0, 4).map((item: any, index: number) => (
               <SwiperSlide key={`product-gallery-key-${index}`}>
-                <div className="col-span-1 transition duration-150  ease-in hover:opacity-90">
+                <div className="flex col-span-1 transition duration-150  ease-in hover:opacity-90">
                   <img
                     src={
                       item?.original ??
                       "/assets/placeholder/products/product-gallery.svg"
                     }
                     alt={`${data?.name}--${index}`}
-                    className="object-cover w-full "
-                    style={{ height: "200px" }}
+                    className="object-container w-full "
+                   
                   />
                 </div>
               </SwiperSlide>
