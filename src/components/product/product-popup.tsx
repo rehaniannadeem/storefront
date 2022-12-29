@@ -213,7 +213,7 @@ export default function ProductPopup() {
               "/assets/placeholder/products/product-thumbnail.svg"
             }
             alt={name}
-            className="lg:object-contain lg:w-full lg:h-full"
+            className="lg:object-contain md:object-fill sm:object-contain lg:w-full lg:h-full md:h-full md:w-full "
           />
         </div>
 
@@ -224,7 +224,7 @@ export default function ProductPopup() {
               onClick={navigateToProductPage}
               role="button"
             >
-              <h2 className="text-heading text-lg md:text-xl lg:text-2xl font-semibold hover:text-black">
+              <h2 className="text-heading text-lg md:text-xl  lg:text-2xl font-semibold hover:text-black">
                 {name}
               </h2>
             </div>
