@@ -45,7 +45,7 @@ const Card: React.FC<Props> = ({
             width={imageSize}
             height={imageSize}
             quality={100}
-            className={`object-cover bg-gray-300 ${
+            className={`object-contain  ${
               variant === "rounded" ? "rounded-md" : "rounded-full"
             }`}
           />
