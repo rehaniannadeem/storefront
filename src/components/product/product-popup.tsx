@@ -79,7 +79,7 @@ export default function ProductPopup() {
   }, [data]);
   const variations = getVariations(data.variations);
   const { image, name, description } = data;
-  let urlName = name.replace(/\s+/g, "-");
+  //let urlName = name.replace(/\s+/g, "-");
 
   //const isSelected = Object.keys(attributes).length == 0 ? false : true;
   /*   const isSelected = !isEmpty(variations)
