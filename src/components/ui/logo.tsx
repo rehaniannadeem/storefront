@@ -13,7 +13,7 @@ const Logo = ({ width, height, className, ...props }: any) => {
     <div>
       <Link
         href={siteSettings.logo.href}
-        className={cn("inline-flex focus:outline-none ", className)}
+        className={cn("inline-flex focus:outline-none p-2", className)}
         {...props}
       >
         {domain && domain.logo != null ? (
