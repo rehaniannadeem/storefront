@@ -62,13 +62,9 @@ const Header: React.FC = () => {
               <span className="bar" />
             </span>
           </button>
-          <div className="">
+          <div >
           <Logo width={60} height={60} />
-          {/*   {width > 1025 ? (
-              <Logo width={90} height={80} />
-            ) : (
-              <Logo width={50} height={30} />
-            )} */}
+         
           </div>
           {domain.name === "urbannecessity" ? (
             <HeaderMenu
