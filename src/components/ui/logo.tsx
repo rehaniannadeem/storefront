@@ -8,35 +8,7 @@ import { Context } from "src/pages/_app";
 
 const Logo = ({ width, height, className, ...props }: any) => {
   const { domain }: any = useContext(Context);
-  // console.log(domain);
-
-  /*  useEffect(() => {
-    let host = window.location.host;
-    let parts = host.split(".");
-    setBusiness(parts[0]);
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      axios({
-        method: "get",
-        url: `http://pos-dev.myignite.online/connector/api/business/${business}`,
-        headers: {
-          "Content-Type": "Application/json",
-        },
-      })
-        .then((response) => {
-          console.log(response.data.data[0]);
-          setFetchLogo(response.data.data[0].logo);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-
-    fetchData();
-  }, [business]);
- */
+ 
   return (
     <div>
       <Link

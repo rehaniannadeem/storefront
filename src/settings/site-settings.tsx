@@ -4,10 +4,7 @@ import { SAFlag } from "@components/icons/SAFlag";
 import { USFlag } from "@components/icons/USFlag";
 //import { DEFlag } from "@components/icons/DEFlag";
 //import { ESFlag } from "@components/icons/ESFlag";
-//import { IoHomeOutline } from "react-icons/io5";
-//import { GrCube } from "react-icons/gr";
 
-//import { HiOutlineCube } from "react-icons/hi";
 export const siteSettings = {
   name: "",
   description: "Spnbx.myIgnite.solution",
@@ -1763,7 +1760,7 @@ menu: [
         value: "en",
         icon: <USFlag width="20px" height="15px" />,
       },
-      /* {
+      /*  {
         id: "zh",
         name: "中国人 - ZH",
         value: "zh",

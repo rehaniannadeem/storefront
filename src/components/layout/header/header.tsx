@@ -64,9 +64,9 @@ const Header: React.FC = () => {
           </button>
           <div>
             {width > 1025 ? (
-              <Logo width={90} height={80} />
+              <Logo width="90px" height="80px" />
             ) : (
-              <Logo width={80} height={50} />
+              <Logo width="80px" height="50px" />
             )}
           </div>
           {domain.name === "urbannecessity" ? (

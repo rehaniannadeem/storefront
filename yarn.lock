@@ -1166,7 +1166,7 @@
   "resolved" "https://registry.npmjs.org/@hapi/hoek/-/hoek-9.2.0.tgz"
   "version" "9.2.0"
 
-"@headlessui/react@^1.7.7":
+"@headlessui/react@^1.4.0":
   "integrity" "sha512-BqDOd/tB9u2tA0T3Z0fn18ktw+KbVwMnkxxsGPIH2hzssrQhKB5n/6StZOyvLYP/FsYtvuXfi9I0YowKPv2c1w=="
   "resolved" "https://registry.npmjs.org/@headlessui/react/-/react-1.7.7.tgz"
   "version" "1.7.7"
@@ -1464,7 +1464,7 @@
   dependencies:
     "@babel/runtime" "^7.6.2"
 
-"@react-google-maps/api@^2.17.1":
+"@react-google-maps/api@^2.17.0":
   "integrity" "sha512-XesubSCFfyMtilqljF2kU5zdPru4nks4I4O0HH6H2xOw51wQXs26btJKlRac2/jbJ/gIiGZ/l14q0xaL/6OaBg=="
   "resolved" "https://registry.npmjs.org/@react-google-maps/api/-/api-2.17.1.tgz"
   "version" "2.17.1"
@@ -1701,13 +1701,6 @@
   dependencies:
     "@types/react" "*"
     "csstype" "^3.0.2"
-
-"@types/react-phone-number-input@^3.0.14":
-  "integrity" "sha512-xOje1m+Z9n3kxj5/bCJzpDeokA95aYYuFbmcK8myyod+KLy3h5tKwCQwSEcU+603EeyfgTMkjz7GYY9S0aZLCQ=="
-  "resolved" "https://registry.npmjs.org/@types/react-phone-number-input/-/react-phone-number-input-3.0.14.tgz"
-  "version" "3.0.14"
-  dependencies:
-    "@types/react" "*"
 
 "@types/react-scroll@^1.8.3":
   "integrity" "sha512-Xt0+Y58pwrIv+vRFxcyKDoo0gBWBR2eNMJ4XRMhQpZdGUtmjnszPi/wFEJSAY+5r83ypJsSA+hOpSc3hRpYlWw=="
