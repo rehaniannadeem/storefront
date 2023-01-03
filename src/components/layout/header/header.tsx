@@ -63,7 +63,7 @@ const Header: React.FC = () => {
             </span>
           </button>
           <div className="p-2">
-          <Logo width={70} height={70} />
+          <Logo width={60} height={60} />
           {/*   {width > 1025 ? (
               <Logo width={90} height={80} />
             ) : (
