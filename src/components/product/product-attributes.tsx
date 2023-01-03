@@ -24,8 +24,6 @@ export const ProductAttributes: React.FC<Props> = ({
   quantity,
   enable_stock,
 }) => {
-  // console.log(active);
-
   return (
     <div className={className}>
       <h3 className="text-base md:text-lg text-heading font-semibold mb-2.5 capitalize">

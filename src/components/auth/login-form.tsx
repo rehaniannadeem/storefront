@@ -301,9 +301,14 @@ const LoginForm: React.FC = () => {
         </label>
         <PhoneInput
           international
-          defaultCountry="PK"
+          defaultCountry="SA"
           className="p-2"
           value={phone}
+          onKeyDown={(e: any) => {
+            if (e.keyCode === 13) {
+              handleOtp(e);
+            }
+          }}
           containerStyle={{
             padding: "1rem",
           }}
@@ -332,9 +337,9 @@ const LoginForm: React.FC = () => {
                   value={otp}
                   isInputNum={true}
                   onChange={setOtp}
+                  shouldAutoFocus={true}
                   numInputs={4}
                   className="my-2 mx-6"
-                  //separator={<span>-</span>}
                   inputStyle={{
                     border: "1px solid black",
                     width: "3rem",
@@ -347,6 +352,7 @@ const LoginForm: React.FC = () => {
                   value={otp}
                   isInputNum={true}
                   onChange={setOtp}
+                  shouldAutoFocus={true}
                   numInputs={4}
                   className="my-2 mx-4"
                   //separator={<span>-</span>}

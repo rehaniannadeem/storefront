@@ -1,5 +1,5 @@
 import Link from "@components/ui/link";
-//import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown } from "react-icons/fa";
 import MegaMenu from "@components/ui/mega-menu";
 import classNames from "classnames";
 import ListMenu from "@components/ui/list-menu";
@@ -14,12 +14,12 @@ const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
   const { t } = useTranslation("menu");
   return (
     <nav className={classNames(`headerMenu flex w-full relative`, className)}>
-      {data?.map((item: any) => (
+      {data?.map((item: any, index: any) => (
         <div
           className={`menuItem group cursor-pointer py-7 ${
             item.subMenu ? "relative" : ""
           }`}
-          key={item.id}
+          key={index}
         >
           <Link
             //  href={item.path}
@@ -33,11 +33,11 @@ const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
             {/* <span className="m-0.5 text-xl ">{item.icon}</span> */}
             <span className="text-lg"> {t(item.label)}</span>
 
-            {/* {(item?.columns || item.subMenu) && (
+            {(item?.columns || item.subMenu) && (
               <span className="opacity-30 text-xs mt-1 xl:mt-0.5 w-4 flex justify-end">
                 <FaChevronDown className="transition duration-300 ease-in-out transform group-hover:-rotate-180" />
               </span>
-            )} */}
+            )}
           </Link>
 
           {item?.columns && Array.isArray(item.columns) && (

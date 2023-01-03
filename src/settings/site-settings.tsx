@@ -1,9 +1,9 @@
-import { ILFlag } from "@components/icons/ILFlag";
+//import { ILFlag } from "@components/icons/ILFlag";
 import { SAFlag } from "@components/icons/SAFlag";
-import { CNFlag } from "@components/icons/CNFlag";
+//import { CNFlag } from "@components/icons/CNFlag";
 import { USFlag } from "@components/icons/USFlag";
-import { DEFlag } from "@components/icons/DEFlag";
-import { ESFlag } from "@components/icons/ESFlag";
+//import { DEFlag } from "@components/icons/DEFlag";
+//import { ESFlag } from "@components/icons/ESFlag";
 //import { IoHomeOutline } from "react-icons/io5";
 //import { GrCube } from "react-icons/gr";
 
@@ -21,8 +21,8 @@ export const siteSettings = {
     src: "/assets/images/Ignite-Vertical.png",
     alt: "StoreFront",
     href: "/",
-    width: 70,
-    height: 60,
+    width: 90,
+    height: 90,
   },
   defaultLanguage: "en",
   currencyCode: "USD",
@@ -45,6 +45,52 @@ export const siteSettings = {
         path: "/search",
         label: "menu-shop",
         // icon: <GrCube />,
+        columns: [
+          {
+            id: 1,
+            columnItems: [
+              {
+                id: 1,
+                path: "/search?q=top-wear",
+                label: "menu-categories",
+                columnItemItems: [
+                  {
+                    id: 1,
+                    path: "/search?q=t-shit-shirtrt",
+                    label: "menu-t-shirt",
+                  },
+                  {
+                    id: 2,
+                    path: "/search?q=casual-shirts",
+                    label: "menu-casual-shirts",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: 2,
+            columnItems: [
+              {
+                id: 1,
+                path: "/search?q=western-wear",
+                label: "menu-brands",
+                columnItemItems: [
+                  {
+                    id: 1,
+                    path: "/search?q=dresses",
+                    label: "menu-dresses",
+                  },
+                  {
+                    id: 2,
+                    path: "/search?q=jumpsuits",
+                    label: "menu-jumpsuits",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
       {
         id: 3,
@@ -53,7 +99,7 @@ export const siteSettings = {
         // icon: <GrCube />,
       },
       {
-        id: 2,
+        id: 5,
         path: "/search",
         label: "menu-contact",
         // icon: <GrCube />,
@@ -77,15 +123,61 @@ export const siteSettings = {
         path: "/search",
         label: "menu-shop",
         // icon: <GrCube />,
+        columns: [
+          {
+            id: 1,
+            columnItems: [
+              {
+                id: 1,
+                path: "/search?q=top-wear",
+                label: "menu-categories",
+                columnItemItems: [
+                  {
+                    id: 1,
+                    path: "/search?q=t-shit-shirtrt",
+                    label: "menu-t-shirt",
+                  },
+                  {
+                    id: 2,
+                    path: "/search?q=casual-shirts",
+                    label: "menu-casual-shirts",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            id: 2,
+            columnItems: [
+              {
+                id: 1,
+                path: "/search?q=western-wear",
+                label: "menu-brands",
+                columnItemItems: [
+                  {
+                    id: 1,
+                    path: "/search?q=dresses",
+                    label: "menu-dresses",
+                  },
+                  {
+                    id: 2,
+                    path: "/search?q=jumpsuits",
+                    label: "menu-jumpsuits",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
       {
-        id: 3,
+        id: 4,
         path: "/",
         label: "menu-faq",
         // icon: <GrCube />,
       },
       {
-        id: 2,
+        id: 5,
         path: "/search",
         label: "menu-contact",
         // icon: <GrCube />,
@@ -1664,17 +1756,18 @@ menu: [
         value: "ar",
         icon: <SAFlag width="20px" height="15px" />,
       },
-      {
-        id: "zh",
-        name: "中国人 - ZH",
-        value: "zh",
-        icon: <CNFlag width="20px" height="15px" />,
-      },
+
       {
         id: "en",
         name: "English - EN",
         value: "en",
         icon: <USFlag width="20px" height="15px" />,
+      },
+      /* {
+        id: "zh",
+        name: "中国人 - ZH",
+        value: "zh",
+        icon: <CNFlag width="20px" height="15px" />,
       },
       {
         id: "de",
@@ -1693,7 +1786,7 @@ menu: [
         name: "Español - ES",
         value: "es",
         icon: <ESFlag width="20px" height="15px" />,
-      },
+      }, */
     ],
   },
 };

@@ -67,13 +67,13 @@ export function removeItem(items: Item[], id: Item["id"]) {
 export const calculateItemTotals = (items: Item[]) =>
   items.map((item) => ({
     ...item,
-    itemTotal: item.attributes.default_sell_price
+    itemTotal:Math.round(item.attributes.default_sell_price)
 
     * item.quantity!,
   }));
 
 export const calculateTotal = (items: Item[]) =>
-  items.reduce((total, item) => total + item.quantity! * item.attributes.default_sell_price, 0);
+  items.reduce((total, item) => total + item.quantity! * Math.round(item.attributes.default_sell_price), 0);
 
 export const calculateTotalItems = (items: Item[]) =>
   items.reduce((sum, item) => sum + item.quantity!, 0);

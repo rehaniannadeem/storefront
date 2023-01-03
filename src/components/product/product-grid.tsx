@@ -14,7 +14,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
   const { query } = useRouter();
   const router = useRouter();
   const { products }: any = useContext(Context);
-  // console.log(products, "products");
+  //console.log(products, "products");
 
   const {
     isFetching: isLoading,
@@ -68,18 +68,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
     } else {
       setPriceArray([]);
     }
-
-    /*   if (query.brand?.length != undefined) {
-      const filterBrand: any = query.brand;
-      setBrandArray(filterBrand);
-    } */
   }, [router]);
-
-  // console.log(initialProduct);
-  /*   useEffect(() => {
-    setProductData(data?.pages[0].data);
-    // console.log(data?.pages[0].data, "data");
-  }, [data]); */
 
   useEffect(() => {
     if (productData?.length > index) {
@@ -100,12 +89,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
               if (Object.keys(query).length === 0) {
                 return item;
               } else {
-                /* if (item.price > 1000) {
-                  return item;
-                } else */ if (
-                  item.price >= priceArray[0] &&
-                  item.price < priceArray[1]
-                ) {
+                if (item.price >= priceArray[0] && item.price < priceArray[1]) {
                   return item;
                 }
 

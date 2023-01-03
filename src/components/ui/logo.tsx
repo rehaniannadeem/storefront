@@ -6,10 +6,7 @@ import { useContext } from "react";
 //import axios from "axios";
 import { Context } from "src/pages/_app";
 
-const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
-  className,
-  ...props
-}) => {
+const Logo = ({ width, height, className, ...props }: any) => {
   const { domain }: any = useContext(Context);
   // console.log(domain);
 
@@ -41,31 +38,33 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
   }, [business]);
  */
   return (
-    <div className="flex-1">
+    <div>
       <Link
         href={siteSettings.logo.href}
-        className={cn("inline-flex focus:outline-none", className)}
+        className={cn("inline-flex focus:outline-none ", className)}
         {...props}
       >
         {domain && domain.logo != null ? (
           <Image
             id="logoImg"
             src={domain.logo}
-            alt={siteSettings.logo.alt}
-            height={siteSettings.logo.height}
-            width={siteSettings.logo.width}
+            alt={"img"}
+            height={width}
+            width={height}
             layout="fixed"
             loading="eager"
+            className="object-contain "
           />
         ) : (
           <Image
             id="logoImg"
             src={"/assets/images/default.png"}
-            alt={siteSettings.logo.alt}
-            height={siteSettings.logo.height}
-            width={siteSettings.logo.width}
+            alt={"img"}
+            height={width}
+            width={height}
             layout="fixed"
             loading="eager"
+            className="object-cover"
           />
         )}
       </Link>

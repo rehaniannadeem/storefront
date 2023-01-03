@@ -206,9 +206,9 @@ const OrdersTable: React.FC = () => {
           )
         ) : paginatePosts.length != 0 ? (
           <div className="w-full space-y-4">
-            {paginatePosts?.map((order: any) => (
+            {paginatePosts?.map((order: any, index) => (
               <ul className="text-sm font-semibold text-heading border border-gray-300 rounded-md flex flex-col px-4 pt-5 pb-6 space-y-5">
-                <li className="flex items-center justify-between">
+                <li className="flex items-center justify-between" key={index}>
                   {t("text-order")}
                   <span className="font-normal">
                     <Link

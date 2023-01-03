@@ -124,7 +124,9 @@ const ProductCard: FC<ProductProps> = ({
 
         {product?.description && (
           <p className="text-body text-xs lg:text-sm leading-normal xl:leading-relaxed max-w-[250px] truncate">
-            {product?.description}
+            <div
+              dangerouslySetInnerHTML={{ __html: `${product?.description}` }}
+            />
           </p>
         )}
 

@@ -87,6 +87,7 @@ const HeroWithCategory: React.FC<Props> = ({
       .then((response: any) => {
         // console.log(response.data, "this is product detail");
         setItems(response.data.data);
+        localStorage.setItem("categories", JSON.stringify(response.data.data));
       })
       .catch(function (err: any) {
         //handle error
@@ -142,8 +143,8 @@ const HeroWithCategory: React.FC<Props> = ({
                     />
                   </SwiperSlide>
                 ))
-              : items?.map((category: any) => (
-                  <SwiperSlide>
+              : items?.map((category: any, index: any) => (
+                  <SwiperSlide key={index}>
                     <CategoryListCard
                       key={`category--key${category.id}`}
                       category={category}
@@ -163,11 +164,8 @@ const HeroWithCategory: React.FC<Props> = ({
             //changed data.categories.data into data.data
             items
               ?.slice(0, 8)
-              .map((category: any) => (
-                <CategoryListCard
-                  key={`category--key${category.id}`}
-                  category={category}
-                />
+              .map((category: any, index: any) => (
+                <CategoryListCard key={index} category={category} />
               ))
           )}
         </div>
@@ -187,10 +185,11 @@ const HeroWithCategory: React.FC<Props> = ({
                 </SwiperSlide>
               ))
             : //<CategoryListFeedLoader limit={8} />
-              placeholder?.map((banner: any) => (
-                <Swiper>
+              placeholder?.map((banner: any, index: any) => (
+                <Swiper key={index}>
                   <SwiperSlide key={`banner--key${banner.id}`}>
                     <BannerCard
+                      key={index}
                       banner={banner}
                       href={"/"}
                       className="xl:h-4/6"
