@@ -22,8 +22,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ columns }) => {
   const categories = JSON.parse(localStorage.getItem("categories")!);
 
   return (
-    <div className="megaMenu shadow-header bg-gray-200 absolute -start-20 xl:start-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible">
-      <div className="grid grid-cols-5">
+    <div className=" shadow-header  bg-gray-200 absolute -start-20 xl:start-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible">
+      <div className="grid grid-cols-2">
         {columns?.map((column) => (
           <ul
             className="even:bg-gray-150 pb-7 2xl:pb-8 pt-6 2xl:pt-7"
