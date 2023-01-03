@@ -323,9 +323,11 @@ const ProductSingleDetails: React.FC = () => {
             {product?.name}
           </h2>
           <p className="text-body text-sm lg:text-base leading-6 lg:leading-8">
+            {product?.description&&
             <div
               dangerouslySetInnerHTML={{ __html: `${product?.description}` }}
             />
+}
           </p>
           <div className="flex items-center mt-5">
             <div className="text-heading font-bold text-base md:text-xl lg:text-2xl 2xl:text-4xl pe-2 md:pe-0 lg:pe-2 2xl:pe-0">
