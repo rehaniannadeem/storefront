@@ -56,6 +56,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
 
   const dir = getDirection(router.locale);
   const [title, setTitle] = useState("");
+  const [fav_icon, setFav_icon] = useState("");
   const [user, setUser] = useState({});
   const [order, setOrder] = useState({});
   const [domain, setDomain] = useState<any>({});
@@ -80,11 +81,13 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
         })
         .then((data) => {
           setTitle(data.data[0].name);
+          setFav_icon(data.data[0].fav_icon);
           setDomain(data.data[0]);
           localStorage.setItem("domainData", JSON.stringify(data.data[0]));
+          localStorage.setItem("user_token", data.data[0].token);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((_error) => {
+          //console.log(error);
         });
     };
 
@@ -123,7 +126,6 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   //console.log(order, "orders");
   //console.log(user, "user Data");
   const Layout = (Component as any).Layout || Noop;
-  // siteSettings.name = title;
 
   return (
     <>
@@ -142,6 +144,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
         <Head>
           <title>{title}</title>
 
+          <link rel="icon" href={fav_icon} />
           <meta
             http-equiv="Content-Security-Policy"
             content="upgrade-insecure-requests"

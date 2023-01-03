@@ -37,8 +37,9 @@ const ProductSingleDetails: React.FC = () => {
   const {
     query: { slug },
   } = useRouter();
+
   const productName = slug?.toString().split("%").join(" ");
-  // console.log(productName);
+
   //  const productName = slug;
   //console.log();
   const { width } = useWindowSize();
@@ -85,7 +86,7 @@ const ProductSingleDetails: React.FC = () => {
         },
       })
         .then((response) => {
-          console.log(response.data, "this is response");
+          // console.log(response.data, "this is response");
           setProduct(response.data[0]);
 
           if (response.data[0].gallery.length === 0) {
@@ -115,8 +116,6 @@ const ProductSingleDetails: React.FC = () => {
     }
   }, [quantity]);
   useEffect(() => {
-    
-
     {
       Object.keys(attributes).length != 0
         ? setIsSelected(true)
@@ -234,7 +233,7 @@ const ProductSingleDetails: React.FC = () => {
   console.log(attributes, "attributes");
   console.log(Object.keys(attributes).length, "quantity");
    console.log(product.enable_stock, "stock"); */
-  
+  console.log(product, "product");
 
   return (
     //block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start
@@ -251,15 +250,15 @@ const ProductSingleDetails: React.FC = () => {
           >
             {product?.gallery?.slice(0, 4).map((item: any, index: number) => (
               <SwiperSlide key={`product-gallery-key-${index}`}>
-                <div className="flex col-span-1 transition duration-150  ease-in hover:opacity-90">
+                <div className="col-span-1 transition duration-150  ease-in hover:opacity-90">
                   <img
                     src={
                       item?.original ??
                       "/assets/placeholder/products/product-gallery.svg"
                     }
                     alt={`${data?.name}--${index}`}
-                    className="object-container w-full "
-                   
+                    className="object-contain w-full "
+                    style={{ height: "200px" }}
                   />
                 </div>
               </SwiperSlide>
@@ -324,7 +323,9 @@ const ProductSingleDetails: React.FC = () => {
             {product?.name}
           </h2>
           <p className="text-body text-sm lg:text-base leading-6 lg:leading-8">
-            {product?.description}
+            <div
+              dangerouslySetInnerHTML={{ __html: `${product?.description}` }}
+            />
           </p>
           <div className="flex items-center mt-5">
             <div className="text-heading font-bold text-base md:text-xl lg:text-2xl 2xl:text-4xl pe-2 md:pe-0 lg:pe-2 2xl:pe-0">

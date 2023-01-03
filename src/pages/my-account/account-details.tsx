@@ -3,11 +3,26 @@ import AccountLayout from "@components/my-account/account-layout";
 import AccountDetails from "@components/my-account/account-details";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
-
+import { useEffect, useState } from "react";
+import Loader from "@components/ui/loaders/loader/loader";
+import { useTranslation } from "next-i18next";
 export default function AccountDetailsPage() {
+  const { t } = useTranslation();
+  const [userData, setUserData] = useState({});
+  const [loadingData, setLoadingData] = useState(true);
+  useEffect(() => {
+    setLoadingData(true);
+    var user = JSON.parse(localStorage.getItem("userData")!);
+    if (user) {
+      setUserData(user);
+    }
+    setLoadingData(false);
+  }, []);
+
+  if (loadingData) return <Loader text={t("common:text-loading")} />;
   return (
     <AccountLayout>
-      <AccountDetails />
+      <AccountDetails data={userData} />
     </AccountLayout>
   );
 }

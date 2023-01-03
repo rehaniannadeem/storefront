@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { useTranslation } from "next-i18next";
 import LanguageSwitcher from "@components/ui/language-switcher";
 import { Context } from "src/pages/_app";
+import useWindowSize from "react-use/lib/useWindowSize";
 const AuthMenu = dynamic(() => import("./auth-menu"), { ssr: false });
 const CartButton = dynamic(() => import("@components/cart/cart-button"), {
   ssr: false,
@@ -17,6 +18,7 @@ const CartButton = dynamic(() => import("@components/cart/cart-button"), {
 
 type DivElementRef = React.MutableRefObject<HTMLDivElement>;
 const { site_header } = siteSettings;
+
 const Header: React.FC = () => {
   const {
     openSidebar,
@@ -28,6 +30,7 @@ const Header: React.FC = () => {
   } = useUI();
   const { t } = useTranslation("common");
   const { domain }: any = useContext(Context);
+  const { width } = useWindowSize();
   const siteHeaderRef = useRef() as DivElementRef;
   addActiveScroll(siteHeaderRef);
 
@@ -60,7 +63,11 @@ const Header: React.FC = () => {
             </span>
           </button>
           <div>
-            <Logo />
+            {width > 1025 ? (
+              <Logo width={90} height={80} />
+            ) : (
+              <Logo width={80} height={50} />
+            )}
           </div>
           {domain.name === "urbannecessity" ? (
             <HeaderMenu

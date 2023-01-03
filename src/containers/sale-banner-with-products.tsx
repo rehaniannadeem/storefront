@@ -61,7 +61,7 @@ const SaleBannerWithProducts: React.FC<ProductsProps> = ({
                 ))
               : data
                   ?.slice(0, 4)
-                  .map((product:any) => (
+                  .map((product) => (
                     <ProductCard
                       key={`product--key${product.id}`}
                       product={product}

@@ -15,6 +15,7 @@ import DeliveryAddress from "src/components/checkout/deliveryAddress";
 import CheckoutCard from "./checkout-card";
 import Container from "@components/ui/container";
 import { useUI } from "@contexts/ui.context";
+import { toast } from "react-toastify";
 
 interface CheckoutInputType {
   firstName: string;
@@ -128,7 +129,7 @@ const CheckoutForm: React.FC = () => {
         },
       })
         .then((response) => {
-          //  console.log(response.data.data, "Payment Gateway");
+          // console.log(response, "Payment Gateway");
           setPaymentGateway(response.data.data);
         })
         .catch((err) => {
@@ -136,14 +137,13 @@ const CheckoutForm: React.FC = () => {
         });
     }
   }, [domainData]);
+
   useEffect(() => {
     setFirstName(userData.first_name);
     setLastName(userData.last_name);
     setMobileNumber(userData.mobile);
     setEmail(userData.email);
   }, [userData]);
-  //console.log(address, "shipping address");
-  console.log(placeOrder, "placeOrder");
   const get_url = (response: any) => {
     axios({
       method: "get",
@@ -183,7 +183,6 @@ const CheckoutForm: React.FC = () => {
       });
   };
   async function onSubmit(input: CheckoutInputType) {
-    // setIsDisabled(true);
     setAddToCartLoader(true);
     axios({
       method: "post",
@@ -222,16 +221,19 @@ const CheckoutForm: React.FC = () => {
     })
       .then((response) => {
         console.log(response, "this is response");
-        setOrderResponse(response.data[0]);
-        localStorage.setItem("orderDetail", JSON.stringify(response.data[0]));
-        //setOrder(response.data[0]);
+        if (response.data[0].original) {
+          toast.error(response.data[0].original.error.message);
+          setAddToCartLoader(false);
+        } else {
+          setOrderResponse(response.data[0]);
+          localStorage.setItem("orderDetail", JSON.stringify(response.data[0]));
 
-        if (response.status == 200) {
-          if (selectPayment.name == "cash On Delivery") {
-            Router.push(ROUTES.ORDER);
-          } else {
-            get_url(response.data[0]);
-            //   console.log(response.data[0], "response");
+          if (response.status == 200) {
+            if (selectPayment.name == "cash On Delivery") {
+              Router.push(ROUTES.ORDER);
+            } else {
+              get_url(response.data[0]);
+            }
           }
         }
       })
@@ -242,10 +244,6 @@ const CheckoutForm: React.FC = () => {
 
     updateUser(input);
   }
-  /*   useEffect(() => {
-    Router.push(ROUTES.ORDER);
-  }, [isResponse]);
- */
 
   return (
     <Container>
@@ -451,7 +449,7 @@ const CheckoutForm: React.FC = () => {
 
                 <label className="p-2">Cash On Delivery</label>
               </div>
-              {paymentGateway?.map((type: any) => (
+              {paymentGateway?.map((type: any, index: any) => (
                 <div className="flex my-2 border-4 h-16  rounded-md border-solid p-1 hover:bg-gray-200 ">
                   <input
                     style={{
@@ -459,6 +457,7 @@ const CheckoutForm: React.FC = () => {
                       cursor: "pointer",
                     }}
                     type="radio"
+                    id={index}
                     value={type}
                     name="payment-option"
                     className="m-2 "
@@ -485,11 +484,7 @@ const CheckoutForm: React.FC = () => {
                 <Button
                   className="w-full "
                   loading={addToCartLoader}
-                  disabled={
-                    /* checked == null ||
-                    Object.keys(selectPayment).length == 0 || */
-                    items.length == 0
-                  }
+                  disabled={items.length <= 0 ? true : false}
                   style={{
                     backgroundColor: domainData.theme_color,
                     color: "white",

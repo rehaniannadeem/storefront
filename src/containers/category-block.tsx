@@ -103,7 +103,7 @@ const CategoryBlock: React.FC<CategoriesProps> = ({
                 );
               })
             : // data.categories?.data changed to data.data
-              data?.data?.map((category:any) => (
+              data?.data?.map((category) => (
                 <SwiperSlide key={`category--key-${category.id}`}>
                   <Card
                     item={category}

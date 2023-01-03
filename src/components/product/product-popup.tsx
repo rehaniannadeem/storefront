@@ -56,7 +56,6 @@ export default function ProductPopup() {
     }
   }, [quantity]);
   useEffect(() => {
-   
     {
       Object.keys(attributes).length != 0
         ? setIsSelected(true)
@@ -73,12 +72,13 @@ export default function ProductPopup() {
   useEffect(() => {
     if (Object.keys(data).length != 0) {
       if (data.variations.length == 1) {
-        setAttributes(data.variations[0]);
+        setAttributes(data?.variations[0]);
       }
     }
   }, [data]);
   const variations = getVariations(data.variations);
   const { image, name, description } = data;
+
   //let urlName = name.replace(/\s+/g, "-");
 
   //const isSelected = Object.keys(attributes).length == 0 ? false : true;
@@ -202,7 +202,8 @@ export default function ProductPopup() {
       openCart();
     }, 300);
   }
-  //console.log(data, "variation");
+  console.log(data, "attributes");
+
   return (
     <div className="rounded-lg bg-white">
       <div className="flex flex-col lg:flex-row w-full md:w-[650px] lg:w-[960px] mx-auto overflow-hidden">
@@ -213,7 +214,7 @@ export default function ProductPopup() {
               "/assets/placeholder/products/product-thumbnail.svg"
             }
             alt={name}
-            className="lg:object-contain md:object-fill sm:object-contain lg:w-full lg:h-full md:h-full md:w-full "
+            className="lg:object-contain md:object-contain sm:object-contain lg:w-full lg:h-full"
           />
         </div>
 
@@ -224,12 +225,12 @@ export default function ProductPopup() {
               onClick={navigateToProductPage}
               role="button"
             >
-              <h2 className="text-heading text-lg md:text-xl  lg:text-2xl font-semibold hover:text-black">
+              <h2 className="text-heading text-lg md:text-xl lg:text-2xl font-semibold hover:text-black">
                 {name}
               </h2>
             </div>
             <p className="text-sm leading-6 md:text-body md:leading-7">
-              {description}
+              <div dangerouslySetInnerHTML={{ __html: `${description}` }} />
             </p>
 
             <div className="flex items-center mt-3">

@@ -67,13 +67,13 @@ const Breadcrumb: React.FC<{ separator?: string }> = ({ separator = "/" }) => {
         <a>{t("breadcrumb-home")}</a>
       </ActiveLink>
 
-      {breadcrumbs?.map((breadcrumb: any) => (
+      {breadcrumbs?.map((breadcrumb: any, index: any) => (
         <ActiveLink
           href={breadcrumb.href}
           activeClassName="font-semibold text-heading"
           key={breadcrumb.href}
         >
-          <a className="capitalize">
+          <a className="capitalize" key={index}>
             {convertBreadcrumbTitle(
               breadcrumb.breadcrumb.split("%20").join(" ")
             )}

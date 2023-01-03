@@ -153,7 +153,7 @@ export default function MobileMenu() {
     <>
       <div className="flex flex-col justify-between w-full h-full">
         <div className="w-full border-b border-gray-100 flex justify-between items-center relative ps-5 md:ps-7 flex-shrink-0 py-0.5">
-          <Logo />
+          <Logo width={70} height={70} />
 
           <button
             className="flex text-2xl items-center justify-center text-gray-500 px-4 md:px-5 py-6 lg:py-8 focus:outline-none transition-opacity hover:opacity-60"

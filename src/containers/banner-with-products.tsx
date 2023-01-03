@@ -61,7 +61,7 @@ const BannerWithProducts: React.FC<ProductsProps> = ({
 										uniqueKey={`on-selling-${idx}`}
 									/>
 							  ))
-							: data?.map((product:any) => (
+							: data?.map((product) => (
 									<ProductCard
 										key={`product--key${product.id}`}
 										product={product}
