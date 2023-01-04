@@ -69,7 +69,7 @@ const HeroWithCategory: React.FC<Props> = ({
         // setIsLoading(false);
 
         // setSlider(data.data[0].banner_image);
-        //console.log(data.data, "slider");
+        console.log(data.data, "slider");
       });
   };
   //get categories
@@ -126,8 +126,7 @@ const HeroWithCategory: React.FC<Props> = ({
       );
     }
   });
-   
-      
+
   return (
     <div
       className={`grid grid-cols-1 2xl:grid-cols-5 gap-5 xl:gap-7 ${className}`}

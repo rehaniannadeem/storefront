@@ -5,7 +5,7 @@ import { useProductsQuery } from "@framework/product/get-all-products";
 import { useRouter } from "next/router";
 import ProductFeedLoader from "@components/ui/loaders/product-feed-loader";
 import { useTranslation } from "next-i18next";
-import { slice } from "lodash";
+//import { slice } from "lodash";
 import { Context } from "src/pages/_app";
 interface ProductGridProps {
   className?: string;
@@ -27,18 +27,19 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
   if (error) return <p>{error.message}</p>;
 
   const { t } = useTranslation("common");
-  const [productData, setProductData] = useState<any>();
+  const [productData, setProductData] = useState<any>([]);
   const [isCompleted, setIsCompleted] = useState(false);
   const [index, setIndex] = useState(13);
-  const initialProduct = slice(productData, 0, index);
+  // const initialProduct = slice(productData, 0, index);
   const [categoryArray, setCategoryArray] = useState<any>([]);
   const [brandArray, setBrandArray] = useState<any>([]);
   const [priceArray, setPriceArray] = useState<any>([]);
+  const [productLength, setProductLength] = useState<any>();
 
   const loadMore = () => {
     setIndex(index + 10);
     if (productData != undefined) {
-      if (index >= productData?.length) {
+      if (index >= productLength) {
         setIsCompleted(true);
       } else {
         setIsCompleted(false);
@@ -46,7 +47,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
     }
   };
   useEffect(() => {
-    setProductData(products);
+    Array.isArray(products) ? setProductData(products) : null;
   }, [products]);
   useEffect(() => {
     if (query.category?.length != undefined) {
@@ -71,10 +72,38 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
   }, [router]);
 
   useEffect(() => {
-    if (productData?.length > index) {
+    let length = productData?.filter((item: any) => {
+      if (Object.keys(query).length === 0) {
+        return item;
+      } else {
+        if (item.price >= priceArray[0] && item.price < priceArray[1]) {
+          return item;
+        }
+
+        if (item.category != null) {
+          if (categoryArray.includes(item.category.name)) {
+            return item;
+          }
+        }
+
+        if (item.brands != null) {
+          if (brandArray.includes(item.brands.name)) {
+            return item;
+          }
+        }
+      }
+    }).length;
+
+    setProductLength(length);
+  });
+
+  useEffect(() => {
+    if (productLength > index) {
       setIsCompleted(true);
+    } else {
+      setIsCompleted(false);
     }
-  }, [index, productData]);
+  }, [index, productLength]);
 
   return (
     <>
@@ -84,7 +113,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
         {isLoading && !data?.pages?.length ? (
           <ProductFeedLoader limit={20} uniqueKey="search-product" />
         ) : (
-          initialProduct
+          productData
             .filter((item: any) => {
               if (Object.keys(query).length === 0) {
                 return item;
@@ -106,6 +135,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
                 }
               }
             })
+            .slice(0, index)
             .map((product: any) => {
               if (product.name.toLocaleLowerCase() === "open product") {
                 product.visibility = "hidden";
@@ -122,7 +152,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
         )}
       </div>
       <div className="text-center pt-8 xl:pt-14">
-        {isCompleted == true ? (
+        {isCompleted === true ? (
           <Button
             // loading={loadingMore}
             // disabled={loadingMore}
