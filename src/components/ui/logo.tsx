@@ -8,7 +8,7 @@ import { Context } from "src/pages/_app";
 
 const Logo = ({ width, height, className, ...props }: any) => {
   const { domain }: any = useContext(Context);
- 
+
   return (
     <div>
       <Link

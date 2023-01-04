@@ -10,7 +10,45 @@ import { useTranslation } from "next-i18next";
 import { useContext } from "react";
 import { Context } from "src/pages/_app";
 import { ROUTES } from "@utils/routes";
-
+/** 
+ * import {
+  IoLogoInstagram,
+  IoLogoTwitter,
+  IoLogoFacebook,
+  IoLogoYoutube,
+  IoClose,
+} from "react-icons/io5";
+const social = [
+  {
+    id: 0,
+    link: "https://www.facebook.com/redqinc/",
+    icon: <IoLogoFacebook />,
+    className: "facebook",
+    title: "text-facebook",
+  },
+  {
+    id: 1,
+    link: "https://twitter.com/redqinc",
+    icon: <IoLogoTwitter />,
+    className: "twitter",
+    title: "text-twitter",
+  },
+  {
+    id: 2,
+    link: "https://www.youtube.com/channel/UCjld1tyVHRNy_pe3ROLiLhw",
+    icon: <IoLogoYoutube />,
+    className: "youtube",
+    title: "text-youtube",
+  },
+  {
+    id: 3,
+    link: "https://www.instagram.com/redqinc/",
+    icon: <IoLogoInstagram />,
+    className: "instagram",
+    title: "text-instagram",
+  },
+];
+*/
 export default function MobileMenu() {
   //const [activeMenus, setActiveMenus] = useState<any>([]);
   const { site_header } = siteSettings;

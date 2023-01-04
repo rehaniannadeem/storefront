@@ -22,7 +22,7 @@ const MegaMenu: React.FC<MegaMenuProps> = ({ columns }) => {
   const categories = JSON.parse(localStorage.getItem("categories")!);
 
   return (
-    <div className=" shadow-header  bg-gray-200 absolute -start-20 xl:start-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible">
+    <div className=" shadow-header bg-gray-200 absolute -start-20 xl:start-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible ">
       <div className="grid grid-cols-2">
         {columns?.map((column) => (
           <ul

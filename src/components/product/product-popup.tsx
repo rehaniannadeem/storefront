@@ -229,10 +229,11 @@ export default function ProductPopup() {
                 {name}
               </h2>
             </div>
-            {description &&
             <p className="text-sm leading-6 md:text-body md:leading-7">
-              <div dangerouslySetInnerHTML={{ __html: `${description}` }} />
-            </p>}
+              {description && (
+                <div dangerouslySetInnerHTML={{ __html: `${description}` }} />
+              )}
+            </p>
 
             <div className="flex items-center mt-3">
               <div className="text-heading font-semibold text-base md:text-xl lg:text-2xl">
