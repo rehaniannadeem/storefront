@@ -1,8 +1,8 @@
-//import { useState } from "react";
+import { useState } from "react";
 import Link from "@components/ui/link";
 import { siteSettings } from "@settings/site-settings";
 import Scrollbar from "@components/common/scrollbar";
-//import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown } from "react-icons/io";
 import Logo from "@components/ui/logo";
 import { useUI } from "@contexts/ui.context";
 import { IoClose } from "react-icons/io5";
@@ -10,6 +10,7 @@ import { useTranslation } from "next-i18next";
 import { useContext } from "react";
 import { Context } from "src/pages/_app";
 import { ROUTES } from "@utils/routes";
+
 /** 
  * import {
   IoLogoInstagram,
@@ -50,11 +51,18 @@ const social = [
 ];
 */
 export default function MobileMenu() {
-  //const [activeMenus, setActiveMenus] = useState<any>([]);
+  const [activeMenus, setActiveMenus] = useState<any>([]);
   const { site_header } = siteSettings;
   const { closeSidebar } = useUI();
   const { t } = useTranslation("menu");
-  /*   const handleArrowClick = (menuName: string) => {
+  let brands: any = [];
+  let categories: any = [];
+  if (typeof window !== "undefined") {
+    brands = JSON.parse(localStorage.getItem("brands")!);
+    categories = JSON.parse(localStorage.getItem("categories")!);
+  }
+
+  const handleArrowClick = (menuName: string) => {
     let newActiveMenus = [...activeMenus];
 
     if (newActiveMenus.includes(menuName)) {
@@ -67,21 +75,21 @@ export default function MobileMenu() {
     }
 
     setActiveMenus(newActiveMenus);
-  }; */
+  };
   const { domain }: any = useContext(Context);
   const ListMenu = ({
-    //  dept,
+    dept,
     data,
-    // hasSubMenu,
-    // menuName,
-    // menuIndex,
+    hasSubMenu,
+    menuName,
+    menuIndex,
     className = "",
   }: any) =>
     data.label && (
       <li className={`mb-0.5 ${className}`}>
         <div
           className="flex flex-row items-center justify-between"
-          onClick={closeSidebar}
+          // onClick={closeSidebar}
         >
           <Link
             href={
@@ -97,7 +105,7 @@ export default function MobileMenu() {
               {t(`${data.label}`)}
             </span> */}
           </Link>
-          {/*    {hasSubMenu && (
+          {hasSubMenu && (
             <div
               className="cursor-pointer w-16 md:w-20 h-8 text-lg flex-shrink-0 flex items-center justify-center"
               onClick={() => handleArrowClick(menuName)}
@@ -108,20 +116,63 @@ export default function MobileMenu() {
                 }`}
               />
             </div>
-          )} */}
+          )}
         </div>
-        {/*  {hasSubMenu && (
+
+        {hasSubMenu && (
           <SubMenu
             dept={dept}
-            data={data.subMenu}
+            data={data}
             toggle={activeMenus.includes(menuName)}
             menuIndex={menuIndex}
           />
-        )} */}
+        )}
       </li>
     );
+  const ListCategories = ({ data, key }: any) => (
+    <li className="relative ps-4 mb-0.5" key={key} onClick={closeSidebar}>
+      <Link
+        href={{
+          pathname: ROUTES.SEARCH,
+          query: { category: data.name },
+        }}
+        className="flex items-center justify-between py-2 ps-5 xl:ps-7 pe-3 xl:pe-3.5 hover:text-heading hover:bg-gray-300"
+      >
+        {t(data.name)}
+        {data.subMenu && (
+          <span className="text-sm mt-0.5 shrink-0">
+            {/* <IoIosArrowForward className="text-body transition duration-300 ease-in-out group-hover:text-black" /> */}
+          </span>
+        )}
+      </Link>
+      {/* {hasSubMenu && (
+          <SubMenu dept={dept} data={data.subMenu} menuIndex={menuIndex} />
+        )} */}
+    </li>
+  );
+  const ListBrands = ({ data, key }: any) => (
+    <li className="relative ps-4 mb-0.5" key={key} onClick={closeSidebar}>
+      <Link
+        href={{
+          pathname: ROUTES.SEARCH,
+          query: { brand: data.slug },
+        }}
+        className="flex items-center justify-between py-2 ps-5 xl:ps-7 pe-3 xl:pe-3.5 hover:text-heading hover:bg-gray-300"
+      >
+        {t(data.name)}
+        {data.subMenu && (
+          <span className="text-sm mt-0.5 shrink-0">
+            {/* <IoIosArrowForward className="text-body transition duration-300 ease-in-out group-hover:text-black" /> */}
+          </span>
+        )}
+      </Link>
+      {/* {hasSubMenu && (
+          <SubMenu dept={dept} data={data.subMenu} menuIndex={menuIndex} />
+        )} */}
+    </li>
+  );
 
-  /*   const SubMenu = ({ dept, data, toggle, menuIndex }: any) => {
+  const SubMenu = ({ dept, data, toggle }: any) => {
     if (!toggle) {
       return null;
     }
@@ -130,7 +181,15 @@ export default function MobileMenu() {
 
     return (
       <ul className="pt-0.5">
-        {data?.map((menu: any, index: number) => {
+        {data.label === "menu-categories" &&
+          categories.map((menu: any, index: number) => {
+            return <ListCategories data={menu} key={index} />;
+          })}
+        {data.label === "menu-brands" &&
+          brands.map((menu: any, index: number) => {
+            return <ListBrands data={menu} key={index} />;
+          })}
+        {/*   {data?.map((menu: any, index: number) => {
           const menuName: string = `sidebar-submenu-${dept}-${menuIndex}-${index}`;
 
           return (
@@ -144,11 +203,11 @@ export default function MobileMenu() {
               className={dept > 1 && "ps-4"}
             />
           );
-        })}
+        })} */}
       </ul>
     );
   };
- */
+
   return (
     <>
       <div className="flex flex-col justify-between w-full h-full">
@@ -176,7 +235,7 @@ export default function MobileMenu() {
                       <ListMenu
                         dept={dept}
                         data={menu}
-                        //  hasSubMenu={menu.subMenu}
+                        hasSubMenu={menu.subMenu}
                         menuName={menuName}
                         key={menuName}
                         menuIndex={index}
@@ -191,7 +250,7 @@ export default function MobileMenu() {
                       <ListMenu
                         dept={dept}
                         data={menu}
-                        //  hasSubMenu={menu.subMenu}
+                        //hasSubMenu={menu.subMenu}
                         menuName={menuName}
                         key={menuName}
                         menuIndex={index}

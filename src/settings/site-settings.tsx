@@ -40,63 +40,47 @@ export const siteSettings = {
       {
         id: 3,
         path: "/search",
-        label: "menu-shop",
+        label: "menu-categories",
         // icon: <GrCube />,
-        columns: [
+        subMenu: [
           {
             id: 1,
-            columnItems: [
-              {
-                id: 1,
-                path: "/search?q=top-wear",
-                label: "menu-categories",
-                columnItemItems: [
-                  {
-                    id: 1,
-                    path: "/search?q=t-shit-shirtrt",
-                    label: "menu-t-shirt",
-                  },
-                  {
-                    id: 2,
-                    path: "/search?q=casual-shirts",
-                    label: "menu-casual-shirts",
-                  },
-                ],
-              },
-            ],
+            path: "/search?q=dresses",
+            label: "menu-dresses",
           },
           {
             id: 2,
-            columnItems: [
-              {
-                id: 1,
-                path: "/search?q=western-wear",
-                label: "menu-brands",
-                columnItemItems: [
-                  {
-                    id: 1,
-                    path: "/search?q=dresses",
-                    label: "menu-dresses",
-                  },
-                  {
-                    id: 2,
-                    path: "/search?q=jumpsuits",
-                    label: "menu-jumpsuits",
-                  },
-                ],
-              },
-            ],
+            path: "/search?q=jumpsuits",
+            label: "menu-jumpsuits",
           },
         ],
       },
       {
-        id: 3,
+        id: 4,
+        path: "/",
+        label: "menu-brands",
+        //icon: <IoHomeOutline />,
+        subMenu: [
+          {
+            id: 1,
+            path: "/search?q=dresses",
+            label: "menu-dresses",
+          },
+          {
+            id: 2,
+            path: "/search?q=jumpsuits",
+            label: "menu-jumpsuits",
+          },
+        ],
+      },
+      {
+        id: 5,
         path: "/",
         label: "menu-faq",
         // icon: <GrCube />,
       },
       {
-        id: 5,
+        id: 6,
         path: "/search",
         label: "menu-contact",
         // icon: <GrCube />,
@@ -118,63 +102,47 @@ export const siteSettings = {
       {
         id: 3,
         path: "/search",
-        label: "menu-shop",
+        label: "menu-categories",
         // icon: <GrCube />,
-        columns: [
+        subMenu: [
           {
             id: 1,
-            columnItems: [
-              {
-                id: 1,
-                path: "/search?q=top-wear",
-                label: "menu-categories",
-                columnItemItems: [
-                  {
-                    id: 1,
-                    path: "/search?q=t-shit-shirtrt",
-                    label: "menu-t-shirt",
-                  },
-                  {
-                    id: 2,
-                    path: "/search?q=casual-shirts",
-                    label: "menu-casual-shirts",
-                  },
-                ],
-              },
-            ],
+            path: "/search?q=dresses",
+            label: "menu-dresses",
           },
           {
             id: 2,
-            columnItems: [
-              {
-                id: 1,
-                path: "/search?q=western-wear",
-                label: "menu-brands",
-                columnItemItems: [
-                  {
-                    id: 1,
-                    path: "/search?q=dresses",
-                    label: "menu-dresses",
-                  },
-                  {
-                    id: 2,
-                    path: "/search?q=jumpsuits",
-                    label: "menu-jumpsuits",
-                  },
-                ],
-              },
-            ],
+            path: "/search?q=jumpsuits",
+            label: "menu-jumpsuits",
           },
         ],
       },
       {
         id: 4,
         path: "/",
+        label: "menu-brands",
+        //icon: <IoHomeOutline />,
+        subMenu: [
+          {
+            id: 1,
+            path: "/search?q=dresses",
+            label: "menu-dresses",
+          },
+          {
+            id: 2,
+            path: "/search?q=jumpsuits",
+            label: "menu-jumpsuits",
+          },
+        ],
+      },
+      {
+        id: 5,
+        path: "/",
         label: "menu-faq",
         // icon: <GrCube />,
       },
       {
-        id: 5,
+        id: 6,
         path: "/search",
         label: "menu-contact",
         // icon: <GrCube />,

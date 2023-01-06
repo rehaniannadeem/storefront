@@ -2,7 +2,9 @@ import Link from "@components/ui/link";
 import { FaChevronDown } from "react-icons/fa";
 import MegaMenu from "@components/ui/mega-menu";
 import classNames from "classnames";
-import ListMenu from "@components/ui/list-menu";
+//import ListMenu from "@components/ui/list-menu";
+import ListCategory from "@components/ui/list-categries";
+import ListBrand from "@components/ui/list-brand";
 import { useTranslation } from "next-i18next";
 import { ROUTES } from "@utils/routes";
 interface MenuProps {
@@ -12,6 +14,13 @@ interface MenuProps {
 
 const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
   const { t } = useTranslation("menu");
+  let brands: any = [];
+  let categories: any = [];
+  if (typeof window !== "undefined") {
+    brands = JSON.parse(localStorage.getItem("brands")!);
+    categories = JSON.parse(localStorage.getItem("categories")!);
+  }
+
   return (
     <nav className={classNames(`headerMenu flex w-full relative`, className)}>
       {data?.map((item: any, index: any) => (
@@ -46,8 +55,36 @@ const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
 
           {item?.subMenu && Array.isArray(item.subMenu) && (
             <div className="subMenu shadow-header bg-gray-200 absolute start-0 opacity-0 group-hover:opacity-100">
-              <ul className="text-body text-sm py-5">
-                {item.subMenu.map((menu: any, index: number) => {
+              {item.label === "menu-categories" && (
+                <ul className="text-body text-sm py-5">
+                  {categories.map((menu: any, index: number) => {
+                    const dept: number = 1;
+                    const menuName: string = `sidebar-menu-${dept}-${index}`;
+                    return (
+                      <ListCategory
+                        data={menu}
+                        key={menuName}
+                        menuIndex={index}
+                      />
+                    );
+                  })}
+                </ul>
+              )}
+              {item.label === "menu-brands" && (
+                <ul
+                  className="text-body text-sm py-5"
+                  style={{ columnCount: 2 }}
+                >
+                  {brands.map((menu: any, index: number) => {
+                    const dept: number = 1;
+                    const menuName: string = `sidebar-menu-${dept}-${index}`;
+                    return (
+                      <ListBrand data={menu} key={menuName} menuIndex={index} />
+                    );
+                  })}
+                </ul>
+              )}
+              {/*  {item.subMenu.map((menu: any, index: number) => {
                   const dept: number = 1;
                   const menuName: string = `sidebar-menu-${dept}-${index}`;
                   return (
@@ -60,8 +97,7 @@ const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
                       menuIndex={index}
                     />
                   );
-                })}
-              </ul>
+                })} */}
             </div>
           )}
         </div>
