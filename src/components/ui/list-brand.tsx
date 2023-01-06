@@ -1,31 +1,35 @@
+import { ROUTES } from "@utils/routes";
 import { useTranslation } from "next-i18next";
-import { IoIosArrowForward } from "react-icons/io";
+//import { IoIosArrowForward } from "react-icons/io";
 import Link from "./link";
 
-const ListMenu = ({ dept, data, hasSubMenu, menuIndex }: any) => {
+const ListMenu = ({ data }: any) => {
   const { t } = useTranslation("menu");
 
   return (
-    <li className="relative">
+    <li className="relative" /* style={{ columnCount: 2 }} */>
       <Link
-        href={data.path}
+        href={{
+          pathname: ROUTES.SEARCH,
+          query: { brand: data.slug },
+        }}
         className="flex items-center justify-between py-2 ps-5 xl:ps-7 pe-3 xl:pe-3.5 hover:text-heading hover:bg-gray-300"
       >
-        {t(data.label)}
-        {data.subMenu && (
+        {t(data.name)}
+        {/*  {data.subMenu && (
           <span className="text-sm mt-0.5 shrink-0">
             <IoIosArrowForward className="text-body transition duration-300 ease-in-out group-hover:text-black" />
           </span>
-        )}
+        )} */}
       </Link>
-      {hasSubMenu && (
+      {/* {hasSubMenu && (
         <SubMenu dept={dept} data={data.subMenu} menuIndex={menuIndex} />
-      )}
+      )} */}
     </li>
   );
 };
 
-const SubMenu: React.FC<any> = ({ dept, data, menuIndex }) => {
+/* const SubMenu: React.FC<any> = ({ dept, data, menuIndex }) => {
   dept = dept + 1;
   return (
     <ul className="subMenuChild shadow-subMenu bg-gray-200 absolute z-0 end-full 2xl:end-auto 2xl:start-full opacity-0 invisible top-4 w-56 py-3">
@@ -46,5 +50,5 @@ const SubMenu: React.FC<any> = ({ dept, data, menuIndex }) => {
     </ul>
   );
 };
-
+ */
 export default ListMenu;
