@@ -20,7 +20,7 @@ const SearchTopBar = () => {
   const [priceArray, setPriceArray] = useState<any>([]);
   const [productLength, setProductLength] = useState();
   const [productData, setProductData] = useState<any>([]);
-
+  const [variationArray, setVariationArray] = useState<any>([]);
   const { openFilter, displayFilter, closeFilter } = useUI();
   const { t } = useTranslation("common");
   const { locale } = useRouter();
@@ -51,6 +51,13 @@ const SearchTopBar = () => {
     } else {
       setPriceArray([]);
     }
+    if (query?.variation?.length != undefined) {
+      const filterVariation: any = query?.variation;
+      setVariationArray(filterVariation.split(","));
+    } else {
+      setVariationArray([]);
+    }
+  
   }, [query]);
 
   useEffect(() => {
@@ -73,12 +80,15 @@ const SearchTopBar = () => {
             return item;
           }
         }
+        if (variationArray.includes(item?.variations[0]?.value)) {
+          return item;
+        }
       }
     }).length;
 
     setProductLength(length);
   });
-
+  
   return (
     <div className="flex justify-between items-center mb-7">
       {/*  <Text variant="pageHeading" className="hidden lg:inline-flex pb-1">

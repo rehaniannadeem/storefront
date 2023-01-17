@@ -2,15 +2,15 @@
 import { CheckBox } from "@components/ui/checkbox";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
-import { useTranslation } from "next-i18next";
+//import { useTranslation } from "next-i18next";
 import { Context } from "src/pages/_app";
 import axios from "axios";
 
-export const CategoryFilter = () => {
+export const VariationFilter = () => {
   const { domain }: any = useContext(Context);
-  const { t } = useTranslation("common");
+ // const { t } = useTranslation("common");
   const router = useRouter();
-  let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
+  let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   const { pathname, query } = router;
   const [items, setItems] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
@@ -20,21 +20,21 @@ export const CategoryFilter = () => {
   // const items = data?.data;
   //console.log(data, "category Data");
 
-  const selectedCategories = query?.category
-    ? (query.category as string).split(",")
+  const selectedVariation = query?.variation
+    ? (query.variation as string).split(",")
     : [];
   const [formState, setFormState] =
-    React.useState<string[]>(selectedCategories);
+    React.useState<string[]>(selectedVariation);
 
   React.useEffect(() => {
-    setFormState(selectedCategories);
-  }, [query?.category]);
+    setFormState(selectedVariation);
+  }, [query?.variation]);
   useEffect(() => {
-    const getCategory = () => {
+    const getVariations = () => {
       setIsLoading(true);
       axios({
         method: "get",
-        url: storefront_base_url+"/categories",
+        url: connector_base_url+"/get_variations",
         // data: bodyFormData,
         headers: {
           "Content-Type": "Application/json",
@@ -43,7 +43,7 @@ export const CategoryFilter = () => {
       })
         .then((response: any) => {
           // console.log(response.data, "this is product detail");
-          setItems(response.data.data);
+          setItems(response.data[0]);
         })
         .catch(function (err: any) {
           //handle error
@@ -51,7 +51,7 @@ export const CategoryFilter = () => {
         });
     };
     
-    {Object.keys(domain).length!=0 &&  getCategory();}
+    {Object.keys(domain).length!=0 &&  getVariations();}
    // getCategory();
     setIsLoading(false);
   }, [domain]);
@@ -62,14 +62,14 @@ export const CategoryFilter = () => {
     let currentFormState = formState.includes(value)
       ? formState.filter((i) => i !== value)
       : [...formState, value];
-    const { category, ...restQuery } = query;
+    const { variation, ...restQuery } = query;
     router.push(
       {
         pathname,
         query: {
           ...restQuery,
           ...(!!currentFormState.length
-            ? { category: currentFormState.join(",") }
+            ? { variation: currentFormState.join(",") }
             : {}),
         },
       },
@@ -78,18 +78,18 @@ export const CategoryFilter = () => {
     );
   }
 
-  // console.log(items, "items");
+   //console.log(items, "items");
 
   return (
     <div className="block border-b border-gray-300 pb-7 mb-7">
       <h3 className="text-heading text-sm md:text-base font-semibold mb-7">
-        {t("text-category")}
+        {items?.name}
       </h3>
       <div className="mt-2 flex flex-col space-y-4">
         {isLoading && !items ? (
           <p>Loading...</p>
         ) : (
-          items?.map((item: any) => (
+          items?.values?.map((item: any) => (
             <CheckBox
               key={item.id}
               label={item.name}

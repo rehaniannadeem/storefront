@@ -1,4 +1,5 @@
 import { CategoryFilter } from "./category-filter";
+import { VariationFilter } from "./variation-filter";
 import { BrandFilter } from "./brand-filter";
 import { FilteredItem } from "./filtered-item";
 // import { ColorFilter } from "./color-filter";
@@ -43,7 +44,7 @@ export const ShopFilters: React.FC = () => {
               ))}
         </div>
       </div>
-
+<VariationFilter/>
       <CategoryFilter />
       <BrandFilter />
       <PriceFilter />

@@ -58,7 +58,7 @@ export default function OrderPage() {
   const [_productData, setProductData] = useState<any>({});
   const [subTotal, setSubTotal] = useState<any>();
   const [order, setOrder] = useState<any>({});
-
+  let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
@@ -69,7 +69,7 @@ export default function OrderPage() {
     const fetchData = () => {
       axios({
         method: "get",
-        url: `https://pos-dev.myignite.online/public/connector/api/sell/${orderId}`,
+        url: connector_base_url+`/sell/${orderId}`,
 
         headers: {
           "Content-Type": "Application/json",

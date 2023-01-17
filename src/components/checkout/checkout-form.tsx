@@ -63,6 +63,7 @@ const CheckoutForm: React.FC = () => {
   const [productsName, _setProductsName] = useState<any>([]);
   const { isAuthorized, openModal, setModalView } = useUI();
   const { clearCart } = useCart();
+  let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
 
   function handleLogin() {
     setModalView("LOGIN_VIEW");
@@ -186,7 +187,7 @@ const CheckoutForm: React.FC = () => {
     setAddToCartLoader(true);
     axios({
       method: "post",
-      url: "https://pos-dev.myignite.online/public/connector/api/sell",
+      url:connector_base_url+"/sell",
 
       headers: {
         "Content-Type": "Application/json",

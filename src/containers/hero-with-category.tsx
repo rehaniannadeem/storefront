@@ -48,12 +48,13 @@ const HeroWithCategory: React.FC<Props> = ({
 
   const [banners, setBanners] = useState<any>([]);
   const [placeholder, _setPlaceholder] = useState<any>([]);
-
+  let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
+  let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   const [items, setItems] = useState<any>([]);
   //fetch banner method
   const getBanner = () => {
     //  setIsLoading(true);
-    fetch("https://pos-dev.myignite.online/connector/api/banner", {
+    fetch(connector_base_url+"/banner", {
       method: "get",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -77,7 +78,7 @@ const HeroWithCategory: React.FC<Props> = ({
     //  setCategoryLoading(true);
     axios({
       method: "get",
-      url: "http://pos-dev.myignite.online/api/store-front/categories",
+      url: storefront_base_url+"/categories",
       // data: bodyFormData,
       headers: {
         "Content-Type": "Application/json",

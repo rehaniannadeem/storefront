@@ -50,13 +50,14 @@ const BrandBlock: React.FC<BrandProps> = ({
   }); */
   const { domain }: any = useContext(Context);
   const [items, setItems] = useState<any>([]);
+  let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   // const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const getBrand = () => {
       // setIsLoading(true);
       axios({
         method: "get",
-        url: "http://pos-dev.myignite.online/api/store-front/brands",
+        url: storefront_base_url+"/brands",
         // data: bodyFormData,
         headers: {
           "Content-Type": "Application/json",
@@ -75,7 +76,9 @@ const BrandBlock: React.FC<BrandProps> = ({
         });
       // setIsLoading(false);
     };
-    getBrand();
+
+    {Object.keys(domain).length!=0 &&  getBrand();}
+   
   }, [domain]);
   // const brands = data?.brands;
 

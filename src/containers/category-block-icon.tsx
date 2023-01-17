@@ -51,11 +51,12 @@ const CategoryBlockIcon: React.FC<CategoriesProps> = ({
   }); */
   const { domain }: any = useContext(Context);
   const [categories, setCategories] = useState<any>();
+  let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   const getCategory = () => {
     //  setCategoryLoading(true);
     axios({
       method: "get",
-      url: "http://pos-dev.myignite.online/api/store-front/categories",
+      url: storefront_base_url+"/categories",
       // data: bodyFormData,
       headers: {
         "Content-Type": "Application/json",
@@ -73,7 +74,8 @@ const CategoryBlockIcon: React.FC<CategoriesProps> = ({
     // setCategoryLoading(false);
   };
   useEffect(() => {
-    getCategory();
+    {Object.keys(domain).length!=0 &&   getCategory();}
+  
   }, [domain]);
 
   return (
