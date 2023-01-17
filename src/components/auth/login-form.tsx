@@ -59,7 +59,7 @@ const LoginForm: React.FC = () => {
   const [domainToken, setDomainToken] = useState("");
   const [userData, setUserData] = useState({});
   //const [authenticatedUser, setAuthenticatedUser] = useState({});
-
+  let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   //const { setUser } = useContext(Context);
 
   useEffect(() => {
@@ -113,7 +113,7 @@ const LoginForm: React.FC = () => {
         mobile_num: phone,
       },
       method: "get",
-      url: "https://pos-dev.myignite.online/connector/api/contactapi",
+      url:connector_base_url+"/contactapi",
       // data: bodyFormData,
       headers: {
         "Content-Type": "Application/json",
@@ -163,7 +163,7 @@ const LoginForm: React.FC = () => {
 
     axios({
       method: "post",
-      url: "https://pos-dev.myignite.online/connector/api/login-consumer",
+      url:connector_base_url+"/login-consumer",
       data: bodyFormData,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -195,7 +195,7 @@ const LoginForm: React.FC = () => {
     bodyFormData.set("mobile_no", phone);
     axios({
       method: "post",
-      url: "https://pos-dev.myignite.online/connector/api/send-otp-consumer",
+      url:connector_base_url+"/send-otp-consumer",
       data: bodyFormData,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -224,7 +224,7 @@ const LoginForm: React.FC = () => {
 
     axios({
       method: "post",
-      url: "https://pos-dev.myignite.online/connector/api/contactapi",
+      url:connector_base_url+"/contactapi",
 
       data: {
         first_name: firstName,

@@ -12,6 +12,7 @@ export const BrandFilter = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation("common");
   const router = useRouter();
+  let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   const { pathname, query } = router;
   /*  const { data, isLoading, error } = useBrandsQuery({
     limit: 10,
@@ -26,7 +27,7 @@ export const BrandFilter = () => {
       setIsLoading(true);
       axios({
         method: "get",
-        url: "http://pos-dev.myignite.online/api/store-front/brands",
+        url:storefront_base_url+"/brands",
         // data: bodyFormData,
         headers: {
           "Content-Type": "Application/json",
@@ -43,7 +44,8 @@ export const BrandFilter = () => {
         });
       setIsLoading(false);
     };
-    getBrand();
+    {Object.keys(domain).length!=0 &&  getBrand();}
+   // getBrand();
   }, [domain]);
   //if (isLoading) return <p>Loading...</p>;
   // if (error) return <p>{error.message}</p>;

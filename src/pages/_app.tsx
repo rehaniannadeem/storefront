@@ -61,7 +61,9 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   const [order, setOrder] = useState({});
   const [domain, setDomain] = useState<any>({});
   const [products, setProducts] = useState<any>({});
-  const [business, setBusiness] = useState("");
+  const [business, setBusiness] = useState<any>();
+  let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
+  let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   useEffect(() => {
     let host = window.location.host;
     let parts = host.split(".");
@@ -71,7 +73,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     const fetchData = async () => {
       await fetch(
-        `http://pos-dev.myignite.online/connector/api/business/${business}`,
+        connector_base_url+`/business/${business}`,
         {
           method: "get",
         }
@@ -90,8 +92,9 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           //console.log(error);
         });
     };
+{business!=undefined&& fetchData(); }
 
-    fetchData();
+   
     /*    const localData = JSON.parse(localStorage.getItem("domainData")!);
 
     setDomain((prev) => ({ ...prev, ...localData })); */
@@ -101,7 +104,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
     const getProduct = () => {
       axios({
         method: "get",
-        url: "http://pos-dev.myignite.online/api/store-front/products",
+        url: storefront_base_url+"/products",
         // data: bodyFormData,
         headers: {
           "Content-Type": "Application/json",
@@ -117,7 +120,9 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           console.log(err);
         });
     };
-    getProduct();
+  {Object.keys(domain).length!=0 &&   getProduct();}
+   
+  
   }, [domain]);
 
   useEffect(() => {

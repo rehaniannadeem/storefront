@@ -34,8 +34,9 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
   const [categoryArray, setCategoryArray] = useState<any>([]);
   const [brandArray, setBrandArray] = useState<any>([]);
   const [priceArray, setPriceArray] = useState<any>([]);
+  const [variationArray, setVariationArray] = useState<any>([]);
   const [productLength, setProductLength] = useState<any>();
-
+//console.log('>>>>>>>>>>>', productData)
   const loadMore = () => {
     setIndex(index + 10);
     if (productData != undefined) {
@@ -69,7 +70,15 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
     } else {
       setPriceArray([]);
     }
+    if (query?.variation?.length != undefined) {
+      const filterVariation: any = query?.variation;
+      // console.log(filterPrice, "filter price");
+      setVariationArray(filterVariation.split(","));
+    } else {
+      setVariationArray([]);
+    }
   }, [router]);
+//console.log(productData[1].variations[0].value);
 
   useEffect(() => {
     let length = productData?.filter((item: any) => {
@@ -91,6 +100,12 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
             return item;
           }
         }
+
+       if (variationArray.includes(item?.variations[0]
+            ?.value)) {
+            return item;
+          }
+       
       }
     }).length;
 
@@ -132,6 +147,11 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
                   if (brandArray.includes(item.brands.name)) {
                     return item;
                   }
+                }
+
+                if (variationArray.includes(item?.variations[0]
+                  ?.value)) {
+                  return item;
                 }
               }
             })

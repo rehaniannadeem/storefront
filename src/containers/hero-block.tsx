@@ -22,9 +22,10 @@ const HeroBlock: React.FC = () => {
   const { domain }: any = useContext(Context);
   const [banners, setBanners] = useState<any>([]);
   const [placeholder, _setPlaceholder] = useState<any>([]);
+  let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   const getBanner = () => {
     //	setIsLoading(true);
-    fetch("https://pos-dev.myignite.online/connector/api/banner", {
+    fetch(connector_base_url+"/banner", {
       method: "get",
       headers: {
         Authorization: `Bearer ${domain.token}`,

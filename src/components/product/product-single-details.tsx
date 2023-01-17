@@ -59,6 +59,7 @@ const ProductSingleDetails: React.FC = () => {
   const [isSelected, setIsSelected] = useState(false);
   //const [isCategory, setIsCategory] = useState(false);
   // let isSelected = Object.keys(attributes).length == 0 ? false : true;
+  let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
 
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
@@ -74,7 +75,7 @@ const ProductSingleDetails: React.FC = () => {
     const fetchData = () => {
       axios({
         method: "get",
-        url: `https://pos-dev.myignite.online/api/store-front/products`,
+        url:storefront_base_url+ "/products",
         params: {
           name: productName,
         },

@@ -4,7 +4,8 @@ import { API_ENDPOINTS } from "@framework/utils/api-endpoints";
 import { useQuery } from "react-query";
 
 export const fetchOrder = async (_id: string) => {
-  const { data } = await http.get(`https://pos-dev.myignite.online/public/connector/api/sell`);
+  let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
+  const { data } = await http.get(connector_base_url+"/sell");
   return data.data[0];
 };
 export const useOrderQuery = (id: string) => {
