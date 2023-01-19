@@ -20,9 +20,12 @@ import ProductsWithFlashSale from "@containers/products-with-flash-sale";
 import HeroWithCategory from "@containers/hero-with-category";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
+import { useRouter } from "next/router";
+import { ROUTES } from "@utils/routes";
 //import { useEffect, useState } from "react";
 //import Head from "next/head";
 //import { siteSettings } from "@settings/site-settings";
+import { useEffect } from 'react';
 
 const flashSaleCarouselBreakpoint = {
   "1281": {
@@ -40,6 +43,18 @@ const flashSaleCarouselBreakpoint = {
 };
 
 export default function Home() {
+  const router = useRouter();
+ 
+  const url=router.asPath.split("?")
+  
+
+useEffect(()=>{
+  
+  {url[1]!=undefined &&
+  router.push(`${ROUTES.PRODUCT}?${url[1]}`, undefined, {
+    locale: router.locale,
+  })}
+},[url])
   /** 
   const [title, setTitle] = useState("");
   useEffect(() => {

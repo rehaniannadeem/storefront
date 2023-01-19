@@ -69,7 +69,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
       <div className="flex flex-col w-full overflow-hidden">
         <Link
-          href={`${ROUTES.PRODUCT}/${urlName}`}
+          href={`${ROUTES.PRODUCTS}/${urlName}`}
           className="truncate text-sm text-heading mb-1.5 -mt-1"
         >
           {generateCartItemName(item.name, item.attributes)}

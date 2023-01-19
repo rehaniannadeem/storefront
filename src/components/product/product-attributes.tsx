@@ -29,14 +29,14 @@ export const ProductAttributes: React.FC<Props> = ({
       <h3 className="text-base md:text-lg text-heading font-semibold mb-2.5 capitalize">
         {title}
       </h3>
-      <ul className="colors flex flex-wrap-me-3">
+      <ul className="colors block overflow-x-auto">
         {attributes?.map((attribute: any) => (
           // console.log(attribute.variation_details[0], "attribute"),
           //   console.log(quantity, "quantity"),
           <li
             key={`${attribute.value}-${attribute.id}`}
             className={cn(
-              "cursor-pointer rounded border border-gray-100 w-11 md:w-14 h-9 md:h-11 p-1 mb-2 md:mb-3 me-2 md:me-3 flex justify-center items-center text-heading text-xs md:text-sm uppercase font-semibold transition duration-200 ease-in-out hover:border-black",
+              "cursor-pointer rounded border inline-flex border-gray-100 w-11 md:w-14 h-9 md:h-11 p-1 mb-2 md:mb-3 me-2 md:me-3 justify-center items-center text-heading text-xs md:text-sm uppercase font-semibold transition duration-200 ease-in-out hover:border-black",
               {
                 "border-black": attribute.value === active,
               }

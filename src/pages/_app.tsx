@@ -53,6 +53,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   }
   // const { isAuthorized } = useUI();
   const router = useRouter();
+//console.log(router);
+
 
   const dir = getDirection(router.locale);
   const [title, setTitle] = useState("");
@@ -99,6 +101,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
 
     setDomain((prev) => ({ ...prev, ...localData })); */
   }, [business]);
+
 
   useEffect(() => {
     const getProduct = () => {

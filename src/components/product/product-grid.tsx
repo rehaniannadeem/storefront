@@ -38,7 +38,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
   const [productLength, setProductLength] = useState<any>();
 //console.log('>>>>>>>>>>>', productData)
   const loadMore = () => {
-    setIndex(index + 10);
+    setIndex(index + 12);
     if (productData != undefined) {
       if (index >= productLength) {
         setIsCompleted(true);

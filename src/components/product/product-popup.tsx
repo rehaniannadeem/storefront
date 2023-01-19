@@ -183,8 +183,9 @@ export default function ProductPopup() {
   }
 
   function navigateToProductPage() {
+    console.log('>>>>>>>>>>>',`${ROUTES.PRODUCTS}/${name} `)
     closeModal();
-    router.push(`${ROUTES.PRODUCT}/${name}`, undefined, {
+    router.push(`${ROUTES.PRODUCTS}/${name}`, undefined, {
       locale: router.locale,
     });
   }
