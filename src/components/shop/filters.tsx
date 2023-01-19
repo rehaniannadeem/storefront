@@ -44,7 +44,7 @@ export const ShopFilters: React.FC = () => {
               ))}
         </div>
       </div>
-<VariationFilter/>
+      <VariationFilter />
       <CategoryFilter />
       <BrandFilter />
       <PriceFilter />

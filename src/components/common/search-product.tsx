@@ -10,7 +10,7 @@ type SearchProductProps = {
 
 const SearchProduct: React.FC<SearchProductProps> = ({ item }) => {
   const [_domainData, setDomainData] = useState({});
-  let urlName = item.name.replace(/\s+/g, "-");
+ // let urlName = item.name.replace(/\s+/g, "-");
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
 
   const { price, basePrice } = usePrice({
@@ -28,7 +28,7 @@ const SearchProduct: React.FC<SearchProductProps> = ({ item }) => {
 
   return (
     <Link
-      href={`${ROUTES.PRODUCT}/${urlName}`}
+      href={`${ROUTES.PRODUCTS}/${item.name}`}
       className="group w-full h-auto flex justify-start items-center"
     >
       <div className="relative flex w-24 h-24 rounded-md overflow-hidden bg-gray-200 flex-shrink-0 cursor-pointer me-4">
