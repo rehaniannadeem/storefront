@@ -15,7 +15,7 @@ export const VariationFilter = () => {
   const [items, setItems] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
 
-  const [active, setActive] = useState("")
+  //const [active, setActive] = useState("")
   /*  const { data, isLoading } = useCategoriesQuery({
     limit: 10,
   }); */
@@ -30,9 +30,9 @@ export const VariationFilter = () => {
 
   React.useEffect(() => {
     setFormState(selectedVariation);
-    if (query?.variation == undefined) {
-      setActive("")
-    }
+    // if (query?.variation == undefined) {
+    //   setActive("")
+    // }
 
 
   }, [query?.variation]);
@@ -86,7 +86,7 @@ export const VariationFilter = () => {
     );
   }
   const handleClick = (itemName: any) => {
-    setActive(itemName)
+   // setActive(itemName)
     handleItemClick(itemName)
 
   }
@@ -106,11 +106,11 @@ export const VariationFilter = () => {
 
               <li key={index} className={cn(
                 " cursor-pointer rounded border inline-flex border-gray-100    w-full  p-2 mb-2 md:mb-3 me-2 md:me-3 justify-center items-center text-heading text-xs md:text-sm uppercase font-semibold transition duration-200 ease-in-out hover:border-black",
-                {
-                  "border-2": item.name === active,
-                }
+                // {
+                //   "border-2": item.name === active,
+                // }
               )}
-                style={item.name == active ? { borderColor: domain?.theme_color } : { borderColor: "#D3D3D3" }}
+                // style={item.name == active ? { borderColor: domain?.theme_color } : { borderColor: "#D3D3D3" }}
                 onClick={() => {
                   handleClick(item.name)
 

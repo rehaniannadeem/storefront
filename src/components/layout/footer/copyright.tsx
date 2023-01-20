@@ -3,6 +3,7 @@ import { siteSettings } from "@settings/site-settings";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useContext } from "react";
+
 //import { IoLogoInstagram, IoLogoFacebook } from "react-icons/io5";
 import { Context } from "src/pages/_app";
 interface CopyrightProps {
@@ -40,7 +41,7 @@ const Copyright: React.FC<CopyrightProps> = () => {
   return (
     <div className="border-t border-gray-300 pt-5 pb-16 sm:pb-20 md:pb-5 mb-2 sm:mb-0">
       <Container className="flex flex-col-reverse md:flex-row text-center md:justify-between">
-        <div className="flex flex-row">
+        <div className="flex flex-row justify-center">
           <p className="text-body text-xs lg:text-sm leading-6 ">
             {t("text-copyright")} &copy; {year}&nbsp;
             <a
@@ -52,6 +53,7 @@ const Copyright: React.FC<CopyrightProps> = () => {
             </a>
             &nbsp; {t("text-all-rights-reserved")}.
           </p>
+          
           {/*   <div className="px-2 text-2xl">
             <Link href={instaLink}>
               <a target="_blank">
@@ -74,6 +76,13 @@ const Copyright: React.FC<CopyrightProps> = () => {
             </Link>
           </div> */}
         </div>
+        {/* <div className="flex justify-center">
+            <div className="flex flex-row ">
+            <img className="p-1 w-11 h-11" src={"/assets/images/maroof.png"} alt="product Image" />
+            <img className="p-1 w-11 h-11" src={"/assets/images/vat-certificate.png"} alt="product Image" />
+            </div>
+           
+          </div> */}
         <div>
           {t("powered-by")}{" "}
           <Link href="https://www.ignitehq.io/">

@@ -17,6 +17,7 @@ const Layout: React.FC = ({ children }) => {
   const { domain }: any = useContext(Context);
   //const [domainData, setDomainData] = useState<any>({});
 
+
   /*  useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
 
@@ -64,7 +65,8 @@ const Layout: React.FC = ({ children }) => {
         }}
       >
         {children}
-        <div className="bottom-0 right-0 fixed w-12 mr-8 mb-20 z-10">
+        {domain?.whatsapp_no!=null?
+        (<div className="bottom-0 right-0 fixed w-12 mr-8 mb-20 z-10">
           <a href={`https://wa.me/${domain.whatsapp_no}`} target="_blank">
             <img
               src="/assets/images/whatsapp.png"
@@ -72,7 +74,7 @@ const Layout: React.FC = ({ children }) => {
               className="rounded-full drop-shadow-2xl"
             />
           </a>
-        </div>
+        </div>):(null)}
       </main>
       <Footer />
       <MobileNavigation />

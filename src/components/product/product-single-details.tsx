@@ -55,7 +55,7 @@ const ProductSingleDetails: React.FC = () => {
   const [token, setToken] = useState("");
   const [product, setProduct] = useState<any>({});
   const [isGalleryImg, setIsGalleryImg] = useState(true);
-  const [isDisable, setIsDisable] = useState(false);
+  //const [isDisable, setIsDisable] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
   //const [isCategory, setIsCategory] = useState(false);
   // let isSelected = Object.keys(attributes).length == 0 ? false : true;
@@ -103,27 +103,28 @@ const ProductSingleDetails: React.FC = () => {
     fetchData();
   }, [token]);
   useEffect(() => {
-    if (product.enable_stock == 1) {
+    
+    if (product?.enable_stock == 1) {
       if (
         Object.keys(attributes).length != 0 &&
-        quantity === Math.round(attributes.variation_details[0].qty_available)
+        quantity === Math.round(attributes?.variation_details[0]?.qty_available)
       ) {
-        if (attributes.variation_details[0].qty_available < 1) {
-          setIsDisable(false);
+        if (attributes?.variation_details[0]?.qty_available <= quantity) {
+         // setIsDisable(false);
         } else {
-          setIsDisable(true);
+         // setIsDisable(true);
         }
       }
     }
   }, [quantity]);
   useEffect(() => {
     {
-      Object.keys(attributes).length != 0
+      Object.keys(attributes)?.length != 0
         ? setIsSelected(true)
         : setIsSelected(false);
     }
-    if (Object.keys(attributes).length != 0 && product.enable_stock == 1) {
-      if (attributes.variation_details[0].qty_available <= 0) {
+    if (Object.keys(attributes)?.length != 0 && product?.enable_stock == 1) {
+      if (attributes?.variation_details[0]?.qty_available <= 0) {
         setQuantity(0);
         //setIsDisable(true);
         setIsSelected(false);
@@ -131,8 +132,8 @@ const ProductSingleDetails: React.FC = () => {
     }
   }, [attributes]);
   useEffect(() => {
-    if (Object.keys(product).length != 0) {
-      if (product.variations.length == 1) {
+    if (Object.keys(product)?.length != 0) {
+      if (product.variations?.length == 1) {
         setAttributes(product.variations[0]);
       }
     }
@@ -160,6 +161,7 @@ const ProductSingleDetails: React.FC = () => {
     // to show btn feedback while product carting
     setAddToCartLoader(true);
     /*    if (product.enable_stock === 0) {
+
       setTimeout(() => {
         setAddToCartLoader(false);
       }, 600);
@@ -207,21 +209,38 @@ const ProductSingleDetails: React.FC = () => {
       });
     }
  */
-    const item = generateCartItem(product!, attributes);
-    addItemToCart(item, quantity);
-    toast.success("Added to the cart", {
-      //type: "dark",
-      progressClassName: "fancy-progress-bar",
-      position: width > 768 ? "bottom-right" : "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-    setAddToCartLoader(false);
 
-    console.log(item, "item");
+    const item = generateCartItem(product!, attributes);
+    if(quantity<=Math.round(attributes?.variation_details[0]?.qty_available)){
+      addItemToCart(item, quantity);
+      toast.success("Added to the cart", {
+        //type: "dark",
+        progressClassName: "fancy-progress-bar",
+        position: width > 768 ? "bottom-right" : "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      setAddToCartLoader(false);
+  
+      console.log(item, "item")
+    }else{
+      toast.error("Out of Stock", {
+        //type: "dark",
+        progressClassName: "fancy-progress-bar",
+        position: width > 768 ? "bottom-right" : "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      setAddToCartLoader(false);
+    }
+   
+  
   }
 
   function handleAttribute(attribute: any) {
@@ -234,7 +253,8 @@ const ProductSingleDetails: React.FC = () => {
   console.log(attributes, "attributes");
   console.log(Object.keys(attributes).length, "quantity");
    console.log(product.enable_stock, "stock"); */
-  console.log(product, "product");
+ // console.log(product, "product");
+  console.log("attributes", attributes);
 
   return (
     //block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start
@@ -335,7 +355,7 @@ const ProductSingleDetails: React.FC = () => {
               {getSymbolFromCurrency(domainCurrencyCode)}{" "}
               {Object.keys(attributes).length == 0
                 ? Math.round(product.price)
-                : Math.round(attributes.default_sell_price)}
+                : Math.round(attributes.sell_price_inc_tax)}
               {/*  {price} */}
             </div>
             {/*  {discount && (
@@ -366,7 +386,7 @@ const ProductSingleDetails: React.FC = () => {
           <Counter
             quantity={quantity}
             onIncrement={() => {
-              console.log(quantity, "dslfkjalfskjaslkfjj");
+             // console.log(quantity, "dslfkjalfskjaslkfjj");
               if (quantity == 0) {
                 alert("out of stock");
               } else {
@@ -375,18 +395,18 @@ const ProductSingleDetails: React.FC = () => {
             }}
             onDecrement={() => {
               setQuantity((prev) => (prev !== 1 ? prev - 1 : 1));
-              if (product.enable_stock == 1) {
+              if (product?.enable_stock == 1) {
                 if (
-                  Object.keys(attributes).length != 0 &&
+                  Object.keys(attributes)?.length != 0 &&
                   quantity <
-                    Math.round(attributes.variation_details[0].qty_available)
+                    Math.round(attributes.variation_details[0]?.qty_available)
                 ) {
-                  setIsDisable(false);
+                  //setIsDisable(false);
                 }
               }
             }}
             disableDecrement={quantity === 0}
-            disableIncrement={isDisable}
+           // disableIncrement={isDisable}
           />
           <Button
             onClick={addToCart}
