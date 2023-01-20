@@ -29,7 +29,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
   const { t } = useTranslation("common");
   const [productData, setProductData] = useState<any>([]);
   const [isCompleted, setIsCompleted] = useState(false);
-  const [index, setIndex] = useState(13);
+  const [index, setIndex] = useState(12);
   // const initialProduct = slice(productData, 0, index);
   const [categoryArray, setCategoryArray] = useState<any>([]);
   const [brandArray, setBrandArray] = useState<any>([]);
@@ -85,7 +85,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
       if (Object.keys(query).length === 0) {
         return item;
       } else {
-        if (item.price >= priceArray[0] && item.price < priceArray[1]) {
+        if (item.price >= priceArray[0] && item.price <= priceArray[1]) {
           return item;
         }
 
@@ -133,7 +133,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
               if (Object.keys(query).length === 0) {
                 return item;
               } else {
-                if (item.price >= priceArray[0] && item.price < priceArray[1]) {
+                if (item.price >= priceArray[0] && item.price <= priceArray[1]) {
                   return item;
                 }
 
@@ -157,9 +157,6 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
             })
             .slice(0, index)
             .map((product: any) => {
-              if (product.name.toLocaleLowerCase() === "open product") {
-                product.visibility = "hidden";
-              } else {
                 return (
                   <ProductCard
                     key={`product--key${product.id}`}
@@ -168,7 +165,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
                   />
                 );
               }
-            })
+            )
         )}
       </div>
       <div className="text-center pt-8 xl:pt-14">

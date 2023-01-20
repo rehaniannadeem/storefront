@@ -65,7 +65,7 @@ const SearchTopBar = () => {
       if (Object.keys(query).length === 0) {
         return item;
       } else {
-        if (item.price >= priceArray[0] && item.price < priceArray[1]) {
+        if (item.price >= priceArray[0] && item.price <= priceArray[1]) {
           return item;
         }
 
