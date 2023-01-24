@@ -1,5 +1,6 @@
 import cn from "classnames";
 
+
 interface Props {
   className?: string;
   title: string;
@@ -36,9 +37,11 @@ export const ProductAttributes: React.FC<Props> = ({
           <li
             key={`${attribute.value}-${attribute.id}`}
             className={cn(
-              "cursor-pointer rounded border inline-flex border-gray-100 w-11 md:w-14 h-9 md:h-11 p-1 mb-2 md:mb-3 me-2 md:me-3 justify-center items-center text-heading text-xs md:text-sm uppercase font-semibold transition duration-200 ease-in-out hover:border-black",
+              "cursor-pointer font-b rounded border inline-flex border-gray-100 w-11 md:w-14 h-9 md:h-11 p-1 mb-2 md:mb-3 me-2 md:me-3 justify-center items-center text-heading text-xs md:text-sm uppercase font-semibold transition duration-200 ease-in-out hover:border-black",
               {
                 "border-black": attribute.value === active,
+              //  "/assets/images/default.png": enable_stock == 1 && attribute?.variation_details[0]?.qty_available < quantity
+
               }
             )}
             onClick={() => {
@@ -52,18 +55,26 @@ export const ProductAttributes: React.FC<Props> = ({
             }}
             style={
               {
-                textDecoration:
+                backgroundImage:
                   enable_stock == 1 &&
                   attribute?.variation_details[0]?.qty_available < quantity
-                    ? "line-through"
+                    ? `url(${"/assets/images/soldout.png"})`
                     : "none",
-              }
+                color:"red" ,
+                backgroundPosition:  
+                enable_stock == 1 &&
+                attribute?.variation_details[0]?.qty_available < quantity
+                  ? "center"
+                  : "none",
+                 
+               }
 
               /*  textDecoration: "line-through",
                   textDecorationThickness: "2px", */
-            }
+             }
           >
-            {attribute.value}
+           <span className="text-black">{attribute.value}</span>
+            
             {/* {title === "color" ? (
               <span
                 className="h-full w-full rounded block"

@@ -142,6 +142,8 @@
   "text-popularity": "Popularity",
   "text-price-low-high": "Price: low to high",
   "text-price-high-low": "Price: high to low",
+  "text-sort-a-z":"Sort: a-z",
+  "text-sort-z-a":"Sort: z-a",
   "text-instagram": "Instagram",
   "text-twitter": "Twitter",
   "text-facebook": "Facebook",

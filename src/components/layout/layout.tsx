@@ -16,6 +16,7 @@ const Layout: React.FC = ({ children }) => {
   //const { t } = useTranslation("common");
   const { domain }: any = useContext(Context);
   //const [domainData, setDomainData] = useState<any>({});
+//console.log(domain);
 
 
   /*  useEffect(() => {
@@ -56,7 +57,8 @@ const Layout: React.FC = ({ children }) => {
           ],
         }}
       />
-      <Header />
+      {domain?.name!=="urbannecessity"?   <Header />:null}
+      {/* <Header /> */}
       <main
         className="relative flex-grow"
         style={{
@@ -76,7 +78,9 @@ const Layout: React.FC = ({ children }) => {
           </a>
         </div>):(null)}
       </main>
-      <Footer />
+      {domain?.name!=="urbannecessity"? <Footer /> : null}
+
+      {/* <Footer /> */}
       <MobileNavigation />
       <Search />
       {/* <CookieBar

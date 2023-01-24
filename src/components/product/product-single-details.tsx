@@ -55,7 +55,7 @@ const ProductSingleDetails: React.FC = () => {
   const [token, setToken] = useState("");
   const [product, setProduct] = useState<any>({});
   const [isGalleryImg, setIsGalleryImg] = useState(true);
-  //const [isDisable, setIsDisable] = useState(false);
+  const [isDisable, setIsDisable] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
   //const [isCategory, setIsCategory] = useState(false);
   // let isSelected = Object.keys(attributes).length == 0 ? false : true;
@@ -105,14 +105,14 @@ const ProductSingleDetails: React.FC = () => {
   useEffect(() => {
     
     if (product?.enable_stock == 1) {
+     
       if (
-        Object.keys(attributes).length != 0 &&
-        quantity === Math.round(attributes?.variation_details[0]?.qty_available)
-      ) {
-        if (attributes?.variation_details[0]?.qty_available <= quantity) {
-         // setIsDisable(false);
+        Object.keys(attributes).length != 0) {
+        
+        if (quantity<=Math.round(attributes?.variation_details[0]?.qty_available) ) {
+          setIsDisable(false);
         } else {
-         // setIsDisable(true);
+          setIsDisable(true);
         }
       }
     }
@@ -254,7 +254,7 @@ const ProductSingleDetails: React.FC = () => {
   console.log(Object.keys(attributes).length, "quantity");
    console.log(product.enable_stock, "stock"); */
  // console.log(product, "product");
-  console.log("attributes", attributes);
+ // console.log("attributes", attributes);
 
   return (
     //block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start
@@ -401,7 +401,7 @@ const ProductSingleDetails: React.FC = () => {
                   quantity <
                     Math.round(attributes.variation_details[0]?.qty_available)
                 ) {
-                  //setIsDisable(false);
+                  setIsDisable(false);
                 }
               }
             }}
@@ -419,7 +419,7 @@ const ProductSingleDetails: React.FC = () => {
                 ? { backgroundColor: "bg-gray-400" }
                 : { backgroundColor: domainData.theme_color }
             }
-            disabled={!isSelected}
+            disabled={!isSelected || isDisable}
             loading={addToCartLoader}
           >
             <span className="py-2 3xl:px-8"> {t("text-add-to-cart")}</span>

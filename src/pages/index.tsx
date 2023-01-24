@@ -44,9 +44,12 @@ const flashSaleCarouselBreakpoint = {
 
 export default function Home() {
   const router = useRouter();
- 
-  const url=router.asPath.split("?")
-  
+ let domainData:any={}
+  const url=router?.asPath.split("?")
+ // console.log(domainData.name);
+  useEffect(()=>{
+    domainData=JSON?.parse(localStorage?.getItem("domainData")!)
+  },[])
 
 useEffect(()=>{
   
@@ -54,6 +57,12 @@ useEffect(()=>{
   router.push(`${ROUTES.PRODUCT}?${url[1]}`, undefined, {
     locale: router.locale,
   })}
+  if(domainData?.name==="urbannecessity" && url[1]==undefined){
+    router.push(`${ROUTES.SEARCH}`, undefined, {
+      locale: router.locale,
+    })
+
+  }
 },[url])
   /** 
   const [title, setTitle] = useState("");

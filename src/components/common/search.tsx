@@ -34,7 +34,7 @@ export default function Search() {
   function clear() {
     setSearchText("");
   }
-
+//console.log('>>>>>>>>>>>', productData)
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (ref.current) {
@@ -95,7 +95,7 @@ export default function Search() {
                       productData
                         ?.filter((item: any) => {
                           if (
-                            item.name
+                            item?.name
                               .toLocaleLowerCase()
                               .includes(searchText.toLocaleLowerCase())
                           ) {
