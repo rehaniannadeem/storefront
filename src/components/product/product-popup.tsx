@@ -42,12 +42,12 @@ export default function ProductPopup() {
     setDomainCurrencyCode(domainData.currency.code);
   }, []);
   useEffect(() => {
-    if (data.enable_stock == 1) {
+    if (data?.enable_stock == 1) {
+     
       if (
-        Object.keys(attributes).length != 0 &&
-        quantity === Math.round(attributes.variation_details[0].qty_available)
-      ) {
-        if (attributes.variation_details[0].qty_available < 1) {
+        Object.keys(attributes).length != 0) {
+        
+        if (quantity<=Math.round(attributes?.variation_details[0]?.qty_available) ) {
           setIsDisable(false);
         } else {
           setIsDisable(true);
@@ -166,7 +166,7 @@ export default function ProductPopup() {
       });
     } */
     const item = generateCartItem(data!, attributes);
-    if (quantity <= Math.round(attributes?.variation_details[0]?.qty_available)) {
+    if(quantity<=Math.round(attributes?.variation_details[0]?.qty_available)){
       addItemToCart(item, quantity);
       toast.success("Added to the cart", {
         //type: "dark",
@@ -178,11 +178,12 @@ export default function ProductPopup() {
         pauseOnHover: true,
         draggable: true,
       });
-      setAddToCartLoader(false);
       setViewCartBtn(true);
+      setAddToCartLoader(false);
+  
       console.log(item, "item")
-    } else {
-      toast.error("Out of stock", {
+    }else{
+      toast.error("Out of Stock", {
         //type: "dark",
         progressClassName: "fancy-progress-bar",
         position: "bottom-right",
@@ -194,13 +195,13 @@ export default function ProductPopup() {
       });
       setAddToCartLoader(false);
     }
-
-
-
+   
+  
+    
   }
 
   function navigateToProductPage() {
-    console.log('>>>>>>>>>>>', `${ROUTES.PRODUCTS}/${name} `)
+    //console.log('>>>>>>>>>>>',`${ROUTES.PRODUCTS}/${name} `)
     closeModal();
     router.push(`${ROUTES.PRODUCTS}/${name}`, undefined, {
       locale: router.locale,
@@ -269,18 +270,18 @@ export default function ProductPopup() {
           </div>
           {data && data.type === "variable"
             ? Object.keys(variations).map((variation) => {
-              return (
-                <ProductAttributes
-                  key={`popup-attribute-key${variation}`}
-                  title={variation}
-                  attributes={variations[variation]}
-                  active={attributes.value}
-                  onClick={handleAttribute}
-                  quantity={quantity}
-                  enable_stock={data.enable_stock}
-                />
-              );
-            })
+                return (
+                  <ProductAttributes
+                    key={`popup-attribute-key${variation}`}
+                    title={variation}
+                    attributes={variations[variation]}
+                    active={attributes.value}
+                    onClick={handleAttribute}
+                    quantity={quantity}
+                    enable_stock={data.enable_stock}
+                  />
+                );
+              })
             : null}
 
           <div className="pt-2 md:pt-4">
@@ -300,28 +301,29 @@ export default function ProductPopup() {
                     if (
                       Object.keys(attributes).length != 0 &&
                       quantity <
-                      Math.round(
-                        attributes.variation_details[0].qty_available
-                      )
+                        Math.round(
+                          attributes.variation_details[0].qty_available
+                        )
                     ) {
                       setIsDisable(false);
                     }
                   }
                 }}
                 disableDecrement={quantity === 0}
-                disableIncrement={isDisable}
+               // disableIncrement={isDisable}
               />
               <Button
                 onClick={addToCart}
                 variant="flat"
-                className={`w-full h-11 md:h-12 px-1.5 ${!isSelected && "bg-gray-400 hover:bg-gray-400"
-                  }`}
+                className={`w-full h-11 md:h-12 px-1.5 ${
+                  !isSelected && "bg-gray-400 hover:bg-gray-400"
+                }`}
                 style={
                   !isSelected
                     ? { backgroundColor: "bg-gray-400" }
                     : { backgroundColor: domainData.theme_color }
                 }
-                disabled={!isSelected}
+                disabled={!isSelected || isDisable}
                 loading={addToCartLoader}
               >
                 {t("text-add-to-cart")}
