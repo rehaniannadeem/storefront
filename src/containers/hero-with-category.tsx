@@ -96,29 +96,22 @@ const HeroWithCategory: React.FC<Props> = ({
       });
   };
   useEffect(() => {
-    let isMounted = true;
+
     if (domain.token !== undefined) {
       getCategory();
     }
 
-    return () => {
-      // 👇️ when the component unmounts, set isMounted to false
-      isMounted = false;
-    };
   }, [domain]);
 
   useEffect(() => {
-    let isMounted = true;
+
     getBanner();
-    return () => {
-      // 👇️ when the component unmounts, set isMounted to false
-      isMounted = false;
-    };
+
   }, [token]);
 
 
   useEffect(() => {
-    let isMounted = true;
+
     {
       banners?.map(
         (item: any, index: any) =>
@@ -141,10 +134,7 @@ const HeroWithCategory: React.FC<Props> = ({
         })
       );
     }
-    return () => {
-      // 👇️ when the component unmounts, set isMounted to false
-      isMounted = false;
-    };
+
   });
 
   return (
