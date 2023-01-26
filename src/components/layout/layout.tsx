@@ -16,7 +16,7 @@ const Layout: React.FC = ({ children }) => {
   //const { t } = useTranslation("common");
   const { domain }: any = useContext(Context);
   //const [domainData, setDomainData] = useState<any>({});
-//console.log(domain);
+console.log(domain);
 
 
   /*  useEffect(() => {
@@ -34,7 +34,7 @@ const Layout: React.FC = ({ children }) => {
             content: "width=device-width, initial-scale=1.0",
           },
         ]}
-        title=""
+        title={domain?.name}
         description="myIgnite Solutions"
         canonical="https://spnbxmyignite.netlify.app/"
         openGraph={{

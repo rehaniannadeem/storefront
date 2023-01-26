@@ -16,7 +16,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
   const { query } = useRouter();
   const router = useRouter();
   const { products }: any = useContext(Context);
-//  console.log(query.sort_by, "products");
+ //console.log(query.variation, "query");
 
   const {
     //  isFetching: isLoading,
@@ -126,23 +126,48 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
         //   return item;
         // }
 
+        // if (item.category != null) {
+        //   if (categoryArray.includes(item.category.name)) {
+        //     return item;
+        //   }
+        // }
+
+        // if (item.brands != null) {
+        //   if (brandArray.includes(item.brands.name)) {
+        //     return item;
+        //   }
+        // }
+        
+if(query?.variation?.length!=undefined){
+  if (variationArray.includes(item?.variations[0]
+    ?.value)) {
+    return item;
+  }
+}else{
+  return item
+}
+       
+
+      }
+    }).filter((item:any)=>{
+      if (query.category?.length != undefined) {
         if (item.category != null) {
           if (categoryArray.includes(item.category.name)) {
             return item;
           }
         }
-
+      } else { 
+        return item
+      }
+    }).filter((item:any)=>{
+      if (query.brand?.length != undefined) {
         if (item.brands != null) {
           if (brandArray.includes(item.brands.name)) {
             return item;
           }
         }
-
-        if (variationArray.includes(item?.variations[0]
-          ?.value)) {
-          return item;
-        }
-
+      } else { 
+        return item
       }
     }).filter((item:any)=>{
       if (query.price?.length != undefined) {
@@ -190,7 +215,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
 
    
       <div className="flex justify-between p-2">
-          <span>{productLength}</span>
+          <span>{productLength} Items</span>
           <span><Listbox value={selectedItem} onChange={handleItemClick}>
 			{({ open }) => (
 				<div className="relative ms-2 lg:ms-0 z-10 min-w-[180px]">
@@ -267,23 +292,47 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
                 //   return item;
                 // }
 
+                // if (item.category != null) {
+                //   if (categoryArray.includes(item.category.name)) {
+                //     return item;
+                //   }
+                // }
+
+                // if (item.brands != null) {
+                //   if (brandArray.includes(item.brands.name)) {
+                //     return item;
+                //   }
+                // }
+                if(query?.variation?.length!=undefined){
+                  if (variationArray.includes(item?.variations[0]
+                    ?.value)) {
+                    return item;
+                  }
+                }else{
+                  return item
+                }
+            
+              
+              }
+            }).filter((item:any)=>{
+              if (query.category?.length != undefined) {
                 if (item.category != null) {
                   if (categoryArray.includes(item.category.name)) {
                     return item;
                   }
                 }
-
+              } else { 
+                return item
+              }
+            }).filter((item:any)=>{
+              if (query.brand?.length != undefined) {
                 if (item.brands != null) {
                   if (brandArray.includes(item.brands.name)) {
                     return item;
                   }
                 }
-
-                if (variationArray.includes(item?.variations[0]
-                  ?.value)) {
-                  return item;
-                }
-              
+              } else { 
+                return item
               }
             }).filter((item:any)=>{
               if (query.price?.length != undefined) {

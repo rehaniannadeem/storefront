@@ -166,7 +166,37 @@ export default function ProductPopup() {
       });
     } */
     const item = generateCartItem(data!, attributes);
-    if(quantity<=Math.round(attributes?.variation_details[0]?.qty_available)){
+    if (Object.keys(attributes).length != 0 && data.enable_stock == 1) {
+      if(quantity<=Math.round(attributes?.variation_details[0]?.qty_available)){
+        addItemToCart(item, quantity);
+        toast.success("Added to the cart", {
+          //type: "dark",
+          progressClassName: "fancy-progress-bar",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setViewCartBtn(true);
+        setAddToCartLoader(false);
+    
+        console.log(item, "item")
+      }else{
+        toast.error("Out of Stock", {
+          //type: "dark",
+          progressClassName: "fancy-progress-bar",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setAddToCartLoader(false);
+      }
+    }else{
       addItemToCart(item, quantity);
       toast.success("Added to the cart", {
         //type: "dark",
@@ -182,22 +212,7 @@ export default function ProductPopup() {
       setAddToCartLoader(false);
   
       console.log(item, "item")
-    }else{
-      toast.error("Out of Stock", {
-        //type: "dark",
-        progressClassName: "fancy-progress-bar",
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-      setAddToCartLoader(false);
     }
-   
-  
-    
   }
 
   function navigateToProductPage() {

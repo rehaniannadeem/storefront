@@ -246,6 +246,10 @@ const LoginForm: React.FC = () => {
           setLastName("");
           setEmail("");
           setVisibleRegister(false);
+          toast.success("Register Successfully")
+          {
+            verifyNumber(event);
+          }
         }
       })
       .catch(function (response) {
