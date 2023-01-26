@@ -3,7 +3,7 @@ import FilterIcon from "@components/icons/filter-icon";
 
 import { useUI } from "@contexts/ui.context";
 import FilterSidebar from "@components/shop/filter-sidebar";
-//import ListBox from "@components/ui/list-box";
+import ListBox from "@components/ui/list-box";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { getDirection } from "@utils/get-direction";
@@ -65,7 +65,7 @@ const SearchTopBar = () => {
       if (Object.keys(query).length === 0) {
         return item;
       } else {
-        if (item.price >= priceArray[0] && item.price < priceArray[1]) {
+        if (item.price >= priceArray[0] && item.price <= priceArray[1]) {
           return item;
         }
 
@@ -101,19 +101,19 @@ const SearchTopBar = () => {
         <FilterIcon />
         <span className="ps-2.5">{t("text-filters")}</span>
       </button>
-      <div className="flex items-center justify-end">
+      <div className=" items-center justify-end contents">
         <div className="flex-shrink-0 text-body text-xs md:text-sm leading-4 pe-4 md:me-6 ps-2 hidden lg:block">
           {productLength} {t("text-items")}
         </div>
-        {/*   <ListBox
+          <ListBox
           options={[
-            { name: "text-sorting-options", value: "options" },
-             { name: "text-newest", value: "newest" },
-            { name: "text-popularity", value: "popularity" }, 
+             { name: "text-sorting-options", value: "options" },
+            //  { name: "text-newest", value: "newest" },
+            // { name: "text-popularity", value: "popularity" }, 
             { name: "text-price-low-high", value: "low-high" },
             { name: "text-price-high-low", value: "high-low" },
           ]}
-        /> */}
+        />
       </div>
       <Drawer
         placement={dir === "rtl" ? "right" : "left"}

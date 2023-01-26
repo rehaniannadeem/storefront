@@ -42,12 +42,12 @@ export default function ProductPopup() {
     setDomainCurrencyCode(domainData.currency.code);
   }, []);
   useEffect(() => {
-    if (data.enable_stock == 1) {
+    if (data?.enable_stock == 1) {
+     
       if (
-        Object.keys(attributes).length != 0 &&
-        quantity === Math.round(attributes.variation_details[0].qty_available)
-      ) {
-        if (attributes.variation_details[0].qty_available < 1) {
+        Object.keys(attributes).length != 0) {
+        
+        if (quantity<=Math.round(attributes?.variation_details[0]?.qty_available) ) {
           setIsDisable(false);
         } else {
           setIsDisable(true);
@@ -166,24 +166,57 @@ export default function ProductPopup() {
       });
     } */
     const item = generateCartItem(data!, attributes);
-    addItemToCart(item, quantity);
-    toast.success("Added to the cart", {
-      //type: "dark",
-      progressClassName: "fancy-progress-bar",
-      position: "bottom-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-    setViewCartBtn(true);
-    setAddToCartLoader(false);
-    console.log(item, "item");
+    if (Object.keys(attributes).length != 0 && data.enable_stock == 1) {
+      if(quantity<=Math.round(attributes?.variation_details[0]?.qty_available)){
+        addItemToCart(item, quantity);
+        toast.success("Added to the cart", {
+          //type: "dark",
+          progressClassName: "fancy-progress-bar",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setViewCartBtn(true);
+        setAddToCartLoader(false);
+    
+        console.log(item, "item")
+      }else{
+        toast.error("Out of Stock", {
+          //type: "dark",
+          progressClassName: "fancy-progress-bar",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setAddToCartLoader(false);
+      }
+    }else{
+      addItemToCart(item, quantity);
+      toast.success("Added to the cart", {
+        //type: "dark",
+        progressClassName: "fancy-progress-bar",
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      setViewCartBtn(true);
+      setAddToCartLoader(false);
+  
+      console.log(item, "item")
+    }
   }
 
   function navigateToProductPage() {
-    console.log('>>>>>>>>>>>',`${ROUTES.PRODUCTS}/${name} `)
+    //console.log('>>>>>>>>>>>',`${ROUTES.PRODUCTS}/${name} `)
     closeModal();
     router.push(`${ROUTES.PRODUCTS}/${name}`, undefined, {
       locale: router.locale,
@@ -241,7 +274,7 @@ export default function ProductPopup() {
                 {getSymbolFromCurrency(domainCurrencyCode)}{" "}
                 {Object.keys(attributes).length == 0
                   ? Math.round(data.price)
-                  : Math.round(attributes.default_sell_price)}
+                  : Math.round(attributes.sell_price_inc_tax)}
               </div>
               {/*   {discount && (
                 <del className="font-segoe text-gray-400 text-base lg:text-xl ps-2.5 -mt-0.5 md:mt-0">
@@ -292,7 +325,7 @@ export default function ProductPopup() {
                   }
                 }}
                 disableDecrement={quantity === 0}
-                disableIncrement={isDisable}
+               // disableIncrement={isDisable}
               />
               <Button
                 onClick={addToCart}
@@ -305,7 +338,7 @@ export default function ProductPopup() {
                     ? { backgroundColor: "bg-gray-400" }
                     : { backgroundColor: domainData.theme_color }
                 }
-                disabled={!isSelected}
+                disabled={!isSelected || isDisable}
                 loading={addToCartLoader}
               >
                 {t("text-add-to-cart")}

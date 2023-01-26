@@ -16,6 +16,8 @@ const Layout: React.FC = ({ children }) => {
   //const { t } = useTranslation("common");
   const { domain }: any = useContext(Context);
   //const [domainData, setDomainData] = useState<any>({});
+//console.log(domain);
+
 
   /*  useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
@@ -32,7 +34,7 @@ const Layout: React.FC = ({ children }) => {
             content: "width=device-width, initial-scale=1.0",
           },
         ]}
-        title=""
+        title={domain?.name}
         description="myIgnite Solutions"
         canonical="https://spnbxmyignite.netlify.app/"
         openGraph={{
@@ -55,7 +57,8 @@ const Layout: React.FC = ({ children }) => {
           ],
         }}
       />
-      <Header />
+      {domain?.name!=="urbannecessity"?   <Header />:null}
+      {/* <Header /> */}
       <main
         className="relative flex-grow"
         style={{
@@ -64,7 +67,8 @@ const Layout: React.FC = ({ children }) => {
         }}
       >
         {children}
-        <div className="bottom-0 right-0 fixed w-12 mr-8 mb-20 z-10">
+        {domain?.whatsapp_no!=null?
+        (<div className="bottom-0 right-0 fixed w-12 mr-8 mb-20 z-10">
           <a href={`https://wa.me/${domain.whatsapp_no}`} target="_blank">
             <img
               src="/assets/images/whatsapp.png"
@@ -72,9 +76,11 @@ const Layout: React.FC = ({ children }) => {
               className="rounded-full drop-shadow-2xl"
             />
           </a>
-        </div>
+        </div>):(null)}
       </main>
-      <Footer />
+      {domain?.name!=="urbannecessity"? <Footer /> : null}
+
+      {/* <Footer /> */}
       <MobileNavigation />
       <Search />
       {/* <CookieBar

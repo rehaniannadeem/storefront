@@ -24,6 +24,9 @@ export const ProductVariation: React.FC<Props> = ({
     quantity,
     enable_stock,
 }) => {
+const domainData:any=JSON.parse(localStorage.getItem("domainData")!)
+const currencyCode=domainData?.currency?.code
+
 
   
     return (
@@ -31,7 +34,7 @@ export const ProductVariation: React.FC<Props> = ({
             <h3 className="text-base md:text-lg text-heading font-semibold mb-2.5 capitalize">
                 {/* {title} */}
             </h3>
-            <ul className="colors  grid lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-3  gap-8   ">
+            <ul className="colors  grid lg:grid-cols-4 md:grid-cols-4 sm:grid-cols-3  gap-4   ">
                 {attributes?.map((attribute: any) => (
                   // console.log(attribute.value)
                    
@@ -66,11 +69,14 @@ export const ProductVariation: React.FC<Props> = ({
                         //         textDecorationThickness: "2px", */
                         // }
                     >
+                       { console.log(attribute?.variation_details[0]?.qty_available)}
+                        
                         <div className="flex flex-col  ">
-                            <span className="flex justify-center p-2"> {attribute?.value}</span>
-                            <span className="flex justify-center p-2">  {attribute?.sku}</span>
-                            <span className="flex justify-center p-2">  {Number(attribute?.sell_price_inc_tax).toFixed(2)}</span>
-                            <span className="flex justify-center p-2">  {attribute?.variation_details[0]?.qty_available>0?"Available":"Not Available"}</span>
+                            <span className="flex justify-center p-2"> SIZE:{attribute?.value}</span>
+                            <span className="flex justify-center p-2">  SKU:{attribute?.sku}</span>
+                            <span className="flex justify-center p-2"> {currencyCode}:{Number(attribute?.sell_price_inc_tax).toFixed(2)}</span>
+                            {attribute?.variation_details[0]?.qty_available>0?<span className="flex justify-center p-2 bg-olive">STOCK: {Math.round(attribute?.variation_details[0]?.qty_available)}{" "}PCS  </span>:<span className="flex justify-center p-2 bg-red-400"> OUT OF STOCK </span>}
+                            
 
                         </div>
 
