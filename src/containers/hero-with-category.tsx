@@ -48,13 +48,13 @@ const HeroWithCategory: React.FC<Props> = ({
 
   const [banners, setBanners] = useState<any>([]);
   const [placeholder, _setPlaceholder] = useState<any>([]);
-  let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
-  let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
+  let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
+  let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   const [items, setItems] = useState<any>([]);
   //fetch banner method
   const getBanner = () => {
     //  setIsLoading(true);
-    fetch(connector_base_url+"/banner", {
+    fetch(connector_base_url + "/banner", {
       method: "get",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -78,7 +78,7 @@ const HeroWithCategory: React.FC<Props> = ({
     //  setCategoryLoading(true);
     axios({
       method: "get",
-      url: storefront_base_url+"/categories",
+      url: storefront_base_url + "/categories",
       // data: bodyFormData,
       headers: {
         "Content-Type": "Application/json",
@@ -96,55 +96,46 @@ const HeroWithCategory: React.FC<Props> = ({
       });
   };
   useEffect(() => {
-    let isMounted = true;
-    if(domain.token!==undefined){
+
+    if (domain.token !== undefined) {
       getCategory();
     }
-  
-    return () => {
-      // 👇️ when the component unmounts, set isMounted to false
-      isMounted = false;
-    };
+
+
   }, [domain]);
 
   useEffect(() => {
-    let isMounted = true;
+
     getBanner();
-    return () => {
-      // 👇️ when the component unmounts, set isMounted to false
-      isMounted = false;
-    };
+
   }, [token]);
 
-  
+
   useEffect(() => {
-    let isMounted = true;
+
     {
       banners?.map(
         (item: any, index: any) =>
-          (placeholder[index] = {
-            id: item.id,
-            title: "slider image",
-            slug: "slider image",
-            image: {
-              mobile: {
-                url: item.banner_image,
-                width: 450,
-                height: 275,
-              },
-              desktop: {
-                url: item.banner_image,
-                width: 1450,
-                height: 800,
-              },
+        (placeholder[index] = {
+          id: item.id,
+          title: "slider image",
+          slug: "slider image",
+          image: {
+            mobile: {
+              url: item.banner_image,
+              width: 450,
+              height: 275,
             },
-          })
+            desktop: {
+              url: item.banner_image,
+              width: 1450,
+              height: 800,
+            },
+          },
+        })
       );
     }
-    return () => {
-      // 👇️ when the component unmounts, set isMounted to false
-      isMounted = false;
-    };
+
   });
 
   return (
@@ -157,23 +148,23 @@ const HeroWithCategory: React.FC<Props> = ({
             {/*changed data.categories.data.length into data*/}
             {items.length == 0
               ? Array.from({ length: 8 }).map((_, idx) => (
-                  <SwiperSlide key={`category-list-${idx}`}>
-                    <CategoryListCardLoader
-                      uniqueKey={`category-list-${idx}`}
-                    />
-                  </SwiperSlide>
-                ))
+                <SwiperSlide key={`category-list-${idx}`}>
+                  <CategoryListCardLoader
+                    uniqueKey={`category-list-${idx}`}
+                  />
+                </SwiperSlide>
+              ))
               : items?.map((category: any, index: any) => (
-                  <SwiperSlide key={index}>
-                    <CategoryListCard
-                      key={`category--key${category.id}`}
-                      category={category}
-                    />
-                  </SwiperSlide>
-                  /*   <div className="w-full mx-1 sm-w-full ">
-                    <CategoryListCard category={category} />
-                  </div> */
-                ))}
+                <SwiperSlide key={index}>
+                  <CategoryListCard
+                    key={`category--key${category.id}`}
+                    category={category}
+                  />
+                </SwiperSlide>
+                /*   <div className="w-full mx-1 sm-w-full ">
+                  <CategoryListCard category={category} />
+                </div> */
+              ))}
           </Carousel>
         </div>
       ) : (
@@ -200,23 +191,23 @@ const HeroWithCategory: React.FC<Props> = ({
         >
           {placeholder.length == 0
             ? Array.from({ length: 8 }).map((_, idx) => (
-                <SwiperSlide key={`category-list-${idx}`}>
-                  <CategoryListCardLoader uniqueKey={`category-list-${idx}`} />
-                </SwiperSlide>
-              ))
+              <SwiperSlide key={`category-list-${idx}`}>
+                <CategoryListCardLoader uniqueKey={`category-list-${idx}`} />
+              </SwiperSlide>
+            ))
             : //<CategoryListFeedLoader limit={8} />
-              placeholder?.map((banner: any, index: any) => (
-                <Swiper key={index}>
-                  <SwiperSlide key={`banner--key${banner.id}`}>
-                    <BannerCard
-                      key={index}
-                      banner={banner}
-                      href={"/"}
-                      className="xl:h-4/6"
-                    />
-                  </SwiperSlide>
-                </Swiper>
-              ))}
+            placeholder?.map((banner: any, index: any) => (
+              <Swiper key={index}>
+                <SwiperSlide key={`banner--key${banner.id}`}>
+                  <BannerCard
+                    key={index}
+                    banner={banner}
+                    href={"/"}
+                    className="xl:h-4/6"
+                  />
+                </SwiperSlide>
+              </Swiper>
+            ))}
         </Carousel>
       </div>
     </div>
