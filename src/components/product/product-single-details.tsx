@@ -211,7 +211,37 @@ const ProductSingleDetails: React.FC = () => {
  */
 
     const item = generateCartItem(product!, attributes);
-    if(quantity<=Math.round(attributes?.variation_details[0]?.qty_available)){
+    if (Object.keys(attributes)?.length != 0 && product?.enable_stock == 1) {
+      if(quantity<=Math.round(attributes?.variation_details[0]?.qty_available)){
+        addItemToCart(item, quantity);
+        toast.success("Added to the cart", {
+          //type: "dark",
+          progressClassName: "fancy-progress-bar",
+          position: width > 768 ? "bottom-right" : "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setAddToCartLoader(false);
+    
+        console.log(item, "item")
+      }else{
+        toast.error("Out of Stock", {
+          //type: "dark",
+          progressClassName: "fancy-progress-bar",
+          position: width > 768 ? "bottom-right" : "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        setAddToCartLoader(false);
+      }
+    
+    }else{
       addItemToCart(item, quantity);
       toast.success("Added to the cart", {
         //type: "dark",
@@ -226,19 +256,8 @@ const ProductSingleDetails: React.FC = () => {
       setAddToCartLoader(false);
   
       console.log(item, "item")
-    }else{
-      toast.error("Out of Stock", {
-        //type: "dark",
-        progressClassName: "fancy-progress-bar",
-        position: width > 768 ? "bottom-right" : "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-      setAddToCartLoader(false);
     }
+  
    
   
   }
@@ -253,8 +272,8 @@ const ProductSingleDetails: React.FC = () => {
   console.log(attributes, "attributes");
   console.log(Object.keys(attributes).length, "quantity");
    console.log(product.enable_stock, "stock"); */
- // console.log(product, "product");
- // console.log("attributes", attributes);
+  // console.log(product, "product");
+  // console.log("attributes", attributes);
 
   return (
     //block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start

@@ -12,5 +12,6 @@ module.exports = withPWA({
     runtimeCaching,
   },
   i18n,
+ 
   /*  distDir: "build", */
 });
