@@ -44,7 +44,7 @@ const ProductsWithFlashSale: React.FC<Props> = () => {
   } = useProductsQuery({ limit: 10, ...query }); */
   const [productData, setProductData] = useState<any>({});
 
-  const topProduct = slice(productData, 0, 5);
+  const topProduct = slice(productData, 0, 4);
   useEffect(() => {
     setProductData(products);
   }, [products]);

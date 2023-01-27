@@ -273,7 +273,7 @@ const ProductSingleDetails: React.FC = () => {
   console.log(Object.keys(attributes).length, "quantity");
    console.log(product.enable_stock, "stock"); */
   // console.log(product, "product");
-  // console.log("attributes", attributes);
+   //console.log("attributes", attributes);
 
   return (
     //block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start
