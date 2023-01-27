@@ -17,11 +17,12 @@ type CartItemProps = {
 };
 
 const CartItem: React.FC<CartItemProps> = ({ item }) => {
-  const urlName = item.name.replace(/\s+/g, "-");
+ // const urlName = item.name.replace(/\s+/g, "-");
   const { t } = useTranslation("common");
   const { addItemToCart, removeItemFromCart, clearItemFromCart } = useCart();
   const [_domainData, setDomainData] = useState({});
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
+
 
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
@@ -69,7 +70,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
       <div className="flex flex-col w-full overflow-hidden">
         <Link
-          href={`${ROUTES.PRODUCTS}/${urlName}`}
+          href={`${ROUTES.PRODUCTS}/${item?.name}`}
           className="truncate text-sm text-heading mb-1.5 -mt-1"
         >
           {generateCartItemName(item.name, item.attributes)}
@@ -77,7 +78,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
         <span className="text-sm text-gray-400 mb-2.5">
           {t("text-unit-price")} : &nbsp;
           {getSymbolFromCurrency(domainCurrencyCode)}
-          {Math.round(item.attributes.default_sell_price)}
+          {Math.round(item.attributes.sell_price_inc_tax)}
           {/* {price} */}
         </span>
 

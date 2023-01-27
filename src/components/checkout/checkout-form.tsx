@@ -50,7 +50,7 @@ const CheckoutForm: React.FC = () => {
   const [orderType, setOrderType] = useState([]);
   const { t } = useTranslation();
   const [addToCartLoader, setAddToCartLoader] = useState<boolean>(false);
-  //const [_isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [paymentGateway, setPaymentGateway] = useState<any>([]);
   const { mutate: updateUser } = useCheckoutMutation();
   const [user, setUser] = useState(false);
@@ -62,6 +62,7 @@ const CheckoutForm: React.FC = () => {
   const [_orderResponse, setOrderResponse] = useState<any>();
   const [productsName, _setProductsName] = useState<any>([]);
   const { isAuthorized, openModal, setModalView } = useUI();
+
   const { clearCart } = useCart();
   let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
 
@@ -69,6 +70,8 @@ const CheckoutForm: React.FC = () => {
     setModalView("LOGIN_VIEW");
     return openModal();
   }
+
+  
   // let host = window.location.host;
   // console.log(">>>>>>>>>>>", `https://${host}/my-account/orders/244582`);
   // console.log(">>>>>>>>>>>", selectPayment);
@@ -80,7 +83,15 @@ const CheckoutForm: React.FC = () => {
   useEffect(() => {
     setUser(isAuthorized);
   }, [isAuthorized]);
+  useEffect(()=>{
+    if(isAuthorized===false || items.length<=0){
+      setIsDisabled(true)
+    }else{
+      setIsDisabled(false)
+    }
+  },[items])
   useEffect(() => {
+ 
     setHost(window.location.host);
 
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
@@ -188,7 +199,6 @@ const CheckoutForm: React.FC = () => {
     axios({
       method: "post",
       url:connector_base_url+"/sell",
-
       headers: {
         "Content-Type": "Application/json",
         Authorization: `Bearer ${domainToken}`,
@@ -205,7 +215,7 @@ const CheckoutForm: React.FC = () => {
             contact_id: userData.id,
             delivered_to: firstName + " " + lastName,
 
-            //payments: "",
+            payments: null,
             /*   payments: [
               {
                 amount: total,
@@ -485,7 +495,7 @@ const CheckoutForm: React.FC = () => {
                 <Button
                   className="w-full "
                   loading={addToCartLoader}
-                  disabled={items.length <= 0 ? true : false}
+                  disabled={isDisabled}
                   style={{
                     backgroundColor: domainData.theme_color,
                     color: "white",
