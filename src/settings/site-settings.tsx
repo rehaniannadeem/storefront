@@ -7,9 +7,9 @@ import { USFlag } from "@components/icons/USFlag";
 
 export const siteSettings = {
   name: "",
-  description: "Spnbx.myIgnite.solution",
+  description: "",
   author: {
-    name: "Ignite.",
+    name: "",
     websiteUrl: "/",
     address: "",
   },

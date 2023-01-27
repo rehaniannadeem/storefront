@@ -1,11 +1,20 @@
 import { DefaultSeo as NextDefaultSeo } from "next-seo";
 import { siteSettings } from "@settings/site-settings";
+import { useContext } from "react";
+import { Context } from "src/pages/_app";
 
 export const DefaultSeo = () => {
+  const { domain }: any = useContext(Context);
+
+
+  const meta_title: string = domain?.meta_title;
+  const meta_description: string = domain?.meta_description;
+  //console.log('>>>>>>>>>>>',meta_description )
+  //sconst fav_icon:string=domain?.fav_icon;
   return (
     <NextDefaultSeo
-      title={siteSettings.name}
-      description={siteSettings.description}
+      title={meta_title === null || meta_title === undefined ? "" : meta_title}
+      description={meta_description === null || meta_description === undefined ? "" : meta_description}
       openGraph={{
         type: "website",
         locale: "en_IE",
