@@ -16,8 +16,11 @@ const Layout: React.FC = ({ children }) => {
   //const { t } = useTranslation("common");
   const { domain }: any = useContext(Context);
   //const [domainData, setDomainData] = useState<any>({});
-console.log(domain);
+//console.log(domain);
 
+const meta_title:string=domain?.meta_title;
+const meta_description:string=domain?.meta_description;
+const fav_icon:string=domain?.fav_icon;
 
   /*  useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
@@ -34,22 +37,22 @@ console.log(domain);
             content: "width=device-width, initial-scale=1.0",
           },
         ]}
-        title={domain?.name}
-        description="myIgnite Solutions"
-        canonical="https://spnbxmyignite.netlify.app/"
+        title={domain?.meta_title}
+      description={domain?.meta_description}
+        canonical=""
         openGraph={{
-          url: "https://spnbxmyignite.netlify.app/",
-          title: "myIgnite solution",
-          description: "myIgnite Solutions",
+          url: "",
+          title: `${meta_title}`,
+          description: `${meta_description}`,
           images: [
             {
-              url: "/assets/images/Ignite-Vertical.png",
+              url:`${fav_icon}`,
               width: 800,
               height: 600,
               alt: "Og Image Alt",
             },
             {
-              url: "/assets/images/Ignite-Vertical.png",
+              url: `${fav_icon}`,
               width: 900,
               height: 800,
               alt: "Og Image Alt Second",
