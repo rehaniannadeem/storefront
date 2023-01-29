@@ -12,16 +12,16 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { ROUTES } from "@utils/routes";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps } from "next";
-import { useEffect } from "react";
+//import { useEffect } from "react";
 
 
 export default function Shop() {
   const { t } = useTranslation("common");
-  useEffect(()=>{
+  // useEffect(()=>{
 
-    //  domainData=JSON?.parse(localStorage?.getItem("domainData")!)
+  //   //  domainData=JSON?.parse(localStorage?.getItem("domainData")!)
    
-  },[])
+  // },[])
   
 
   
