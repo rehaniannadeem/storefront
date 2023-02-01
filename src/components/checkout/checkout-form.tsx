@@ -31,6 +31,7 @@ interface CheckoutInputType {
 
 const CheckoutForm: React.FC = () => {
   const { items, total } = useCart();
+console.log("item",items);
 
   // const { setOrder } = useContext(Context);
 
@@ -117,7 +118,7 @@ const CheckoutForm: React.FC = () => {
             name: item.name,
             unit_price: item.attributes.default_sell_price,
             sell_price_inc_tax: item.attributes.sell_price_inc_tax,
-            tax_id: item.tax_id,
+            tax_rate_id: item.tax_id,
             unit_tax:
               item.attributes.sell_price_inc_tax -
               item.attributes.default_sell_price,

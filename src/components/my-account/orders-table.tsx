@@ -30,7 +30,7 @@ const OrdersTable: React.FC = () => {
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
   const [userData, setUserData] = useState<any>({});
   //console.log(userData, "user");
-console.log('>>>>>>>>>>>', process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL)
+//console.log('>>>>>>>>>>>', process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL)
 let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   const fetchData = () => {
     axios({
