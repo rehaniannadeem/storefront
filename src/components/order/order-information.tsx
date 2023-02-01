@@ -98,9 +98,9 @@ export default function OrderInformation() {
         <p>Loading...</p>
       )}
 
-      <p className="text-heading text-sm md:text-base mb-8">
+      {/* <p className="text-heading text-sm md:text-base mb-8">
         {t("text-pay-cash")}
-      </p>
+      </p> */}
 
       {/*  <OrderDetails /> */}
     </div>

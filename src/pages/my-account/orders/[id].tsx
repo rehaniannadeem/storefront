@@ -30,7 +30,7 @@ const OrderItemCard = ({ product }: { product: any }) => {
   }, []);
 
   const { price: itemTotal }: any = usePrice({
-    amount: product.unit_price * product.quantity,
+    amount: product.unit_price_inc_tax * product.quantity,
     currencyCode: domainCurrencyCode,
   });
 
@@ -56,7 +56,7 @@ export default function OrderPage() {
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
   const [orderDetail, setOrderDetail] = useState<any>([]);
   const [_productData, setProductData] = useState<any>({});
-  const [subTotal, setSubTotal] = useState<any>();
+  //const [subTotal, setSubTotal] = useState<any>();
   const [order, setOrder] = useState<any>({});
   let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   useEffect(() => {
@@ -81,7 +81,7 @@ export default function OrderPage() {
           console.log(">>>>>>>>>>>", response);
           setOrder(response.data.data[0]);
           setOrderDetail(response.data.data[0].sell_lines);
-          setSubTotal(response.data.data[0].total_before_tax);
+          //setSubTotal(response.data.data[0].total_before_tax);
           /*  console.log(response.data.data[0].total_before_tax, "this is total");
           console.log(subTotal, " total");
           console.log(response.data.data, "order"); */
@@ -150,12 +150,12 @@ export default function OrderPage() {
             </tbody>
 
             <tfoot>
-              <tr className="odd:bg-gray-150">
+              {/* <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("text-sub-total")}:</td>
                 <td className="p-4">
                   {domainCurrencyCode} {Math.round(subTotal)}
                 </td>
-              </tr>
+              </tr> */}
               {/*   <tr className="odd:bg-gray-150">
           <td className="p-4 italic">{t("text-shipping")}:</td>
           <td className="p-4">
@@ -184,7 +184,7 @@ export default function OrderPage() {
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("text-total")}:</td>
                 <td className="p-4">
-                  {domainCurrencyCode} {Math.round(subTotal)}
+                  {domainCurrencyCode} {Math.round(order?.final_total)}
                 </td>
               </tr>
             </tfoot>

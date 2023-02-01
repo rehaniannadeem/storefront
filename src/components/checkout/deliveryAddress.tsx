@@ -48,6 +48,8 @@ function Map({ setValue }: any) {
   const [selected, setSelected] = useState<any>(null);
   const [address, setAddress] = useState(null);
 
+
+
   useEffect(() => {
     setSelected({
       lat: geolocation.latitude,
@@ -117,6 +119,8 @@ const PlaceAutocomplete = ({ setSelected, setAddress }: any) => {
     setValue(address, false);
     clearSuggestions();
     const result = await getGeocode({ address });
+    console.log(result,'resuot');
+    
     const { lat, lng } = await getLatLng(result[0]);
     setSelected({ lat, lng });
   };
