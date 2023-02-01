@@ -85,7 +85,7 @@ export default function OrderInformation() {
             <span className="uppercase text-[11px] block text-body font-normal leading-5">
               {t("text-total")}:
             </span>
-            {domainCurrencyCode} {orderDetail.final_total}
+            {domainCurrencyCode} { orderDetail?.final_total?.toFixed()}
           </li>
           <li className="text-heading font-semibold text-base lg:text-lg border-b md:border-b-0 md:border-r border-dashed border-gray-300 px-4 lg:px-6 xl:px-8 py-4 md:py-5 lg:py-6 last:border-0">
             <span className="uppercase text-[11px] block text-body font-normal leading-5">
