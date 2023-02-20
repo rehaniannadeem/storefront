@@ -60,8 +60,8 @@ const fav_icon:string=domain?.fav_icon;
           ],
         }}
       />
-      {domain?.name!=="urbannecessity"?   <Header />:null}
-      {/* <Header /> */}
+      {/* {domain?.name!=="urbannecessity"?   <Header />:null} */}
+      <Header />
       <main
         className="relative flex-grow"
         style={{
@@ -81,9 +81,9 @@ const fav_icon:string=domain?.fav_icon;
           </a>
         </div>):(null)}
       </main>
-      {domain?.name!=="urbannecessity"? <Footer /> : null}
+      {/* {domain?.name!=="urbannecessity"? <Footer /> : null} */}
 
-      {/* <Footer /> */}
+      <Footer />
       <MobileNavigation />
       <Search />
       {/* <CookieBar

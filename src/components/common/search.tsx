@@ -103,11 +103,11 @@ export default function Search() {
                           }
                         })
                         ?.map((item: any, index: any) => {
-                          if (
-                            item.name.toLocaleLowerCase() === "open product"
-                          ) {
-                            item.visibility = "hidden";
-                          } else {
+                          // if (
+                          //   item.name.toLocaleLowerCase() === "open product"
+                          // ) {
+                          //   item.visibility = "hidden";
+                          // } else {
                             return (
                               <div
                                 className=" p-5 border-b border-gray-150 relative last:border-b-0"
@@ -116,7 +116,7 @@ export default function Search() {
                                 <SearchProduct item={item} key={index} />
                               </div>
                             );
-                          }
+                        
                         })
                     )}
                   </div>

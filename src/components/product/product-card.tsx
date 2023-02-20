@@ -4,6 +4,7 @@ import { FC, useEffect, useState } from "react";
 import { useUI } from "@contexts/ui.context";
 import usePrice from "@framework/product/use-price";
 import { Product } from "@framework/types";
+import {  useRouter } from "next/router";
 //import { useTranslation } from "next-i18next";
 
 interface ProductProps {
@@ -32,6 +33,11 @@ const ProductCard: FC<ProductProps> = ({
   const [_domainData, setDomainData] = useState({});
 
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
+const {locale}=useRouter()
+
+
+
+
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
@@ -119,7 +125,8 @@ const ProductCard: FC<ProductProps> = ({
               variant === "list",
           })}
         >
-          {product?.name}
+          {locale==='ar' && product?.arabic_name ? product?.arabic_name : product?.name}
+        
         </h2>
 
         {product?.description && (

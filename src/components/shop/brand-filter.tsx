@@ -89,6 +89,7 @@ export const BrandFilter = () => {
               name={item.name.toLowerCase()}
               checked={formState.includes(item.slug)}
               value={item.slug}
+              item={item}
               onChange={handleItemClick}
             />
           ))

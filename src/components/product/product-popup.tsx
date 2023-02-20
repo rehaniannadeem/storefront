@@ -22,7 +22,8 @@ export default function ProductPopup() {
     openCart,
   } = useUI();
   const router = useRouter();
-  const { addItemToCart } = useCart();
+  const {locale}=useRouter()
+    const { addItemToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [attributes, setAttributes] = useState<{ [key: string]: string | any }>(
     {}
@@ -260,7 +261,8 @@ export default function ProductPopup() {
               role="button"
             >
               <h2 className="text-heading text-lg md:text-xl lg:text-2xl font-semibold hover:text-black">
-                {name}
+              {locale==='ar' && data?.arabic_name ? data?.arabic_name : data?.name}
+                {/* {name} */}
               </h2>
             </div>
             <p className="text-sm leading-6 md:text-body md:leading-7">

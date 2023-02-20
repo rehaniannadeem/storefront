@@ -13,7 +13,7 @@ import { ROUTES } from "@utils/routes";
 */
 import Container from "@components/ui/container";
 import BrandBlock from "@containers/brand-block";
-import FeatureBlock from "@containers/feature-block";
+// import FeatureBlock from "@containers/feature-block";
 import Layout from "@components/layout/layout";
 import Divider from "@components/ui/divider";
 import ProductsWithFlashSale from "@containers/products-with-flash-sale";
@@ -57,12 +57,12 @@ useEffect(()=>{
   router.push(`${ROUTES.PRODUCT}?${url[1]}`, undefined, {
     locale: router.locale,
   })}
-  if(domainData?.name==="urbannecessity" && url[1]==undefined){
-    router.push(`${ROUTES.SEARCH}`, undefined, {
-      locale: router.locale,
-    })
+  // if(domainData?.name==="urbannecessity" && url[1]==undefined){
+  //   router.push(`${ROUTES.SEARCH}`, undefined, {
+  //     locale: router.locale,
+  //   })
 
-  }
+  // }
 },[url])
   /** 
   const [title, setTitle] = useState("");
@@ -112,7 +112,7 @@ useEffect(()=>{
       */}
       <Divider />
       <BrandBlock sectionHeading="text-top-brands" />
-      <FeatureBlock />
+      {/* <FeatureBlock /> */}
     </Container>
   );
 }

@@ -38,7 +38,7 @@ const ProductSingleDetails: React.FC = () => {
     query: { slug },
   } = useRouter(); */
   const router = useRouter();
- 
+  const {locale} = useRouter();
   const url=router.asPath.split("?")
   const sku=url[1]
  
@@ -245,7 +245,8 @@ const ProductSingleDetails: React.FC = () => {
       <div className="col-span-5 pt-8 lg:pt-0">
         <div className="pb-7 mb-7 border-b border-gray-300">
           <h2 className="text-heading text-lg md:text-xl lg:text-2xl 2xl:text-3xl font-bold hover:text-black mb-3.5">
-            {product?.name}
+          {locale==='ar' && product?.arabic_name ? product?.arabic_name : product?.name}
+            {/* {product?.name} */}
           </h2>
           <p className="text-body text-sm lg:text-base leading-6 lg:leading-8">
             {product?.description && (

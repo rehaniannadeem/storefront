@@ -22,6 +22,8 @@ const WidgetLink: FC<Props> = ({ className, data }) => {
   const { widgetTitle, lists } = data;
   const { t } = useTranslation("footer");
   const { domain }: any = useContext(Context);
+  // console.log(domain);
+  
   const [faceLink, setFaceLink] = useState("#");
   const [instaLink, setInstaLink] = useState("#");
   //  const [aboutUs, setAboutUs] = useState("#");

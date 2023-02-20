@@ -4,6 +4,7 @@ import Text from "@components/ui/text";
 import { FaLink } from "react-icons/fa";
 import { LinkProps } from "next/link";
 import { useTranslation } from "next-i18next";
+import { useRouter } from 'next/router';
 
 interface Props {
   item: any;
@@ -26,6 +27,8 @@ const Card: React.FC<Props> = ({
 
   const placeholderImage = "/icons/apple-icon-180.png";
   const { t } = useTranslation("common");
+const {locale}=useRouter()
+
 
   return (
     <Link
@@ -64,7 +67,8 @@ const Card: React.FC<Props> = ({
         )}
       </div>
       <Text variant="heading" className="capitalize">
-        {name}
+      {locale==='ar' && item?.arabic_name ? item?.arabic_name : name}
+       
       </Text>
     </Link>
   );
