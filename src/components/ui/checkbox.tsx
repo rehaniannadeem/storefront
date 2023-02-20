@@ -1,15 +1,18 @@
 import React, { useContext } from "react";
-import { useTranslation } from "next-i18next";
+// import { useTranslation } from "next-i18next";
 import { Context } from "src/pages/_app";
+import { useRouter } from 'next/router';
 interface CheckBoxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   labelKey?: string;
   label?: string | any;
+  item?: any
 }
 export const CheckBox = React.forwardRef<HTMLInputElement, CheckBoxProps>(
-  ({ labelKey, label, ...rest }, ref) => {
-    const { t } = useTranslation();
+  ({ labelKey, label, item, ...rest }, ref) => {
+    // const { t } = useTranslation();
+    const {locale}=useRouter()
     const { domain }: any = useContext(Context);
-    // console.log(domain.theme_color);
+    //  console.log(item,'fdskfjdl');
     return (
       <label className="group flex items-center text-heading text-sm cursor-pointer">
         <input
@@ -19,7 +22,7 @@ export const CheckBox = React.forwardRef<HTMLInputElement, CheckBoxProps>(
           {...rest}
           style={{ accentColor: domain.theme_color }}
         />
-        <span className="ms-4 -mt-0.5">{labelKey ? t(labelKey) : label}</span>
+        <span className="ms-4 -mt-0.5">{/* {labelKey ? t(labelKey) : label} */}   {locale==='ar' && item?.arabic_name ? item?.arabic_name : label}</span>
       </label>
     );
   }

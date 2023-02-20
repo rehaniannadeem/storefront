@@ -31,7 +31,7 @@ interface CheckoutInputType {
 
 const CheckoutForm: React.FC = () => {
   const { items, total } = useCart();
-console.log("item",items);
+// console.log("item",items);
 
   // const { setOrder } = useContext(Context);
 
@@ -142,7 +142,7 @@ console.log("item",items);
         },
       })
         .then((response) => {
-          // console.log(response, "Payment Gateway");
+           console.log(response, "Payment Gateway");
           setPaymentGateway(response.data.data);
         })
         .catch((err) => {
@@ -180,7 +180,7 @@ console.log("item",items);
       },
     })
       .then((response) => {
-        console.log(response.data.Url, "Payment ");
+        console.log(response, "Payment ");
         if (response.status == 200) {
           console.log("get_url");
           setAddToCartLoader(false);
@@ -244,6 +244,8 @@ console.log("item",items);
             if (selectPayment.name == "cash On Delivery") {
               Router.push(ROUTES.ORDER);
             } else {
+              
+              
               get_url(response.data[0]);
             }
           }

@@ -96,6 +96,7 @@ export const CategoryFilter = () => {
               name={item.name.toLowerCase()}
               checked={formState.includes(item.name)}
               value={item.name}
+              item={item}
               onChange={handleItemClick}
             />
           ))

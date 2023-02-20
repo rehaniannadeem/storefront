@@ -65,7 +65,7 @@ const BrandBlock: React.FC<BrandProps> = ({
         },
       })
         .then((response: any) => {
-          // console.log(response.data.brands, "this is brand detail");
+        //  console.log(response.data.brands, "this is brand detail");
           setItems(response.data.brands);
 
           localStorage.setItem("brands", JSON.stringify(response.data.brands));
@@ -81,6 +81,7 @@ const BrandBlock: React.FC<BrandProps> = ({
    
   }, [domain]);
   // const brands = data?.brands;
+// console.log(items,"brands");
 
   return (
     <div className={className}>

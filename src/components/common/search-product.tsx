@@ -3,6 +3,7 @@ import Image from "next/image";
 import usePrice from "@framework/product/use-price";
 import { ROUTES } from "@utils/routes";
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
 
 type SearchProductProps = {
   item: any;
@@ -12,7 +13,8 @@ const SearchProduct: React.FC<SearchProductProps> = ({ item }) => {
   const [_domainData, setDomainData] = useState({});
  // let urlName = item.name.replace(/\s+/g, "-");
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
-
+console.log(item,'tiem');
+const {locale}=useRouter()
   const { price, basePrice } = usePrice({
     amount: item.sale_price ? item.sale_price : item.price,
     baseAmount: item.price,
@@ -44,7 +46,9 @@ const SearchProduct: React.FC<SearchProductProps> = ({ item }) => {
         />
       </div>
       <div className="flex flex-col w-full overflow-hidden">
-        <h3 className="truncate text-sm text-heading mb-2">{item.name}</h3>
+        <h3 className="truncate text-sm text-heading mb-2">
+        {locale==='ar' && item?.arabic_name ? item?.arabic_name : item?.name}
+        </h3>
         <div className="text-heading font-semibold text-sm">
           {price}
           <del className="ps-2 text-gray-400 font-normal">{basePrice}</del>
