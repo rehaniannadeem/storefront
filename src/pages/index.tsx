@@ -44,12 +44,12 @@ const flashSaleCarouselBreakpoint = {
 
 export default function Home() {
   const router = useRouter();
- let domainData:any={}
+//  let domainData:any={}
   const url=router?.asPath.split("?")
  // console.log(domainData.name);
-  useEffect(()=>{
-    domainData=JSON?.parse(localStorage?.getItem("domainData")!)
-  },[])
+  // useEffect(()=>{
+  //   domainData=JSON?.parse(localStorage?.getItem("domainData")!)
+  // },[])
 
 useEffect(()=>{
   
