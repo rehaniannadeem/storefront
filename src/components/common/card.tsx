@@ -25,7 +25,7 @@ const Card: React.FC<Props> = ({
   const imageSize: any =
     (size === "small" && 180) || (size === "medium" && 198);
 
-  const placeholderImage = "/icons/apple-icon-180.png";
+  const placeholderImage = "/icons/ignite-default.png";
   const { t } = useTranslation("common");
 const {locale}=useRouter()
 
