@@ -54,7 +54,9 @@ const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
           )}
 
           {item?.subMenu && Array.isArray(item.subMenu) && (
-            <div className="subMenu shadow-header bg-gray-200 absolute start-0 opacity-0 group-hover:opacity-100">
+            <div className="subMenu shadow-header bg-gray-200 absolute start-0 opacity-0 group-hover:opacity-100"
+            style={{ columnCount: 2 }}
+            >
               {item.label === "menu-categories" && (
                 <ul className="text-body text-sm py-5">
                   {categories?.map((menu: any, index: number) => {
