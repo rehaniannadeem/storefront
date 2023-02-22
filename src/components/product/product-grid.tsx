@@ -9,6 +9,11 @@ import { useTranslation } from "next-i18next";
 import { Context } from "src/pages/_app";
 import { Listbox, Transition } from "@headlessui/react";
 import { HiOutlineSelector, HiCheck } from "react-icons/hi";
+import FilterIcon from "@components/icons/filter-icon";
+import { useUI } from "@contexts/ui.context";
+import { Drawer } from "@components/common/drawer/drawer";
+import { getDirection } from "@utils/get-direction";
+import FilterSidebar from "@components/shop/filter-sidebar";
 interface ProductGridProps {
   className?: string;
 }
@@ -40,7 +45,10 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
   const [productLength, setProductLength] = useState<any>();
   //const [sortedFilter, setSortedFilter] = useState<any>('low-high')
   //const [isLoading, setIsLoading] = useState(false)
-
+  const { openFilter, displayFilter, closeFilter } = useUI();
+  const { locale } = useRouter();
+  const dir = getDirection(locale);
+  const contentWrapperCSS = dir === "ltr" ? { left: 0 } : { right: 0 };
   //console.log('>>>>>>>>>>>', productData)
   const options = [
     { name: "text-sorting-options", value: "options" },
@@ -211,10 +219,17 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
     <>
       <div className="flex flex-col">
 
-
-        <div className="flex justify-between p-2">
-          <span>{productLength} Items</span>
-          <span><Listbox value={selectedItem} onChange={handleItemClick}>
+      <span className="flex justify-end">{productLength} Items</span>
+        <div className="flex justify-between   p-2">
+        
+          <button
+        className="lg:hidden text-heading text-sm px-4 py-2 font-semibold border border-gray-300 rounded-md flex items-center transition duration-200 ease-in-out focus:outline-none hover:bg-gray-200"
+        onClick={openFilter}
+      >
+        <FilterIcon />
+        <span className="ps-2.5">{t("text-filters")}</span>
+      </button>
+          <span ><Listbox value={selectedItem} onChange={handleItemClick}>
             {({ open }) => (
               <div className="relative ms-2 lg:ms-0 z-10 min-w-[180px]">
                 <Listbox.Button className="border border-gray-300  text-heading text-[13px] md:text-sm font-semibold  relative w-full py-2 ps-3 pe-10 text-start bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm cursor-pointer">
@@ -271,6 +286,17 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
               </div>
             )}
           </Listbox></span>
+          <Drawer
+        placement={dir === "rtl" ? "right" : "left"}
+        open={displayFilter}
+        onClose={closeFilter}
+        handler={false}
+        showMask={true}
+        level={null}
+        contentWrapperStyle={contentWrapperCSS}
+      >
+        <FilterSidebar />
+      </Drawer>
         </div>
         <div
           className={`grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 lg:gap-x-5 xl:gap-x-7 gap-y-3 xl:gap-y-5 2xl:gap-y-8 ${className}`}

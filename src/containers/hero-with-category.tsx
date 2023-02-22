@@ -48,13 +48,14 @@ const HeroWithCategory: React.FC<Props> = ({
 
   const [banners, setBanners] = useState<any>([]);
   const [placeholder, _setPlaceholder] = useState<any>([]);
-  let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
-  let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
+  let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
+  let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   const [items, setItems] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState(false)
   //fetch banner method
   const getBanner = () => {
-    //  setIsLoading(true);
-    fetch(connector_base_url+"/banner", {
+    setIsLoading(true);
+    fetch(connector_base_url + "/banner", {
       method: "get",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -67,7 +68,7 @@ const HeroWithCategory: React.FC<Props> = ({
       })
       .then((data) => {
         setBanners(data.data);
-        // setIsLoading(false);
+        setIsLoading(false);
 
         // setSlider(data.data[0].banner_image);
         console.log(data.data, "slider");
@@ -75,10 +76,10 @@ const HeroWithCategory: React.FC<Props> = ({
   };
   //get categories
   const getCategory = () => {
-    //  setCategoryLoading(true);
+    setIsLoading(true);
     axios({
       method: "get",
-      url: storefront_base_url+"/categories",
+      url: storefront_base_url + "/categories",
       // data: bodyFormData,
       headers: {
         "Content-Type": "Application/json",
@@ -89,53 +90,55 @@ const HeroWithCategory: React.FC<Props> = ({
         // console.log(response.data, "this is product detail");
         setItems(response.data.data);
         localStorage.setItem("categories", JSON.stringify(response.data.data));
+        setIsLoading(false);
       })
       .catch(function (err: any) {
         //handle error
         console.log(err);
+        setIsLoading(false);
       });
   };
   useEffect(() => {
-   
-    if(domain.token!==undefined){
+
+    if (domain.token !== undefined) {
       getCategory();
     }
-  
-   
+
+
   }, [domain]);
 
   useEffect(() => {
-   
+
     getBanner();
-   
+
   }, [token]);
 
-  
+
   useEffect(() => {
-    
+
     {
       banners?.map(
         (item: any, index: any) =>
-          (placeholder[index] = {
-            id: item.id,
-            title: "slider image",
-            slug: "slider image",
-            image: {
-              mobile: {
-                url: item.banner_image,
-                width: 450,
-                height: 275,
-              },
-              desktop: {
-                url: item.banner_image,
-                width: 1450,
-                height: 800,
-              },
+        (placeholder[index] = {
+          id: item.id,
+          title: "slider image",
+          slug: "slider image",
+          image: {
+            mobile: {
+              url: item.banner_image,
+              width: 450,
+              height: 275,
             },
-          })
+            desktop: {
+              url: item.banner_image,
+              width: 1450,
+              height: 800,
+            },
+          },
+        })
       );
     }
-   
+
   });
 
   return (
@@ -144,32 +147,40 @@ const HeroWithCategory: React.FC<Props> = ({
     >
       {width < 1500 ? (
         <div>
-          <Carousel breakpoints={categoryResponsive} buttonSize="small">
-            {/*changed data.categories.data.length into data*/}
-            {items.length == 0
-              ? Array.from({ length: 8 }).map((_, idx) => (
-                  <SwiperSlide key={`category-list-${idx}`}>
-                    <CategoryListCardLoader
-                      uniqueKey={`category-list-${idx}`}
-                    />
-                  </SwiperSlide>
-                ))
-              : items?.map((category: any, index: any) => (
-                  <SwiperSlide key={index}>
-                    <CategoryListCard
-                      key={`category--key${category.id}`}
-                      category={category}
-                    />
-                  </SwiperSlide>
-                  /*   <div className="w-full mx-1 sm-w-full ">
-                    <CategoryListCard category={category} />
-                  </div> */
-                ))}
-          </Carousel>
+          { isLoading ?
+          (  <Carousel breakpoints={categoryResponsive} buttonSize="small">
+              {/*changed data.categories.data.length into data*/}
+
+              {Array.from({ length: 8 }).map((_, idx) => (
+                <SwiperSlide key={`category-list-${idx}`}>
+                  <CategoryListCardLoader
+                    uniqueKey={`category-list-${idx}`}
+                  />
+                </SwiperSlide>
+              ))}
+
+            </Carousel> ):(
+              items.length == 0 ?(<div></div>):
+            
+           ( <Carousel breakpoints={categoryResponsive} buttonSize="small">
+              {/*changed data.categories.data.length into data*/}
+              {items?.map((category: any, index: any) => (
+                <SwiperSlide key={index}>
+                  <CategoryListCard
+                    key={`category--key${category.id}`}
+                    category={category}
+                  />
+                </SwiperSlide>
+                /*   <div className="w-full mx-1 sm-w-full ">
+                  <CategoryListCard category={category} />
+                </div> */
+              ))}
+
+            </Carousel>))}
         </div>
       ) : (
         <div className="2xl:-me-14 grid grid-cols-1 gap-3">
-          {items.length == 0 ? (
+          {items.length == 0 && isLoading ? (
             <CategoryListFeedLoader limit={8} />
           ) : (
             //changed data.categories.data into data.data
@@ -189,25 +200,25 @@ const HeroWithCategory: React.FC<Props> = ({
           className="-mx-0"
           buttonClassName="hidden"
         >
-          {placeholder.length == 0
+          {placeholder.length == 0 && isLoading
             ? Array.from({ length: 8 }).map((_, idx) => (
-                <SwiperSlide key={`category-list-${idx}`}>
-                  <CategoryListCardLoader uniqueKey={`category-list-${idx}`} />
-                </SwiperSlide>
-              ))
+              <SwiperSlide key={`category-list-${idx}`}>
+                <CategoryListCardLoader uniqueKey={`category-list-${idx}`} />
+              </SwiperSlide>
+            ))
             : //<CategoryListFeedLoader limit={8} />
-              placeholder?.map((banner: any, index: any) => (
-                <Swiper key={index}>
-                  <SwiperSlide key={`banner--key${banner.id}`}>
-                    <BannerCard
-                      key={index}
-                      banner={banner}
-                      href={"/"}
-                      className="xl:h-4/6"
-                    />
-                  </SwiperSlide>
-                </Swiper>
-              ))}
+            placeholder?.map((banner: any, index: any) => (
+              <Swiper key={index}>
+                <SwiperSlide key={`banner--key${banner.id}`}>
+                  <BannerCard
+                    key={index}
+                    banner={banner}
+                    href={"/"}
+                    className="xl:h-4/6"
+                  />
+                </SwiperSlide>
+              </Swiper>
+            ))}
         </Carousel>
       </div>
     </div>

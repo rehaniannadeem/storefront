@@ -158,6 +158,8 @@ const CheckoutForm: React.FC = () => {
     setEmail(userData.email);
   }, [userData]);
   const get_url = (response: any) => {
+    // console.log(response,'treu response');
+    
     axios({
       method: "get",
       url: "https://wallet31.myignite.online/app/api/get_url",
@@ -173,14 +175,14 @@ const CheckoutForm: React.FC = () => {
         email: userData.email,
         currency: domainData.currency.code,
         method_id: selectPayment.id,
-        invoice_id: response.invoice_no,
+        invoice_id: response.id,
         return_url: `http://${host}/my-account/orders/${response.id}`,
         //  return_url: "https://www.google.com/",
         cancel_url: `http://${host}/my-account/orders/${response.id}`,
       },
     })
       .then((response) => {
-        console.log(response, "Payment ");
+        // console.log(response, "Payment ");
         if (response.status == 200) {
           console.log("get_url");
           setAddToCartLoader(false);

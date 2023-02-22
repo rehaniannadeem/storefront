@@ -51,10 +51,10 @@ const BrandBlock: React.FC<BrandProps> = ({
   const { domain }: any = useContext(Context);
   const [items, setItems] = useState<any>([]);
   let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
-  // const [isLoading, setIsLoading] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const getBrand = () => {
-      // setIsLoading(true);
+       setIsLoading(true);
       axios({
         method: "get",
         url: storefront_base_url+"/brands",
@@ -67,12 +67,14 @@ const BrandBlock: React.FC<BrandProps> = ({
         .then((response: any) => {
         //  console.log(response.data.brands, "this is brand detail");
           setItems(response.data.brands);
+          setIsLoading(false);
 
           localStorage.setItem("brands", JSON.stringify(response.data.brands));
         })
         .catch(function (err: any) {
           //handle error
           console.log(err);
+          setIsLoading(false);
         });
       // setIsLoading(false);
     };
@@ -85,10 +87,22 @@ const BrandBlock: React.FC<BrandProps> = ({
 
   return (
     <div className={className}>
-      <SectionHeader sectionHeading={sectionHeading} />
-
+      {isLoading ?
+   (  <>  <SectionHeader sectionHeading={sectionHeading} />
+       <Carousel breakpoints={breakpoints} buttonClassName="-mt-8 md:-mt-12">
+         { Array.from({ length: 10 }).map((_, idx) => (
+               <SwiperSlide key={idx}>
+                 <CardRoundedLoader uniqueKey={`category-${idx}`} />
+               </SwiperSlide>
+             ))
+          }
+       </Carousel>
+       </>):(
+        items?.length==0  ?(<div></div>):
+(<>
+<SectionHeader sectionHeading={sectionHeading} />
       <Carousel breakpoints={breakpoints} buttonClassName="-mt-8 md:-mt-12">
-        {items.length == 0
+        {items.length == 0 && isLoading
           ? Array.from({ length: 10 }).map((_, idx) => (
               <SwiperSlide key={idx}>
                 <CardRoundedLoader uniqueKey={`category-${idx}`} />
@@ -107,7 +121,33 @@ const BrandBlock: React.FC<BrandProps> = ({
                 />
               </SwiperSlide>
             ))}
-      </Carousel>
+      </Carousel></>)
+        
+       )
+      
+    }
+      {/* <SectionHeader sectionHeading={sectionHeading} />
+      <Carousel breakpoints={breakpoints} buttonClassName="-mt-8 md:-mt-12">
+        {items.length == 0 && isLoading
+          ? Array.from({ length: 10 }).map((_, idx) => (
+              <SwiperSlide key={idx}>
+                <CardRoundedLoader uniqueKey={`category-${idx}`} />
+              </SwiperSlide>
+            ))
+          : items?.map((brand: any) => (
+              <SwiperSlide key={`brand--key${brand.id}`}>
+                <Card
+                  item={brand}
+                  variant="rounded"
+                  size="medium"
+                  href={{
+                    pathname: ROUTES.SEARCH,
+                    query: { brand: brand.slug },
+                  }}
+                />
+              </SwiperSlide>
+            ))}
+      </Carousel> */}
     </div>
   );
 };
