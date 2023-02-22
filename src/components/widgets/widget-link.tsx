@@ -29,8 +29,8 @@ const WidgetLink: FC<Props> = ({ className, data }) => {
   //  const [aboutUs, setAboutUs] = useState("#");
   //  const [privacyPolicy, setPrivacyPolicy] = useState("#");
   // const [termCondition, setTermCondition] = useState("#");
-  const [email, setEmail] = useState("#");
-  const [mobile, setMobile] = useState("#");
+  const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
   // const [_domainData, setDomainData] = useState({});
   //business_location
   // console.log("sdljkfsldfk", domain.business_location);
@@ -52,8 +52,10 @@ const WidgetLink: FC<Props> = ({ className, data }) => {
     {
       domain.business_location && setEmail(domain.business_location.email);
     }
-
-    setMobile(domain.whatsapp_no);
+if(domain?.whatsapp_no!=null){
+  setMobile(domain?.whatsapp_no);
+}
+   
   }, [domain]);
   // console.log(">>>>>>>>>>>", lists);
 
@@ -62,7 +64,7 @@ const WidgetLink: FC<Props> = ({ className, data }) => {
   //footer.widgets[2].lists[0].path = aboutUs;
   // footer.widgets[3].lists[0].path = privacyPolicy;
   // footer.widgets[3].lists[1].path = termCondition;
-  footer.widgets[1].lists[0].title = email;
+    footer.widgets[1].lists[0].title = email;
   footer.widgets[1].lists[1].title = mobile;
   return (
     <div className={`${className}`}>
