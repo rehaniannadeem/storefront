@@ -51,7 +51,7 @@ export default function OrderInformation() {
   }, [orderDetail != undefined]);
 
   //console.log(data);
-  console.log(orderDetail, "order detail");
+  console.log(orderDetail, "order detail aaa");
   if (isLoading) return <p>Loading...</p>;
   return (
     <div className="xl:px-32 2xl:px-44 3xl:px-56 py-16 lg:py-20">
@@ -85,7 +85,7 @@ export default function OrderInformation() {
             <span className="uppercase text-[11px] block text-body font-normal leading-5">
               {t("text-total")}:
             </span>
-            {domainCurrencyCode} { orderDetail?.final_total?.toFixed()}
+            {domainCurrencyCode} {orderDetail?.shipping_charges + orderDetail?.final_total}
           </li>
           <li className="text-heading font-semibold text-base lg:text-lg border-b md:border-b-0 md:border-r border-dashed border-gray-300 px-4 lg:px-6 xl:px-8 py-4 md:py-5 lg:py-6 last:border-0">
             <span className="uppercase text-[11px] block text-body font-normal leading-5">

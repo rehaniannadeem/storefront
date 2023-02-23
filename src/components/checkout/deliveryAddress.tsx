@@ -49,6 +49,8 @@ function Map({ setValue }: any) {
   const [address, setAddress] = useState(null);
 
 
+console.log(geolocation.latitude,'dfslkjflsdf');
+console.log(geolocation.longitude,'ddddd');
 
   useEffect(() => {
     setSelected({

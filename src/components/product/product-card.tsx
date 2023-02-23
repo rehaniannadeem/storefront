@@ -29,7 +29,7 @@ const ProductCard: FC<ProductProps> = ({
 }) => {
   // const { t } = useTranslation("common");
   const { openModal, setModalView, setModalData } = useUI();
-  const placeholderImage = `/assets/placeholder/products/product-${variant}.svg`;
+  // const placeholderImage = `/assets/placeholder/products/product-${variant}.svg`;
   const [_domainData, setDomainData] = useState({});
 
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
@@ -55,7 +55,7 @@ const {locale}=useRouter()
     setModalView("PRODUCT_VIEW");
     return openModal();
   }
-  // console.log(product);
+  //  console.log(product);
   return (
     <div
       className={cn(
@@ -88,7 +88,7 @@ const {locale}=useRouter()
         )}
       >
         <Image
-          src={product?.image?.thumbnail ?? placeholderImage}
+          src={product?.image?.thumbnail ?? '/icons/ignite-default.png'}
           width={imgWidth}
           height={imgHeight}
           loading={imgLoading}

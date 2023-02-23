@@ -161,19 +161,20 @@ const HeroWithCategory: React.FC<Props> = ({
 
             </Carousel> ):(
               items.length == 0 ?(<div></div>):
-            
+             
            ( <Carousel breakpoints={categoryResponsive} buttonSize="small">
               {/*changed data.categories.data.length into data*/}
               {items?.map((category: any, index: any) => (
                 <SwiperSlide key={index}>
+             
                   <CategoryListCard
                     key={`category--key${category.id}`}
                     category={category}
                   />
                 </SwiperSlide>
-                /*   <div className="w-full mx-1 sm-w-full ">
-                  <CategoryListCard category={category} />
-                </div> */
+                //   <div className="w-full mx-1 sm-w-full ">
+                //   <CategoryListCard category={category} />
+                // </div>
               ))}
 
             </Carousel>))}

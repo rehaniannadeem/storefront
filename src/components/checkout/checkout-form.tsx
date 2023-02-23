@@ -31,7 +31,7 @@ interface CheckoutInputType {
 
 const CheckoutForm: React.FC = () => {
   const { items, total } = useCart();
-// console.log("item",items);
+  // console.log("item",items);
 
   // const { setOrder } = useContext(Context);
 
@@ -62,20 +62,26 @@ const CheckoutForm: React.FC = () => {
   const [host, setHost] = useState("");
   const [_orderResponse, setOrderResponse] = useState<any>();
   const [productsName, _setProductsName] = useState<any>([]);
+  const[city,setCity]=useState<any>("")
+  const[country,setCountry]=useState<any>("")
   const { isAuthorized, openModal, setModalView } = useUI();
-
+  const [shipping, setShipping] = useState<string>("Free")
+  const [isCity,setIsCity]=useState(false)
+  const [isCountry,setIsCountry]=useState(false)
+  const[selectedMethod,setSelectedMethod]=useState<any>({})
+  const[finalTotal,setFinalTotal]=useState(total)
   const { clearCart } = useCart();
-  let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
+  let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
 
   function handleLogin() {
     setModalView("LOGIN_VIEW");
     return openModal();
   }
 
-  
+
   // let host = window.location.host;
   // console.log(">>>>>>>>>>>", `https://${host}/my-account/orders/244582`);
-  // console.log(">>>>>>>>>>>", selectPayment);
+   console.log(">>>>>>>>>>>", selectedMethod);
   const {
     register,
     handleSubmit,
@@ -84,15 +90,30 @@ const CheckoutForm: React.FC = () => {
   useEffect(() => {
     setUser(isAuthorized);
   }, [isAuthorized]);
-  useEffect(()=>{
-    if(isAuthorized===false || items.length<=0){
+
+  useEffect(() => {
+    if (isAuthorized === false || items.length <= 0) {
       setIsDisabled(true)
-    }else{
+    } else {
       setIsDisabled(false)
     }
-  },[items])
+  }, [items])
+  useEffect(()=>{
+    if(selectedMethod){
+      setIsDisabled(false)
+      if(shipping==="Free"){
+        setFinalTotal(total)
+      }else{
+        let newTotal=total+Number(selectedMethod?.base_shipping_fee)
+        setFinalTotal(newTotal)
+      }
+    }
+
+  },[selectedMethod])
+// console.log(finalTotal,"finaltotal");
+
   useEffect(() => {
- 
+
     setHost(window.location.host);
 
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
@@ -129,6 +150,47 @@ const CheckoutForm: React.FC = () => {
     }
   }, []);
 
+  useEffect(()=>{
+    let newCity=city.toLowerCase()
+    let newCountry=country.toLowerCase()
+   if(isCity && isCountry){
+ 
+    axios({
+      method: "get",
+      url: connector_base_url + "/shipping-methods",
+      headers: {
+        Accept: "Application/json",
+        Authorization: `Bearer ${domainToken}`,
+        // "merchant-uuid": `${domainData.business_location.custom_field3}`,
+        // "merchant-uuid": "05113C9C7BD4C",
+      },
+      params: {
+       country:newCountry,
+       city:newCity
+      },
+    })
+      .then((response) => {
+    //  console.log(response,'this is response');
+    setShipping(response?.data?.data)
+    if(response?.data.success===false){
+      if(!city || !country){
+        toast.error("Please enter city and country")
+      }else{
+        toast.error(response.data.message)
+      }
+     
+    }
+    
+      })
+      .catch((err) => {
+        console.log(err, "Response Error");
+        setAddToCartLoader(false);
+      });
+      // setIsDisabled(false)
+      
+   }
+  },[isCity,isCountry])
+
   useEffect(() => {
     if (Object.keys(domainData).length != 0) {
       axios({
@@ -142,7 +204,7 @@ const CheckoutForm: React.FC = () => {
         },
       })
         .then((response) => {
-           console.log(response, "Payment Gateway");
+          console.log(response, "Payment Gateway");
           setPaymentGateway(response.data.data);
         })
         .catch((err) => {
@@ -159,7 +221,7 @@ const CheckoutForm: React.FC = () => {
   }, [userData]);
   const get_url = (response: any) => {
     // console.log(response,'treu response');
-    
+
     axios({
       method: "get",
       url: "https://wallet31.myignite.online/app/api/get_url",
@@ -171,7 +233,7 @@ const CheckoutForm: React.FC = () => {
       params: {
         order_no: response.id,
         item_name: productsName.toString(),
-        amount: response.total_before_tax,
+        amount: finalTotal,
         email: userData.email,
         currency: domainData.currency.code,
         method_id: selectPayment.id,
@@ -198,10 +260,16 @@ const CheckoutForm: React.FC = () => {
       });
   };
   async function onSubmit(input: CheckoutInputType) {
+    let shippingCharges=0
+    if(shipping==="Free"){
+      shippingCharges=0
+    }else{
+      shippingCharges=Number(selectedMethod?.base_shipping_fee)
+    }
     setAddToCartLoader(true);
     axios({
       method: "post",
-      url:connector_base_url+"/sell",
+      url: connector_base_url + "/sell",
       headers: {
         "Content-Type": "Application/json",
         Authorization: `Bearer ${domainToken}`,
@@ -217,6 +285,7 @@ const CheckoutForm: React.FC = () => {
             location_id: domainData.location_id,
             contact_id: userData.id,
             delivered_to: firstName + " " + lastName,
+            shipping_charges:shippingCharges,
 
             payments: null,
             /*   payments: [
@@ -227,7 +296,7 @@ const CheckoutForm: React.FC = () => {
               },
             ], */
             order_source: "storefront",
-            total_before_tax: total,
+            total_before_tax: finalTotal,
             products: placeOrder,
           },
         ],
@@ -246,8 +315,8 @@ const CheckoutForm: React.FC = () => {
             if (selectPayment.name == "cash On Delivery") {
               Router.push(ROUTES.ORDER);
             } else {
-              
-              
+
+
               get_url(response.data[0]);
             }
           }
@@ -260,6 +329,35 @@ const CheckoutForm: React.FC = () => {
 
     updateUser(input);
   }
+  const handleDeliveryOption = (e: any) => {
+    setChecked(e)
+    let value = e
+    if (value?.toLowerCase() === 'delivery') {
+      // setShipping("100")
+      setIsDisabled(true)
+
+    } else {
+      setShipping("Free")
+      setIsDisabled(false)
+      setSelectedMethod({})
+      setCity('')
+      setCountry('')
+    }
+
+    // console.log(e, 'e value');
+
+  }
+  const handleCity=()=>{
+    setIsCity(true)
+
+  }
+  const handleCountry=()=>{
+    setIsCountry(true)
+    
+  }
+
+  // console.log(shipping, "check");
+  // console.log(isCountry, "country");
 
   return (
     <Container>
@@ -273,9 +371,33 @@ const CheckoutForm: React.FC = () => {
             >
               <div className=" my-3">
                 <h2 className="font-bold">{t("forms:delivery-option")}</h2>
-                {orderType?.map((type: any, index: any) => (
+                {orderType?.map((type, index) => (
+                  <div
+                    className="flex cursor-pointer my-2 border-4 rounded-md border-solid p-1 hover:bg-gray-200"
+                    key={index}
+                    onClick={() => { handleDeliveryOption(type) }}
+                  >
+                    <label htmlFor={`orderType-${index}`}>
+                      <input
+                        style={{
+                          accentColor: domainData.theme_color,
+                          cursor: "pointer",
+                        }}
+                        type="radio"
+                        value={type}
+                        name="option"
+                        id={`orderType-${index}`}
+                        className="m-2"
+                        onChange={() => { handleDeliveryOption(type) }}
+                        checked={type === checked}
+                      />
+                      {type}
+                    </label>
+                  </div>
+                ))}
+                {/* {orderType?.map((type: any, index: any) => (
                   // console.log(">>>>>>>>>>>", index),
-                  <div className="flex my-2 border-4 rounded-md border-solid p-1 hover:bg-gray-200">
+                  <div className="flex my-2 border-4 rounded-md border-solid p-1 hover:bg-gray-200" >
                     <input
                       style={{
                         accentColor: domainData.theme_color,
@@ -286,12 +408,12 @@ const CheckoutForm: React.FC = () => {
                       name="option"
                       id={index}
                       className="m-2 "
-                      onChange={(e) => setChecked(e.target.value)}
+                      // onChange={handleDeliveryOption}
                       checked={type == checked}
                     />
                     <label>{type}</label>
                   </div>
-                ))}
+                ))} */}
               </div>
 
               {checked === "Delivery" ? (
@@ -375,6 +497,35 @@ const CheckoutForm: React.FC = () => {
                       }}
                     />
                   </div>
+               
+                  <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0">
+                    <Input
+                      labelKey="forms:label-city"
+                       name={"city" }
+                      // {...register("city", {
+                      //   required: "forms:phone-required",
+                      // })}
+                      value={city}
+                      onChange={(e)=>{setCity(e.target.value)}}
+                      variant="solid"
+                      className="w-full lg:w-1/2 "
+                      onBlur={handleCity}
+                      onFocus={()=>setIsCity(false)}
+                      
+                    />
+
+                    <Input
+                      labelKey="forms:label-country"
+                      name={"country"}
+                      // {...register("city")}
+                      value={country}
+                      onChange={(e)=>{setCountry(e.target.value)}}
+                      variant="solid"
+                      className="w-full lg:w-1/2 lg:ms-3 mt-2 md:mt-0"
+                      onBlur={handleCountry}
+                      onFocus={()=>setIsCountry(false)}
+                    />
+                  </div>
                   {/*   <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0">
             <Input
               labelKey="forms:label-city"
@@ -404,6 +555,7 @@ const CheckoutForm: React.FC = () => {
                     }}
                   />
                   <div>
+                    {/* <label >Address</label> */}
                     <DeliveryAddress setAddress={setAddress} />
                   </div>
                 </div>
@@ -443,7 +595,7 @@ const CheckoutForm: React.FC = () => {
           )}
         </div>
         <div className="md:w-full lg:w-2/5 md:ms-7 lg:ms-10 xl:ms-14 flex flex-col h-full -mt-1.5">
-          <CheckoutCard />
+          <CheckoutCard shipping={shipping} setSelectedMethod={setSelectedMethod} />
           {paymentGateway && (
             <div className=" my-3 p-2 ">
               <h2 className="font-bold p-1">{t("forms:payment-method")}</h2>
@@ -478,7 +630,7 @@ const CheckoutForm: React.FC = () => {
                     name="payment-option"
                     className="m-2 "
                     onChange={() => setSelectPayment(type)}
-                    //checked={(type.name = selectPayment.name)}
+                  //checked={(type.name = selectPayment.name)}
                   />
 
                   <label className="p-2">{type.name}</label>
