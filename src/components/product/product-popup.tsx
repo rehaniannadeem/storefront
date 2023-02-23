@@ -246,7 +246,7 @@ export default function ProductPopup() {
           <img
             src={
               image?.original ??
-              "/assets/placeholder/products/product-thumbnail.svg"
+              "/icons/ignite-default.png"
             }
             alt={name}
             className="lg:object-contain md:object-contain sm:object-contain lg:w-full lg:h-full"

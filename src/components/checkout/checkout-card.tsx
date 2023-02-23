@@ -1,15 +1,18 @@
-import usePrice from "@framework/product/use-price";
+// import usePrice from "@framework/product/use-price";
 import { useCart } from "@contexts/cart/cart.context";
 import { CheckoutItem } from "@components/checkout/checkout-card-item";
-import { CheckoutCardFooterItem } from "./checkout-card-footer-item";
+// import { CheckoutCardFooterItem } from "./checkout-card-footer-item";
 import { useTranslation } from "next-i18next";
 import { useEffect, useState } from "react";
 
-const CheckoutCard: React.FC = () => {
+const CheckoutCard = (shipping: any) => {
   const { items, total, isEmpty } = useCart();
-  const [_domainData, setDomainData] = useState({});
+  const [domainData, setDomainData] = useState<any>({});
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
-
+  const [shippingMethod, setShippingMethod] = useState(shipping.shipping)
+  const [check, setCheck] = useState<any>()
+  const [finalTotal, setFinalTotal] = useState(total)
+  // setSelectedMethod(check)
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
@@ -17,28 +20,59 @@ const CheckoutCard: React.FC = () => {
     }
     setDomainCurrencyCode(domainData.currency.code);
   }, []);
-  const { price: subtotal } = usePrice({
-    amount: total,
-    currencyCode: domainCurrencyCode,
-  });
+
+  useEffect(() => {
+    setShippingMethod(shipping?.shipping)
+  }, [shipping]);
+
+  // const { price: subtotal } = usePrice({
+  //   amount: total,
+  //   currencyCode: domainCurrencyCode,
+  // });
+
+
+  useEffect(() => {
+    let final: any = 0
+    if (shipping.shipping === 'Free') {
+      final = total
+    } else {
+      final = (total + Number(check?.base_shipping_fee))
+    }
+    setFinalTotal(final)
+  }, [check])
+  // console.log(total);
+  //  console.log(shipping, 'shipiing');
+
   const { t } = useTranslation("common");
-  const checkoutFooter = [
-    {
-      id: 1,
-      name: t("text-sub-total"),
-      price: subtotal,
-    },
-    {
-      id: 2,
-      name: t("text-shipping"),
-      price: t("text-free"),
-    },
-    {
-      id: 3,
-      name: t("text-total"),
-      price: subtotal,
-    },
-  ];
+  // const checkoutFooter = [
+  //   {
+  //     id: 1,
+  //     name: t("text-sub-total"),
+  //     price: total.toFixed(2),
+  //     code: domainCurrencyCode
+  //   },
+  //   {
+  //     id: 2,
+  //     name: t("text-shipping"),
+  //     price: shipping.shipping,
+  //     code: domainCurrencyCode
+  //     // price: t("text-free"),
+  //   },
+  //   {
+  //     id: 3,
+  //     name: t("text-total"),
+  //     price: finalTotal.toFixed(2),
+  //     code: domainCurrencyCode
+  //   },
+
+  // ];
+
+  const handleShippingMethod = (e: any) => {
+    //  console.log(e)
+    setCheck(e)
+    shipping.setSelectedMethod(e)
+  }
+
   return (
     <div className="pt-12 md:pt-0 2xl:ps-4">
       <h2 className="text-lg md:text-xl xl:text-2xl font-bold text-heading mb-6 xl:mb-8">
@@ -48,14 +82,64 @@ const CheckoutCard: React.FC = () => {
         <span>{t("text-product")}</span>
         <span className="ms-auto flex-shrink-0">{t("text-sub-total")}</span>
       </div>
+      <div>
       {!isEmpty ? (
         items.map((item) => <CheckoutItem item={item} key={item.id} />)
       ) : (
         <p className="text-red-500 lg:px-3 py-4">{t("text-empty-cart")}</p>
       )}
-      {checkoutFooter.map((item: any) => (
-        <CheckoutCardFooterItem item={item} key={item.id} />
-      ))}
+      </div>
+   
+      
+      <div className="flex items-center py-4 lg:py-5 border-b border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+        {t("text-sub-total")}
+        {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + total.toFixed(2)}</span>}
+      </div >
+      <div className='border-b flex flex-col  py-4 lg:py-5 text-sm lg:px-3 font-semibold text-heading '>
+        <div className="flex items-center   border-gray-300 text-sm  w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+          {t("text-shipping")}
+          {shipping.shipping !== "Free" ? <span className="ms-auto flex-shrink-0"></span> : <span className="ms-auto flex-shrink-0">{shipping.shipping}</span>}
+        </div>
+        <div>
+          {shippingMethod !== "Free" && shippingMethod != undefined &&
+            shippingMethod?.map((type: any, index: any) => (
+
+              <div
+                className="flex p-2 justify-between cursor-pointer my-2 border-4 rounded-md border-solid  hover:bg-gray-200"
+                key={index}
+                onClick={() => { handleShippingMethod(type) }}
+              >
+
+                <div>
+                  <label htmlFor={`orderType-${index}`}>
+                    <input
+                      style={{
+                        accentColor: domainData.theme_color,
+                        cursor: "pointer",
+                      }}
+                      type="radio"
+                      value={type}
+                      name="option"
+                      id={`orderType-${index}`}
+                      className="m-2"
+                      onChange={() => { handleShippingMethod(type) }}
+                      checked={type === check}
+                    />
+                    {type.name}
+                  </label></div>
+                <div className="flex"><span className="self-center"> {Number(type.base_shipping_fee).toFixed(2)}</span></div>
+              </div>
+            ))}
+        </div>
+      </div>
+      <div className="flex items-center py-4 lg:py-5 border-b border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+        {t("text-total")}
+        {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + finalTotal.toFixed(2)}</span>}
+
+      </div>
+      {/* {checkoutFooter.map((item: any) => (
+        <CheckoutCardFooterItem item={item} key={item.id}  />
+      ))} */}
     </div>
   );
 };

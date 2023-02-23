@@ -105,6 +105,8 @@ export default function OrderPage() {
   ); */
   //console.log(subtotal, "this is total");
   //  console.log(orderDetail, "order Detail");
+  // console.log(order);
+  
   return (
     <AccountLayout>
       {/*  <OrderDetails className="p-0" /> */}
@@ -165,6 +167,10 @@ export default function OrderPage() {
             </span>
           </td>
         </tr> */}
+        <tr className="odd:bg-gray-150">
+                <td className="p-4 italic">{ t("text-shipping")}:</td>
+                <td className="p-4"> {domainCurrencyCode} {Number(order?.shipping_charges).toFixed(2) }</td>
+              </tr>
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("common:date")}:</td>
                 <td className="p-4">{orderDetail[0].created_at}</td>
@@ -184,7 +190,7 @@ export default function OrderPage() {
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("text-total")}:</td>
                 <td className="p-4">
-                  {domainCurrencyCode} {Math.round(order?.final_total)}
+                  {domainCurrencyCode} {Number(order?.final_total)+Number(order?.shipping_charges)}
                 </td>
               </tr>
             </tfoot>

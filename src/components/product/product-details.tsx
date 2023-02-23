@@ -195,7 +195,7 @@ const ProductSingleDetails: React.FC = () => {
                   <img
                     src={
                       item?.original ??
-                      "/assets/placeholder/products/product-gallery.svg"
+                      "/icons/ignite-default.png"
                     }
                     // alt={`${data?.name}--${index}`}
                     className="object-contain w-full "
@@ -238,7 +238,7 @@ const ProductSingleDetails: React.FC = () => {
       
         <div className="col-span-4 ">
           <div className="col-span-1 transition duration-150 ease-in hover:opacity-90">
-            <img src={"/assets/images/default.png"} alt="product Image" />
+            <img src={"/icons/ignite-default.png"} alt="product Image" />
           </div>
         </div>
       )}

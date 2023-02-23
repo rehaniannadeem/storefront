@@ -295,7 +295,7 @@ const ProductSingleDetails: React.FC = () => {
                   <img
                     src={
                       item?.original ??
-                      "/assets/placeholder/products/product-gallery.svg"
+                      "/icons/ignite-default.png"
                     }
                     alt={`${data?.name}--${index}`}
                     className="object-contain w-full "
@@ -317,7 +317,7 @@ const ProductSingleDetails: React.FC = () => {
             <SwiperSlide key={`product-gallery-key`}>
               <div className="col-span-5 ">
                 <div className="col-span-1 transition duration-150 ease-in hover:opacity-90">
-                  <img src={"/assets/images/default.png"} alt="product Image" />
+                  <img src={"/icons/ignite-default.png"} alt="product Image" />
                 </div>
               </div>
             </SwiperSlide>
@@ -354,7 +354,7 @@ const ProductSingleDetails: React.FC = () => {
         </div> */
         <div className="col-span-5 ">
           <div className="col-span-1 transition duration-150 ease-in hover:opacity-90">
-            <img src={"/assets/images/default.png"} alt="product Image" />
+            <img src={"/icons/ignite-default.png"} className="w-full" style={{height:'400px'}} alt="product Image" />
           </div>
         </div>
       )}

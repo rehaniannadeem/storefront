@@ -30,7 +30,7 @@ const Logo = ({ width, height, className, ...props }: any) => {
         ) : (
           <Image
             id="logoImg"
-            src={"/assets/images/default.png"}
+            src={"/icons/ignite-default.png"}
             alt={"img"}
             height={width}
             width={height}

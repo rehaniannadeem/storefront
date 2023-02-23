@@ -214,6 +214,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
       setIsCompleted(false);
     }
   }, [index, productLength]);
+// console.log(productData, 'product');
 
   return (
     <>
