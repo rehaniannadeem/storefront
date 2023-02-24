@@ -21,6 +21,7 @@ import {
 import "@reach/combobox/styles.css";
 import { useTranslation } from "next-i18next";
 
+
 const containerStyle = {
   width: "100%",
   height: "300px",
@@ -40,7 +41,7 @@ function MyComponent({ setAddress }: any) {
     googleMapsApiKey: API_KEY,
     libraries: ["places"],
   });
-  // console.log(value, "selected");
+    // console.log(value, "selected");
   return isLoaded ? <Map setValue={setValue} /> : <>Loading...</>;
 }
 function Map({ setValue }: any) {
@@ -49,21 +50,27 @@ function Map({ setValue }: any) {
   const [address, setAddress] = useState(null);
 
 
-console.log(geolocation.latitude,'dfslkjflsdf');
-console.log(geolocation.longitude,'ddddd');
+//  console.log(address,'dfslkjflsdf');
+// console.log(geolocation.longitude,'ddddd');
 
-  useEffect(() => {
-    setSelected({
-      lat: geolocation.latitude,
-      lng: geolocation.longitude,
-    });
+useEffect(() => {
+  setSelected({
+    lat: geolocation.latitude,
+    lng: geolocation.longitude,
+  });
+}, [geolocation.latitude, geolocation.longitude]);
+  // useEffect(() => {
+  //   setSelected({
+  //     lat: geolocation.latitude,
+  //     lng: geolocation.longitude,
+  //   });
 
-    /*   console.log(selected, "location");
-    navigator.geolocation.getCurrentPosition(function (position) {
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
-    }); */
-  }, [geolocation]);
+  //   /*   console.log(selected, "location");
+  //   navigator.geolocation.getCurrentPosition(function (position) {
+  //     console.log("Latitude is :", position.coords.latitude);
+  //     console.log("Longitude is :", position.coords.longitude);
+  //   }); */
+  // }, [geolocation]);
 
   /*  const [map, setMap] = React.useState(null);
  
@@ -79,6 +86,7 @@ console.log(geolocation.longitude,'ddddd');
          setMap(null);
      }, []); */
   setValue(address);
+// console.log(selected,'selected');
 
   return (
     <>
@@ -113,7 +121,9 @@ const PlaceAutocomplete = ({ setSelected, setAddress }: any) => {
     lat: null,
     lng: null,
   });
-
+  // console.log(value,'value');
+  
+const [_isLoading,setIsLoading]=useState(false)
   setAddress(value);
   const geolocation = useGeolocation();
   const { t } = useTranslation();
@@ -121,11 +131,12 @@ const PlaceAutocomplete = ({ setSelected, setAddress }: any) => {
     setValue(address, false);
     clearSuggestions();
     const result = await getGeocode({ address });
-    console.log(result,'resuot');
+    // console.log(result,'resuot');
     
     const { lat, lng } = await getLatLng(result[0]);
     setSelected({ lat, lng });
   };
+// console.log(currentLocation,'location');
 
   useEffect(() => {
     //  let lat: any = ;
@@ -150,25 +161,34 @@ const PlaceAutocomplete = ({ setSelected, setAddress }: any) => {
         }
       );
     } */
-  }, [geolocation]);
+  }, [geolocation.latitude, geolocation.longitude]);
   useEffect(() => {
-    Geocode.fromLatLng(currentLocation.lat, currentLocation.lng).then(
-      (response: any) => {
-        // console.log(response, "address");
-        const address = response.results[0].formatted_address;
+    setIsLoading(true)
+    if(currentLocation.lat != null){
+     
+      
+      Geocode.fromLatLng(currentLocation.lat, currentLocation.lng).then(
+        (response: any) => {
+           console.log(response, "address");
+          const address = response.results[0].formatted_address;
+  
+          setValue(address);
+          setSelected(currentLocation.lat, currentLocation.lng);
+          //setCurrentLocation(address);
+          // console.log(address, "address");
+          setIsLoading(false)
+        },
+        (error: any) => {
+          console.error(error,'error');
+          setIsLoading(false)
+        }
+      );
+    }
 
-        setValue(address);
-        setSelected(currentLocation.lat, currentLocation.lng);
-        //setCurrentLocation(address);
-        console.log(address, "address");
-      },
-      (error: any) => {
-        console.error(error);
-      }
-    );
-  }, [currentLocation.lat != null]);
-
+  }, [currentLocation]);
+ 
   return (
+   
     <Combobox onSelect={handleSelect}>
       <ComboboxInput
         className="border-solid border-2 p-2 border-gray-300 rounded w-full  "
