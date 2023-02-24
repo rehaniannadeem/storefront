@@ -55,7 +55,7 @@ const ProductsWithFlashSale: React.FC<Props> = () => {
   /*  const { data, isLoading, error } = useTopSellerProductsQuery({
     limit: 10,
   }); */
-console.log(products,'dskjfsldfjdl');
+// console.log(products,'dskjfsldfjdl');
 
   return (
     <div
