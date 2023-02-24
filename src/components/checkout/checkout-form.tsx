@@ -62,12 +62,16 @@ const CheckoutForm: React.FC = () => {
   const [host, setHost] = useState("");
   const [_orderResponse, setOrderResponse] = useState<any>();
   const [productsName, _setProductsName] = useState<any>([]);
-  const[city,setCity]=useState<any>("")
-  const[country,setCountry]=useState<any>("")
+  // const[city,setCity]=useState<any>("")
+  // const[country,setCountry]=useState<any>("")
+  const[location,setLocation]=useState<any>({
+    city:"",
+    country:""
+  })
   const { isAuthorized, openModal, setModalView } = useUI();
   const [shipping, setShipping] = useState<string>("Free")
-  const [isCity,setIsCity]=useState(false)
-  const [isCountry,setIsCountry]=useState(false)
+  // const [isCity,setIsCity]=useState(false)
+  // const [isCountry,setIsCountry]=useState(false)
   const[selectedMethod,setSelectedMethod]=useState<any>({})
   const[finalTotal,setFinalTotal]=useState(total)
   const { clearCart } = useCart();
@@ -151,9 +155,9 @@ const CheckoutForm: React.FC = () => {
   }, []);
 
   useEffect(()=>{
-    let newCity=city.toLowerCase()
-    let newCountry=country.toLowerCase()
-   if(isCity && isCountry){
+    let newCity=location?.city.toLowerCase()
+    let newCountry=location?.country.toLowerCase()
+   if(location.city && location.country){
  
     axios({
       method: "get",
@@ -173,11 +177,9 @@ const CheckoutForm: React.FC = () => {
     //  console.log(response,'this is response');
     setShipping(response?.data?.data)
     if(response?.data.success===false){
-      if(!city || !country){
-        toast.error("Please enter city and country")
-      }else{
+     
         toast.error(response.data.message)
-      }
+     
      
     }
     
@@ -189,7 +191,7 @@ const CheckoutForm: React.FC = () => {
       // setIsDisabled(false)
       
    }
-  },[isCity,isCountry])
+  },[location])
 
   useEffect(() => {
     if (Object.keys(domainData).length != 0) {
@@ -261,10 +263,13 @@ const CheckoutForm: React.FC = () => {
   };
   async function onSubmit(input: CheckoutInputType) {
     let shippingCharges=0
+    let shippingMethod=""
     if(shipping==="Free"){
       shippingCharges=0
+      shippingMethod=""
     }else{
       shippingCharges=Number(selectedMethod?.base_shipping_fee)
+      shippingMethod=selectedMethod?.name
     }
     setAddToCartLoader(true);
     axios({
@@ -286,7 +291,7 @@ const CheckoutForm: React.FC = () => {
             contact_id: userData.id,
             delivered_to: firstName + " " + lastName,
             shipping_charges:shippingCharges,
-
+            shipping_custom_field_4:shippingMethod,
             payments: null,
             /*   payments: [
               {
@@ -340,24 +345,24 @@ const CheckoutForm: React.FC = () => {
       setShipping("Free")
       setIsDisabled(false)
       setSelectedMethod({})
-      setCity('')
-      setCountry('')
+      // setCity('')
+      // setCountry('')
     }
 
     // console.log(e, 'e value');
 
   }
-  const handleCity=()=>{
-    setIsCity(true)
+  // const handleCity=()=>{
+  //   setIsCity(true)
 
-  }
-  const handleCountry=()=>{
-    setIsCountry(true)
+  // }
+  // const handleCountry=()=>{
+  //   setIsCountry(true)
     
-  }
+  // }
 
   // console.log(shipping, "check");
-  // console.log(isCountry, "country");
+  //  console.log(location, "country");
 
   return (
     <Container>
@@ -498,7 +503,7 @@ const CheckoutForm: React.FC = () => {
                     />
                   </div>
                
-                  <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0">
+                  {/* <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0">
                     <Input
                       labelKey="forms:label-city"
                        name={"city" }
@@ -525,7 +530,7 @@ const CheckoutForm: React.FC = () => {
                       onBlur={handleCountry}
                       onFocus={()=>setIsCountry(false)}
                     />
-                  </div>
+                  </div> */}
                   {/*   <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0">
             <Input
               labelKey="forms:label-city"
@@ -556,7 +561,7 @@ const CheckoutForm: React.FC = () => {
                   />
                   <div>
                     {/* <label >Address</label> */}
-                    <DeliveryAddress setAddress={setAddress} />
+                    <DeliveryAddress setAddress={setAddress} setLocation={setLocation} />
                   </div>
                 </div>
               ) : null}
