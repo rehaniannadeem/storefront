@@ -22,7 +22,10 @@ const CheckoutCard = (shipping: any) => {
   }, []);
 
   useEffect(() => {
-    setShippingMethod(shipping?.shipping)
+    if(shipping.shipping){
+      setShippingMethod(shipping?.shipping)
+    }
+
   }, [shipping]);
 
   // const { price: subtotal } = usePrice({
@@ -35,12 +38,24 @@ const CheckoutCard = (shipping: any) => {
     let final: any = 0
     if (shipping.shipping === 'Free') {
       final = total
+      
     } else {
-      final = (total + Number(check?.base_shipping_fee))
+      if(Object.keys(check).length!=0){
+        final = (total + Number(check?.base_shipping_fee))
+      }else{
+        final = total 
+      }
+      // final = (total + Number(check?.base_shipping_fee))
     }
     setFinalTotal(final)
-  }, [check])
-  // console.log(total);
+  }, [check,shipping])
+  useEffect(()=>{
+    if (shipping.shipping === 'Free') {
+      
+      setCheck({})
+    }
+  },[shipping])
+  
   //  console.log(shipping, 'shipiing');
 
   const { t } = useTranslation("common");
@@ -102,32 +117,36 @@ const CheckoutCard = (shipping: any) => {
         </div>
         <div>
           {shippingMethod !== "Free" && shippingMethod != undefined &&
-            shippingMethod?.map((type: any, index: any) => (
+            shippingMethod?.map((method: any, index: any) => (
 
               <div
-                className="flex p-2 justify-between cursor-pointer my-2 border-4 rounded-md border-solid  hover:bg-gray-200"
+                className="flex p-2 justify-between  cursor-pointer my-2 border-4 rounded-md border-solid  hover:bg-gray-200"
                 key={index}
-                onClick={() => { handleShippingMethod(type) }}
+                onClick={() => { handleShippingMethod(method) }}
               >
 
-                <div>
-                  <label htmlFor={`orderType-${index}`}>
+                <div className="w-full">
+                  <label htmlFor={`methodType-${index}`} className="flex">
                     <input
                       style={{
                         accentColor: domainData.theme_color,
                         cursor: "pointer",
                       }}
                       type="radio"
-                      value={type}
-                      name="option"
-                      id={`orderType-${index}`}
+                      value={method}
+                      name="method"
+                      id={`methodType-${index}`}
                       className="m-2"
-                      onChange={() => { handleShippingMethod(type) }}
-                      checked={type === check}
+                      onChange={() => { handleShippingMethod(method) }}
+                      checked={method === check}
                     />
-                    {type.name}
+                     {/* <span className="self-center"> <img src="/icons/ignite-default.png" width={20} height={20} alt="" /></span>  */}
+                   <span className="self-center px-1">{method.name}</span> 
                   </label></div>
-                <div className="flex"><span className="self-center"> {Number(type.base_shipping_fee).toFixed(2)}</span></div>
+                  <div className="flex">
+                 
+                  </div>
+                <div className="flex justify-end"><span className="self-center"> {Number(method.base_shipping_fee).toFixed(2)}</span></div>
               </div>
             ))}
         </div>
