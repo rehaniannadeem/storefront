@@ -11,7 +11,7 @@ const CheckoutCard = (shipping: any) => {
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
   const [shippingMethod, setShippingMethod] = useState(shipping.shipping)
   const [check, setCheck] = useState<any>()
-  const [finalTotal, setFinalTotal] = useState(total)
+  // const [finalTotal, setFinalTotal] = useState(total)
   // setSelectedMethod(check)
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
@@ -22,7 +22,7 @@ const CheckoutCard = (shipping: any) => {
   }, []);
 
   useEffect(() => {
-    if(shipping.shipping){
+    if (shipping.shipping) {
       setShippingMethod(shipping?.shipping)
     }
 
@@ -34,28 +34,33 @@ const CheckoutCard = (shipping: any) => {
   // });
 
 
+  // useEffect(() => {
+  //   let final: any = 0
+  //   if (shipping.shipping === 'Free') {
+  //     final = total
+
+  //   } else {
+  //     if (Object.keys(check).length != 0) {
+  //       // if(check?.is_cod ===1){
+  //       //   final = (total + Number(check?.cod_rate))
+  //       // }else{
+  //         final = (total + Number(check?.base_shipping_fee))
+      
+
+  //     } else {
+  //       final = total
+  //     }
+  //     // final = (total + Number(check?.base_shipping_fee))
+  //   }
+  //   // setFinalTotal(final)
+  // }, [check, shipping])
   useEffect(() => {
-    let final: any = 0
     if (shipping.shipping === 'Free') {
-      final = total
-      
-    } else {
-      if(Object.keys(check).length!=0){
-        final = (total + Number(check?.base_shipping_fee))
-      }else{
-        final = total 
-      }
-      // final = (total + Number(check?.base_shipping_fee))
-    }
-    setFinalTotal(final)
-  }, [check,shipping])
-  useEffect(()=>{
-    if (shipping.shipping === 'Free') {
-      
+
       setCheck({})
     }
-  },[shipping])
-  
+  }, [shipping])
+
   //  console.log(shipping, 'shipiing');
 
   const { t } = useTranslation("common");
@@ -89,7 +94,7 @@ const CheckoutCard = (shipping: any) => {
   }
 
   return (
-    <div className="pt-12 md:pt-0 2xl:ps-4">
+    <div className="pt-12 md:pt-0 2xl:ps-4 border-b border-gray-300">
       <h2 className="text-lg md:text-xl xl:text-2xl font-bold text-heading mb-6 xl:mb-8">
         {t("text-your-order")}
       </h2>
@@ -98,14 +103,14 @@ const CheckoutCard = (shipping: any) => {
         <span className="ms-auto flex-shrink-0">{t("text-sub-total")}</span>
       </div>
       <div>
-      {!isEmpty ? (
-        items.map((item) => <CheckoutItem item={item} key={item.id} />)
-      ) : (
-        <p className="text-red-500 lg:px-3 py-4">{t("text-empty-cart")}</p>
-      )}
+        {!isEmpty ? (
+          items.map((item) => <CheckoutItem item={item} key={item.id} />)
+        ) : (
+          <p className="text-red-500 lg:px-3 py-4">{t("text-empty-cart")}</p>
+        )}
       </div>
-   
-      
+
+
       <div className="flex items-center py-4 lg:py-5 border-b border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
         {t("text-sub-total")}
         {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + total.toFixed(2)}</span>}
@@ -140,22 +145,25 @@ const CheckoutCard = (shipping: any) => {
                       onChange={() => { handleShippingMethod(method) }}
                       checked={method === check}
                     />
-                     {/* <span className="self-center"> <img src="/icons/ignite-default.png" width={20} height={20} alt="" /></span>  */}
-                   <span className="self-center px-1">{method.name}</span> 
+                    {method?.image &&
+                      <span className="self-center"> <img src={method?.image} width={20} height={20} alt="" /></span>
+
+                    }
+                    <span className="self-center px-1">{method.name}</span>
                   </label></div>
-                  <div className="flex">
-                 
-                  </div>
-                <div className="flex justify-end"><span className="self-center"> {Number(method.base_shipping_fee).toFixed(2)}</span></div>
+                <div className="flex">
+
+                </div>
+                <div className="flex justify-end"><span className="self-center">{/* method?.is_cod === 1 ? Number(method?.cod_rate).toFixed(2) : */ Number(method.base_shipping_fee).toFixed(2)} </span></div>
               </div>
             ))}
         </div>
       </div>
-      <div className="flex items-center py-4 lg:py-5 border-b border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+      {/* <div className="flex items-center py-4 lg:py-5 border-b border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
         {t("text-total")}
         {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + finalTotal.toFixed(2)}</span>}
 
-      </div>
+      </div> */}
       {/* {checkoutFooter.map((item: any) => (
         <CheckoutCardFooterItem item={item} key={item.id}  />
       ))} */}
