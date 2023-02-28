@@ -56,24 +56,24 @@ const CheckoutForm: React.FC = () => {
   const { mutate: updateUser } = useCheckoutMutation();
   const [user, setUser] = useState(false);
   const [selectPayment, setSelectPayment] = useState<any>({
-    id: 1,
-    name: "cash On Delivery",
+
   });
+  const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
   const [host, setHost] = useState("");
   const [_orderResponse, setOrderResponse] = useState<any>();
   const [productsName, _setProductsName] = useState<any>([]);
   // const[city,setCity]=useState<any>("")
   // const[country,setCountry]=useState<any>("")
-  const[location,setLocation]=useState<any>({
-    city:"",
-    country:""
+  const [location, setLocation] = useState<any>({
+    city: "",
+    country: ""
   })
   const { isAuthorized, openModal, setModalView } = useUI();
   const [shipping, setShipping] = useState<string>("Free")
   // const [isCity,setIsCity]=useState(false)
   // const [isCountry,setIsCountry]=useState(false)
-  const[selectedMethod,setSelectedMethod]=useState<any>({})
-  const[finalTotal,setFinalTotal]=useState(total)
+  const [selectedMethod, setSelectedMethod] = useState<any>({})
+  const [finalTotal, setFinalTotal] = useState(total)
   const { clearCart } = useCart();
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
 
@@ -85,7 +85,7 @@ const CheckoutForm: React.FC = () => {
 
   // let host = window.location.host;
   // console.log(">>>>>>>>>>>", `https://${host}/my-account/orders/244582`);
-   console.log(">>>>>>>>>>>", selectedMethod);
+  // console.log(">>>>>>>>>>>", selectPayment);
   const {
     register,
     handleSubmit,
@@ -95,6 +95,14 @@ const CheckoutForm: React.FC = () => {
     setUser(isAuthorized);
   }, [isAuthorized]);
 
+  useEffect(()=>{
+    if(Object.keys(selectPayment).length!=0){
+      setIsDisabled(false)
+    }else{
+      setIsDisabled(true)
+    }
+  },[selectPayment])
+
   useEffect(() => {
     if (isAuthorized === false || items.length <= 0) {
       setIsDisabled(true)
@@ -102,19 +110,27 @@ const CheckoutForm: React.FC = () => {
       setIsDisabled(false)
     }
   }, [items])
-  useEffect(()=>{
-    if(selectedMethod){
-      setIsDisabled(false)
-      if(shipping==="Free"){
+  useEffect(() => {
+    setSelectPayment({})
+    if (selectedMethod) {
+      // setIsDisabled(false)
+      if (shipping === "Free") {
         setFinalTotal(total)
-      }else{
-        let newTotal=total+Number(selectedMethod?.base_shipping_fee)
+      } else {
+        let newTotal = total + Number(selectedMethod?.base_shipping_fee)
         setFinalTotal(newTotal)
       }
     }
 
-  },[selectedMethod])
-// console.log(finalTotal,"finaltotal");
+  }, [selectedMethod])
+  // console.log(finalTotal,"finaltotal");
+  useEffect(() => {
+    var domainData = JSON.parse(localStorage.getItem("domainData")!);
+    if (domainData) {
+      setDomainData(domainData);
+    }
+    setDomainCurrencyCode(domainData.currency.code);
+  }, []);
 
   useEffect(() => {
 
@@ -154,44 +170,44 @@ const CheckoutForm: React.FC = () => {
     }
   }, []);
 
-  useEffect(()=>{
-    let newCity=location?.city.toLowerCase()
-    let newCountry=location?.country.toLowerCase()
-   if(location.city && location.country){
- 
-    axios({
-      method: "get",
-      url: connector_base_url + "/shipping-methods",
-      headers: {
-        Accept: "Application/json",
-        Authorization: `Bearer ${domainToken}`,
-        // "merchant-uuid": `${domainData.business_location.custom_field3}`,
-        // "merchant-uuid": "05113C9C7BD4C",
-      },
-      params: {
-       country:newCountry,
-       city:newCity
-      },
-    })
-      .then((response) => {
-    //  console.log(response,'this is response');
-    setShipping(response?.data?.data)
-    if(response?.data.success===false){
-     
-        toast.error(response.data.message)
-     
-     
-    }
-    
+  useEffect(() => {
+    let newCity = location?.city.toLowerCase()
+    let newCountry = location?.country.toLowerCase()
+    if (location.city && location.country) {
+
+      axios({
+        method: "get",
+        url: connector_base_url + "/shipping-methods",
+        headers: {
+          Accept: "Application/json",
+          Authorization: `Bearer ${domainToken}`,
+          // "merchant-uuid": `${domainData.business_location.custom_field3}`,
+          // "merchant-uuid": "05113C9C7BD4C",
+        },
+        params: {
+          country: newCountry,
+          city: newCity
+        },
       })
-      .catch((err) => {
-        console.log(err, "Response Error");
-        setAddToCartLoader(false);
-      });
+        .then((response) => {
+          //  console.log(response,'this is response');
+          setShipping(response?.data?.data)
+          if (response?.data.success === false) {
+
+            toast.error(response.data.message)
+
+
+          }
+
+        })
+        .catch((err) => {
+          console.log(err, "Response Error");
+          setAddToCartLoader(false);
+        });
       // setIsDisabled(false)
-      
-   }
-  },[location])
+
+    }
+  }, [location])
 
   useEffect(() => {
     if (Object.keys(domainData).length != 0) {
@@ -221,6 +237,18 @@ const CheckoutForm: React.FC = () => {
     setMobileNumber(userData.mobile);
     setEmail(userData.email);
   }, [userData]);
+  useEffect(()=>{
+    if(checked==="Pickup"){
+      setSelectPayment({
+        id: 1,
+        name: "cash On Delivery",
+      })
+    }else{
+      setSelectPayment({
+        
+      })
+    }
+  },[checked])
   const get_url = (response: any) => {
     // console.log(response,'treu response');
 
@@ -262,14 +290,20 @@ const CheckoutForm: React.FC = () => {
       });
   };
   async function onSubmit(input: CheckoutInputType) {
-    let shippingCharges=0
-    let shippingMethod=""
-    if(shipping==="Free"){
-      shippingCharges=0
-      shippingMethod=""
-    }else{
-      shippingCharges=Number(selectedMethod?.base_shipping_fee)
-      shippingMethod=selectedMethod?.name
+    let shippingCharges = 0
+    let shippingMethod = ""
+    if (shipping === "Free") {
+      shippingCharges = 0
+      shippingMethod = ""
+    } else {
+      if (selectPayment.name == "cash On Delivery") {
+        shippingCharges = Number(selectedMethod?.cod_rate)
+        shippingMethod = selectedMethod?.name
+      }else{
+        shippingCharges = Number(selectedMethod?.base_shipping_fee)
+        shippingMethod = selectedMethod?.name
+      }
+
     }
     setAddToCartLoader(true);
     axios({
@@ -290,8 +324,8 @@ const CheckoutForm: React.FC = () => {
             location_id: domainData.location_id,
             contact_id: userData.id,
             delivered_to: firstName + " " + lastName,
-            shipping_charges:shippingCharges,
-            shipping_custom_field_4:shippingMethod,
+            shipping_charges: shippingCharges,
+            shipping_custom_field_4: shippingMethod,
             payments: null,
             /*   payments: [
               {
@@ -358,7 +392,7 @@ const CheckoutForm: React.FC = () => {
   // }
   // const handleCountry=()=>{
   //   setIsCountry(true)
-    
+
   // }
 
   // console.log(shipping, "check");
@@ -502,7 +536,7 @@ const CheckoutForm: React.FC = () => {
                       }}
                     />
                   </div>
-               
+
                   {/* <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0">
                     <Input
                       labelKey="forms:label-city"
@@ -604,7 +638,7 @@ const CheckoutForm: React.FC = () => {
           {paymentGateway && (
             <div className=" my-3 p-2 ">
               <h2 className="font-bold p-1">{t("forms:payment-method")}</h2>
-              <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
+              {/* <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
                 <input
                   style={{
                     accentColor: domainData.theme_color,
@@ -621,55 +655,198 @@ const CheckoutForm: React.FC = () => {
                 />
 
                 <label className="p-2">Cash On Delivery</label>
-              </div>
-              {paymentGateway?.map((type: any, index: any) => (
-                <div className="flex my-2 border-4 h-16  rounded-md border-solid p-1 hover:bg-gray-200 ">
-                  <input
-                    style={{
-                      accentColor: domainData.theme_color,
-                      cursor: "pointer",
-                    }}
-                    type="radio"
-                    id={index}
-                    value={type}
-                    name="payment-option"
-                    className="m-2 "
-                    onChange={() => setSelectPayment(type)}
-                  //checked={(type.name = selectPayment.name)}
-                  />
-
-                  <label className="p-2">{type.name}</label>
-
-                  <div className="  inline-flex  md:ml-10  w-full  justify-end">
-                    <img
-                      className="w-2/5"
+              </div> */}
+              {checked === "Pickup" ? (
+                <div>
+                  <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
+                    <input
                       style={{
-                        height: "3rem",
-
-                        display: "flex",
+                        accentColor: domainData.theme_color,
+                        cursor: "pointer",
                       }}
-                      src={type.logo}
+                      type="radio"
+                      value="cash On Delivery"
+                      name="payment-option"
+                      className="m-2 "
+                      onChange={() =>
+                        setSelectPayment({ id: 1, name: "cash On Delivery" })
+                      }
+                      checked={"cash On Delivery" == selectPayment.name}
                     />
+
+                    <label className="p-2">Cash On Delivery</label>
                   </div>
+                  {paymentGateway?.map((type: any, index: any) => (
+                    <div className="flex my-2 border-4 h-16  rounded-md border-solid p-1 hover:bg-gray-200 ">
+                      <input
+                        style={{
+                          accentColor: domainData.theme_color,
+                          cursor: "pointer",
+                        }}
+                        type="radio"
+                        id={index}
+                        value={type}
+                        name="payment-option"
+                        className="m-2 "
+                        onChange={() => setSelectPayment(type)}
+                      //checked={(type.name = selectPayment.name)}
+                      />
+
+                      <label className="p-2">{type.name}</label>
+
+                      <div className="  inline-flex  md:ml-10  w-full  justify-end">
+                        <img
+                          className="w-2/5"
+                          style={{
+                            height: "3rem",
+
+                            display: "flex",
+                          }}
+                          src={type.logo}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-              <div className="flex w-full p-3">
-                <Button
-                  className="w-full "
-                  loading={addToCartLoader}
-                  disabled={isDisabled}
-                  style={{
-                    backgroundColor: domainData.theme_color,
-                    color: "white",
-                  }}
-                  onClick={handleSubmit(onSubmit)}
-                >
-                  {t("common:button-place-order")}
-                </Button>
-              </div>
-            </div>
+
+              ) :
+                selectedMethod && selectedMethod.is_cod === 0 ?
+                  paymentGateway?.map((type: any, index: any) => (
+                    <div className="flex my-2 border-4 h-16  rounded-md border-solid p-1 hover:bg-gray-200 ">
+                      <input
+                        style={{
+                          accentColor: domainData.theme_color,
+                          cursor: "pointer",
+                        }}
+                        type="radio"
+                        id={index}
+                        value={type}
+                        name="payment-option"
+                        className="m-2 "
+                        onChange={() => setSelectPayment(type)}
+                      //checked={(type.name = selectPayment.name)}
+                      />
+
+                      <label className="p-2">{type.name}</label>
+
+                      <div className="  inline-flex  md:ml-10  w-full  justify-end">
+                        <img
+                          className="w-2/5"
+                          style={{
+                            height: "3rem",
+
+                            display: "flex",
+                          }}
+                          src={type.logo}
+                        />
+                      </div>
+                    </div>
+                  )) :
+                  <div>
+                  <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
+                    <input
+                      style={{
+                        accentColor: domainData.theme_color,
+                        cursor: "pointer",
+                      }}
+                      type="radio"
+                      value="cash On Delivery"
+                      name="payment-option"
+                      className="m-2 "
+                      onChange={() =>
+                        setSelectPayment({ id: 1, name: "cash On Delivery" })
+                      }
+                      checked={"cash On Delivery" == selectPayment.name}
+                    />
+
+                    <label className="p-2">Cash On Delivery</label>
+                  </div>
+                  {paymentGateway?.map((type: any, index: any) => (
+                    <div className="flex my-2 border-4 h-16  rounded-md border-solid p-1 hover:bg-gray-200 ">
+                      <input
+                        style={{
+                          accentColor: domainData.theme_color,
+                          cursor: "pointer",
+                        }}
+                        type="radio"
+                        id={index}
+                        value={type}
+                        name="payment-option"
+                        className="m-2 "
+                        onChange={() => setSelectPayment(type)}
+                      //checked={(type.name = selectPayment.name)}
+                      />
+
+                      <label className="p-2">{type.name}</label>
+
+                      <div className="  inline-flex  md:ml-10  w-full  justify-end">
+                        <img
+                          className="w-2/5"
+                          style={{
+                            height: "3rem",
+
+                            display: "flex",
+                          }}
+                          src={type.logo}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              }
+               <div className="flex items-center py-4 lg:py-5 border-b border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+        {t("text-total")}
+        {<span className="ms-auto flex-shrink-0">{domainCurrencyCode+" " + finalTotal.toFixed(2)}</span>}
+
+      </div> 
+                    {/* // {paymentGateway?.map((type: any, index: any) => (
+                //   <div className="flex my-2 border-4 h-16  rounded-md border-solid p-1 hover:bg-gray-200 ">
+                //     <input
+                //       style={{
+                //         accentColor: domainData.theme_color,
+                //         cursor: "pointer",
+                //       }}
+                //       type="radio"
+                //       id={index}
+                //       value={type}
+                //       name="payment-option"
+                //       className="m-2 "
+                //       onChange={() => setSelectPayment(type)}
+                //     //checked={(type.name = selectPayment.name)}
+                //     />
+
+                //     <label className="p-2">{type.name}</label>
+
+                //     <div className="  inline-flex  md:ml-10  w-full  justify-end">
+                //       <img
+                //         className="w-2/5"
+                //         style={{
+                //           height: "3rem",
+
+                //           display: "flex",
+                //         }}
+                //         src={type.logo}
+                //       />
+                //     </div>
+                //   </div>
+                // ))} */}
+                    <div className="flex w-full p-3">
+                      <Button
+                        className="w-full "
+                        loading={addToCartLoader}
+                        disabled={isDisabled}
+                        style={{
+                          backgroundColor: domainData.theme_color,
+                          color: "white",
+                        }}
+                        onClick={handleSubmit(onSubmit)}
+                      >
+                        {t("common:button-place-order")}
+                      </Button>
+                    </div>
+                  </div>
           )}
-        </div>
+            </div>
       </div>
     </Container>
   );
