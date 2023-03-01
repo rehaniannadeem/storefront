@@ -49,9 +49,7 @@ const WidgetLink: FC<Props> = ({ className, data }) => {
     if (domain.term_condition != null) {
       setTermCondition(domain.term_condition);
     } */
-    {
-      domain.business_location && setEmail(domain.business_location.email);
-    }
+    {domain?.business_location!=null && setEmail(domain?.business_location?.email)}
 if(domain?.whatsapp_no!=null){
   setMobile(domain?.whatsapp_no);
 }
