@@ -185,6 +185,7 @@
   "date":"Date",
   "order-type":"Order Type",
   "payment-method":"Payment Method",
-  "text-variation":"Variation"
+  "text-variation":"Variation",
+  "text-shipping-method":"Shipping Method"
   
 }

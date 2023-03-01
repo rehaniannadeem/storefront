@@ -6,9 +6,9 @@ import { useTranslation } from "next-i18next";
 import { useEffect, useState } from "react";
 
 const CheckoutCard = (shipping: any) => {
-  const { items, total, isEmpty } = useCart();
+  const { items, /* total */ isEmpty } = useCart();
   const [domainData, setDomainData] = useState<any>({});
-  const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
+  const [_domainCurrencyCode, setDomainCurrencyCode] = useState("");
   const [shippingMethod, setShippingMethod] = useState(shipping.shipping)
   const [check, setCheck] = useState<any>()
   // const [finalTotal, setFinalTotal] = useState(total)
@@ -111,14 +111,15 @@ const CheckoutCard = (shipping: any) => {
       </div>
 
 
-      <div className="flex items-center py-4 lg:py-5 border-b border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+      {/* <div className="flex items-center py-4 lg:py-5 border-b border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
         {t("text-sub-total")}
         {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + total.toFixed(2)}</span>}
-      </div >
-      <div className='border-b flex flex-col  py-4 lg:py-5 text-sm lg:px-3 font-semibold text-heading '>
-        <div className="flex items-center   border-gray-300 text-sm  w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
-          {t("text-shipping")}
-          {shipping.shipping !== "Free" ? <span className="ms-auto flex-shrink-0"></span> : <span className="ms-auto flex-shrink-0">{shipping.shipping}</span>}
+      </div > */}
+      <div className='border-b flex flex-col  py-4 lg:py-5 text-sm lg:px-3  '>
+        <div className="flex items-center  border-gray-300 text-sm  w-full font-semibold  last:border-b-0 last:text-base last:pb-0">
+          
+          {t("text-shipping-method")}
+          {/* {shipping.shipping !== "Free" ? <span className="ms-auto flex-shrink-0"></span> : <span className="ms-auto flex-shrink-0">{shipping.shipping}</span>} */}
         </div>
         <div>
           {shippingMethod !== "Free" && shippingMethod != undefined && shipping.isDelivery == true &&

@@ -61,6 +61,7 @@ const CheckoutForm: React.FC = () => {
   const [host, setHost] = useState("");
   const [_orderResponse, setOrderResponse] = useState<any>();
   const [productsName, _setProductsName] = useState<any>([]);
+  const[shippingFee,setShippingFee]=useState<any>()
   // const[city,setCity]=useState<any>("")
   // const[country,setCountry]=useState<any>("")
   const [location, setLocation] = useState<any>({
@@ -126,7 +127,7 @@ const CheckoutForm: React.FC = () => {
   }, [selectedMethod])
   useEffect(() => {
     // setSelectPayment({})
-    if (selectedMethod) {
+    if (Object.keys(selectPayment).length!=0 && Object.keys(selectedMethod).length!=0) {
       // setIsDisabled(false)
       if (shipping === "Free") {
         setFinalTotal(total)
@@ -134,9 +135,11 @@ const CheckoutForm: React.FC = () => {
         if(selectPayment.name == "cash On Delivery"){
           let newTotal = total + Number(selectedMethod?.cod_rate)
           setFinalTotal(newTotal)
-        }else{
+          setShippingFee(Number(selectedMethod?.cod_rate))
+        }else if(selectPayment.name){
           let newTotal = total + Number(selectedMethod?.base_shipping_fee)
           setFinalTotal(newTotal)
+          setShippingFee(Number(selectedMethod?.base_shipping_fee))
         }
        
       }
@@ -414,8 +417,8 @@ const CheckoutForm: React.FC = () => {
 
   // }
 
-  // console.log(shipping, "check");
-  //  console.log(location, "country");
+  console.log(finalTotal, "check");
+   console.log(shippingFee, "country");
 
   return (
     <Container>
@@ -656,7 +659,7 @@ const CheckoutForm: React.FC = () => {
           <CheckoutCard shipping={shipping} setSelectedMethod={setSelectedMethod} isDelivery={isDelivery} />
           {paymentGateway && (
             <div className=" my-3 p-2 ">
-              <h2 className="font-bold p-1">{t("forms:payment-method")}</h2>
+              <h2 className="font-semibold p-1">{t("forms:payment-method")}</h2>
               {/* <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
                 <input
                   style={{
@@ -813,6 +816,15 @@ const CheckoutForm: React.FC = () => {
                   ))}
                 </div>
               }
+                <div className="flex items-center py-4 lg:py-5 border-b border-t border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+        {t("text-sub-total")}
+        {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + total.toFixed(2)}</span>}
+      </div >
+      <div className="flex items-center py-4 lg:py-5 border-b border-t border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+      {t("text-shipping")}
+          {shipping !== "Free" ? <span className="ms-auto flex-shrink-0">{shippingFee && domainCurrencyCode + " " +shippingFee.toFixed(2)}</span> : <span className="ms-auto flex-shrink-0">{shipping}</span>}
+          </div >
+           
                <div className="flex items-center py-4 lg:py-5 border-b border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
         {t("text-total")}
         {<span className="ms-auto flex-shrink-0">{domainCurrencyCode+" " + finalTotal.toFixed(2)}</span>}
