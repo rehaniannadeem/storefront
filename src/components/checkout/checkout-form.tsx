@@ -700,7 +700,8 @@ const CheckoutForm: React.FC = () => {
                     <label className="p-2">Cash On Delivery</label>
                   </div>
                   {paymentGateway?.map((type: any, index: any) => (
-                    <div className="flex my-2 border-4 h-16  rounded-md border-solid p-1 hover:bg-gray-200 ">
+                    <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 ">
+                     <div className="col-span-5">
                       <input
                         style={{
                           accentColor: domainData.theme_color,
@@ -716,17 +717,20 @@ const CheckoutForm: React.FC = () => {
                       />
 
                       <label className="p-2">{type.name}</label>
-
-                      <div className="  inline-flex  md:ml-10  w-full  justify-end">
+                      </div>
+                      <div className="inline-flex col-span-7 w-full  justify-end">
+                       
                         <img
-                          className="w-2/5"
-                          style={{
-                            height: "3rem",
+                          className="flex h-14 w-fit self-center"
+                          // style={{
+                          //   height: "3rem",
 
-                            display: "flex",
-                          }}
+                          //   display: "flex",
+                          // }}
                           src={type.logo}
                         />
+                     
+                       
                       </div>
                     </div>
                   ))}
@@ -735,7 +739,8 @@ const CheckoutForm: React.FC = () => {
               ) :
                 selectedMethod && selectedMethod.is_cod === 0 ?
                   paymentGateway?.map((type: any, index: any) => (
-                    <div className="flex my-2 border-4 h-16  rounded-md border-solid p-1 hover:bg-gray-200 ">
+                    <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 ">
+                     <div className="col-span-5">
                       <input
                         style={{
                           accentColor: domainData.theme_color,
@@ -751,17 +756,20 @@ const CheckoutForm: React.FC = () => {
                       />
 
                       <label className="p-2">{type.name}</label>
-
-                      <div className="  inline-flex  md:ml-10  w-full  justify-end">
+                      </div>
+                      <div className="inline-flex col-span-7 w-full  justify-end">
+                       
                         <img
-                          className="w-2/5"
-                          style={{
-                            height: "3rem",
+                          className="flex h-14 w-fit self-center"
+                          // style={{
+                          //   height: "3rem",
 
-                            display: "flex",
-                          }}
+                          //   display: "flex",
+                          // }}
                           src={type.logo}
                         />
+                     
+                       
                       </div>
                     </div>
                   )) :
@@ -785,35 +793,39 @@ const CheckoutForm: React.FC = () => {
                     <label className="p-2">Cash On Delivery</label>
                   </div>
                   {paymentGateway?.map((type: any, index: any) => (
-                    <div className="flex my-2 border-4 h-16  rounded-md border-solid p-1 hover:bg-gray-200 ">
-                      <input
-                        style={{
-                          accentColor: domainData.theme_color,
-                          cursor: "pointer",
-                        }}
-                        type="radio"
-                        id={index}
-                        value={type}
-                        name="payment-option"
-                        className="m-2 "
-                        onChange={() => setSelectPayment(type)}
-                      //checked={(type.name = selectPayment.name)}
-                      />
+                   <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 ">
+                   <div className="col-span-5">
+                    <input
+                      style={{
+                        accentColor: domainData.theme_color,
+                        cursor: "pointer",
+                      }}
+                      type="radio"
+                      id={index}
+                      value={type}
+                      name="payment-option"
+                      className="m-2 "
+                      onChange={() => setSelectPayment(type)}
+                    //checked={(type.name = selectPayment.name)}
+                    />
 
-                      <label className="p-2">{type.name}</label>
-
-                      <div className="  inline-flex  md:ml-10  w-full  justify-end">
-                        <img
-                          className="w-2/5"
-                          style={{
-                            height: "3rem",
-
-                            display: "flex",
-                          }}
-                          src={type.logo}
-                        />
-                      </div>
+                    <label className="p-2">{type.name}</label>
                     </div>
+                    <div className="inline-flex col-span-7 w-full  justify-end">
+                     
+                      <img
+                        className="flex h-14 w-fit self-center"
+                        // style={{
+                        //   height: "3rem",
+
+                        //   display: "flex",
+                        // }}
+                        src={type.logo}
+                      />
+                   
+                     
+                    </div>
+                  </div>
                   ))}
                 </div>
               }
