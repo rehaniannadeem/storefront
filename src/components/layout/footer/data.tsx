@@ -31,7 +31,7 @@ export const footer = {
           path: "/contact-us",
         }, */
         {
-          id: 2,
+          id: 1,
           title: "link-email",
           path: "#",
         },
@@ -41,7 +41,7 @@ export const footer = {
           path: "/",
         }, */
         {
-          id: 3,
+          id: 2,
           title: "link-phone",
           path: "#",
         },
