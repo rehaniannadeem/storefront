@@ -2,7 +2,7 @@ import cn from "classnames";
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import { useUI } from "@contexts/ui.context";
-import usePrice from "@framework/product/use-price";
+// import usePrice from "@framework/product/use-price";
 import { Product } from "@framework/types";
 import {  useRouter } from "next/router";
 //import { useTranslation } from "next-i18next";
@@ -45,11 +45,11 @@ const {locale}=useRouter()
     }
     setDomainCurrencyCode(domainData.currency.code);
   }, []);
-  const { price, basePrice, discount } = usePrice({
-    amount: product.sale_price ? product.sale_price : product.price,
-    baseAmount: product.price,
-    currencyCode: domainCurrencyCode,
-  });
+  // const { price, basePrice, discount } = usePrice({
+  //   amount: product.sale_price ? product.sale_price : product.price,
+  //   baseAmount: product.price,
+  //   currencyCode: domainCurrencyCode,
+  // });
   function handlePopupView() {
     setModalData({ data: product });
     setModalView("PRODUCT_VIEW");
@@ -144,12 +144,12 @@ const {locale}=useRouter()
               : "sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3"
           }`}
         >
-          <span className="inline-block">{price}</span>
-          {discount && (
+          <span className="inline-block">{domainCurrencyCode+" "+ product?.price.toFixed(2)}</span>
+          {/* {discount && (
             <del className="sm:text-base font-normal text-gray-800">
               {basePrice}
             </del>
-          )}
+          )} */}
         </div>
       </div>
     </div>
