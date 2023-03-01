@@ -190,7 +190,7 @@ export default function OrderPage() {
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("text-total")}:</td>
                 <td className="p-4">
-                  {domainCurrencyCode} {Number(order?.final_total)+Number(order?.shipping_charges)}
+                  {domainCurrencyCode} {(Number(order?.final_total)+Number(order?.shipping_charges)).toFixed(2)}
                 </td>
               </tr>
             </tfoot>

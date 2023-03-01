@@ -165,7 +165,7 @@ let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
                       {order.shipping_status}
                     </td>
                     <td className="text-start lg:text-center px-4 py-5 text-heading">
-                    {domainCurrencyCode} {Number(order?.final_total)+Number(order?.shipping_charges)}
+                    {domainCurrencyCode} {(Number(order?.final_total)+Number(order?.shipping_charges)).toFixed(2)}
                     </td>
                     <td className="text-end px-4 py-5 text-heading">
                       <Link href={`/my-account/orders/${order.id}`}>
@@ -231,7 +231,7 @@ let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
                   {t("text-total")}
                   <span className="font-normal">
                     {" "}
-                    {domainCurrencyCode} {Number(order?.final_total)+Number(order?.shipping_charges)}
+                    {domainCurrencyCode}  {(Number(order?.final_total)+Number(order?.shipping_charges)).toFixed(2)}
                   </span>
                 </li>
                 <li className="flex items-center justify-between">
