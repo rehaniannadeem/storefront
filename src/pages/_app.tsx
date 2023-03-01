@@ -68,6 +68,12 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   useEffect(() => {
     let host = window.location.host;
+    if(host.includes('myignite.site')){
+      console.log('hello myignite');
+      
+     }else{
+      console.log("window.location.host");
+     }  
     let parts = host.split(".");
     setBusiness(parts[0]);
   }, []);
