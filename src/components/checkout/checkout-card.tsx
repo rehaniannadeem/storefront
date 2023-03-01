@@ -121,7 +121,7 @@ const CheckoutCard = (shipping: any) => {
           {shipping.shipping !== "Free" ? <span className="ms-auto flex-shrink-0"></span> : <span className="ms-auto flex-shrink-0">{shipping.shipping}</span>}
         </div>
         <div>
-          {shippingMethod !== "Free" && shippingMethod != undefined &&
+          {shippingMethod !== "Free" && shippingMethod != undefined && shipping.isDelivery==true &&
             shippingMethod?.map((method: any, index: any) => (
 
               <div

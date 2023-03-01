@@ -55,9 +55,8 @@ const CheckoutForm: React.FC = () => {
   const [paymentGateway, setPaymentGateway] = useState<any>([]);
   const { mutate: updateUser } = useCheckoutMutation();
   const [user, setUser] = useState(false);
-  const [selectPayment, setSelectPayment] = useState<any>({
-
-  });
+  const [selectPayment, setSelectPayment] = useState<any>({});
+  const [isDelivery,setIsDelivery]=useState(true)
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
   const [host, setHost] = useState("");
   const [_orderResponse, setOrderResponse] = useState<any>();
@@ -213,10 +212,10 @@ const CheckoutForm: React.FC = () => {
           //  console.log(response,'this is response');
           setShipping(response?.data?.data)
           if (response?.data.success === false) {
-
+            setIsDelivery(false)
             toast.error(response.data.message)
-
-
+          }else{
+            setIsDelivery(true)
           }
 
         })
@@ -654,7 +653,7 @@ const CheckoutForm: React.FC = () => {
           )}
         </div>
         <div className="md:w-full lg:w-2/5 md:ms-7 lg:ms-10 xl:ms-14 flex flex-col h-full -mt-1.5">
-          <CheckoutCard shipping={shipping} setSelectedMethod={setSelectedMethod} />
+          <CheckoutCard shipping={shipping} setSelectedMethod={setSelectedMethod} isDelivery={isDelivery} />
           {paymentGateway && (
             <div className=" my-3 p-2 ">
               <h2 className="font-bold p-1">{t("forms:payment-method")}</h2>
