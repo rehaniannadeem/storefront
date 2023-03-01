@@ -76,6 +76,7 @@ const CheckoutForm: React.FC = () => {
   const [finalTotal, setFinalTotal] = useState(total)
   const { clearCart } = useCart();
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
+  let production_payment_url = process.env.NEXT_PUBLIC_IGNITE_PRODUCTION_PAYMENT_URL
 
   function handleLogin() {
     setModalView("LOGIN_VIEW");
@@ -235,7 +236,7 @@ const CheckoutForm: React.FC = () => {
     if (Object.keys(domainData).length != 0) {
       axios({
         method: "get",
-        url: `http://wallet31.myignite.online/app/api/payment_gateway/${domainData?.currency?.code}`,
+        url: production_payment_url+ `/app/api/payment_gateway/${domainData?.currency?.code}`,
 
         headers: {
           Accept: "Application/json",
@@ -276,7 +277,7 @@ const CheckoutForm: React.FC = () => {
 
     axios({
       method: "get",
-      url: "https://wallet31.myignite.online/app/api/get_url",
+      url:production_payment_url+ "/app/api/get_url",
       headers: {
         Accept: "Application/json",
         "merchant-uuid": `${domainData.business_location.custom_field3}`,
