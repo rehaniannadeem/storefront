@@ -15,6 +15,7 @@ export default function OrderInformation() {
   const [orderDetail, setOrderDetail] = useState<any>();
   const [_domainData, setDomainData] = useState({});
   const [isLoading,setIsLoading]=useState(false)
+  const[total,setTotal]=useState()
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
   // const [isClear, setIsClear] = useState(false);
   // const {
@@ -38,9 +39,11 @@ export default function OrderInformation() {
       setDomainData(domainData);
     }
     setDomainCurrencyCode(domainData.currency.code);
-    var orderDetail = JSON.parse(localStorage.getItem("orderDetail")!);
+    var orderDetail:any = JSON.parse(localStorage.getItem("orderDetail")!);
     if (orderDetail) {
       setOrderDetail(orderDetail);
+      let total=orderDetail?.shipping_charges + orderDetail?.final_total
+      setTotal(total.toFixed(2))
     }
     setIsLoading(false)
   }, []);
@@ -85,7 +88,7 @@ export default function OrderInformation() {
             <span className="uppercase text-[11px] block text-body font-normal leading-5">
               {t("text-total")}:
             </span>
-            {domainCurrencyCode} {orderDetail?.shipping_charges + orderDetail?.final_total}
+            {domainCurrencyCode} {total}
           </li>
           <li className="text-heading font-semibold text-base lg:text-lg border-b md:border-b-0 md:border-r border-dashed border-gray-300 px-4 lg:px-6 xl:px-8 py-4 md:py-5 lg:py-6 last:border-0">
             <span className="uppercase text-[11px] block text-body font-normal leading-5">
