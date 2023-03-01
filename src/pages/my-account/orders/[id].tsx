@@ -117,9 +117,17 @@ export default function OrderPage() {
               {t("text-order-details")}:
             </h2>
             <div className="inline-flex  md:ml-10  w-3/5 justify-end">
-              <h2 className="font-bold text-lg rounded-full text-white bg-red-600 p-2 w-fit h-fit">
+              {order?.payment_status.toLowerCase()==="due"?
+               <h2 className="font-bold text-lg rounded-full text-white bg-red-600 p-2 w-fit h-fit">
+               {order.payment_status}
+             </h2>:
+              <h2 className="font-bold text-lg rounded-full text-white bg-green-600 p-2 w-fit h-fit">
+              {order.payment_status}
+            </h2>
+              }
+              {/* <h2 className="font-bold text-lg rounded-full text-white bg-red-600 p-2 w-fit h-fit">
                 {order.payment_status}
-              </h2>
+              </h2> */}
             </div>
           </div>
 
