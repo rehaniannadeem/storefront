@@ -375,8 +375,8 @@ const ProductSingleDetails: React.FC = () => {
             <div className="text-heading font-bold text-base md:text-xl lg:text-2xl 2xl:text-4xl pe-2 md:pe-0 lg:pe-2 2xl:pe-0">
               {getSymbolFromCurrency(domainCurrencyCode)}{" "}
               {Object.keys(attributes).length == 0
-                ? Math.round(product.price)
-                : Math.round(attributes.sell_price_inc_tax)}
+                ? Number(product.price).toFixed(2)
+                : Number(attributes.sell_price_inc_tax).toFixed(2)}
               {/*  {price} */}
             </div>
             {/*  {discount && (

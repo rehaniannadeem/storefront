@@ -78,7 +78,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
         <span className="text-sm text-gray-400 mb-2.5">
           {t("text-unit-price")} : &nbsp;
           {getSymbolFromCurrency(domainCurrencyCode)}
-          {Math.round(item.attributes.sell_price_inc_tax)}
+          {Number(item.attributes.sell_price_inc_tax).toFixed(2)}
           {/* {price} */}
         </span>
 
@@ -91,7 +91,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
           />
           <span className="font-semibold p-1 text-sm md:text-base text-heading leading-5">
             {getSymbolFromCurrency(domainCurrencyCode)}
-            {Math.round(item.itemTotal)}
+            {Number(item.itemTotal).toFixed(2)}
             {/*   {totalPrice} */}
           </span>
         </div>

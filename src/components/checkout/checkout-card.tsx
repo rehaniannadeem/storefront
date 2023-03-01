@@ -56,12 +56,14 @@ const CheckoutCard = (shipping: any) => {
   // }, [check, shipping])
   useEffect(() => {
     if (shipping.shipping === 'Free') {
-
       setCheck({})
+    }else if(shipping.shipping !=undefined){
+      setCheck(shipping.shipping[0])
+      shipping.setSelectedMethod(shipping.shipping[0])
     }
   }, [shipping])
 
-  //  console.log(shipping, 'shipiing');
+    // console.log(shipping, 'shipiing');
 
   const { t } = useTranslation("common");
   // const checkoutFooter = [

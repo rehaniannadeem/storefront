@@ -275,8 +275,8 @@ export default function ProductPopup() {
               <div className="text-heading font-semibold text-base md:text-xl lg:text-2xl">
                 {getSymbolFromCurrency(domainCurrencyCode)}{" "}
                 {Object.keys(attributes).length == 0
-                  ? Math.round(data.price)
-                  : Math.round(attributes.sell_price_inc_tax)}
+                  ? Number(data?.price).toFixed(2)
+                  : Number(attributes?.sell_price_inc_tax).toFixed(2)}
               </div>
               {/*   {discount && (
                 <del className="font-segoe text-gray-400 text-base lg:text-xl ps-2.5 -mt-0.5 md:mt-0">

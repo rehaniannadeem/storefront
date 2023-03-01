@@ -151,7 +151,7 @@ const CheckoutForm: React.FC = () => {
     if (domainData) {
       setDomainData(domainData);
     }
-    setDomainCurrencyCode(domainData.currency.code);
+    setDomainCurrencyCode(domainData?.currency?.code);
   }, []);
 
   useEffect(() => {
@@ -235,7 +235,7 @@ const CheckoutForm: React.FC = () => {
     if (Object.keys(domainData).length != 0) {
       axios({
         method: "get",
-        url: `http://wallet31.myignite.online/app/api/payment_gateway/${domainData.currency.code}`,
+        url: `http://wallet31.myignite.online/app/api/payment_gateway/${domainData?.currency?.code}`,
 
         headers: {
           Accept: "Application/json",
@@ -287,7 +287,7 @@ const CheckoutForm: React.FC = () => {
         item_name: productsName.toString(),
         amount: finalTotal,
         email: userData.email,
-        currency: domainData.currency.code,
+        currency: domainData?.currency?.code,
         method_id: selectPayment.id,
         invoice_id: response.id,
         return_url: `http://${host}/my-account/orders/${response.id}`,
@@ -417,8 +417,8 @@ const CheckoutForm: React.FC = () => {
 
   // }
 
-  console.log(finalTotal, "check");
-   console.log(shippingFee, "country");
+  // console.log(selectedMethod, "check");
+  //  console.log(shippingFee, "country");
 
   return (
     <Container>
@@ -820,7 +820,7 @@ const CheckoutForm: React.FC = () => {
         {t("text-sub-total")}
         {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + total.toFixed(2)}</span>}
       </div >
-      <div className="flex items-center py-4 lg:py-5 border-b border-t border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+      <div className="flex items-center py-4 lg:py-5 border-b  border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
       {t("text-shipping")}
           {shipping !== "Free" ? <span className="ms-auto flex-shrink-0">{shippingFee && domainCurrencyCode + " " +shippingFee.toFixed(2)}</span> : <span className="ms-auto flex-shrink-0">{shipping}</span>}
           </div >
