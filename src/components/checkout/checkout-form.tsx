@@ -96,11 +96,14 @@ const CheckoutForm: React.FC = () => {
   }, [isAuthorized]);
 
   useEffect(()=>{
-    if(Object.keys(selectPayment).length!=0){
-      setIsDisabled(false)
-    }else{
-      setIsDisabled(true)
+    if(checked==="Delivery"){
+      if(Object.keys(selectPayment).length!=0 && Object.keys(selectedMethod).length!=0){
+        setIsDisabled(false)
+      }else{
+        setIsDisabled(true)
+      }
     }
+  
   },[selectPayment])
 
   useEffect(() => {
@@ -112,17 +115,34 @@ const CheckoutForm: React.FC = () => {
   }, [items])
   useEffect(() => {
     setSelectPayment({})
+    // if (selectedMethod) {
+    //   // setIsDisabled(false)
+    //   if (shipping === "Free") {
+    //     setFinalTotal(total)
+    //   } else {
+    //     let newTotal = total + Number(selectedMethod?.base_shipping_fee)
+    //     setFinalTotal(newTotal)
+    //   }
+    // }
+  }, [selectedMethod])
+  useEffect(() => {
+    // setSelectPayment({})
     if (selectedMethod) {
       // setIsDisabled(false)
       if (shipping === "Free") {
         setFinalTotal(total)
       } else {
-        let newTotal = total + Number(selectedMethod?.base_shipping_fee)
-        setFinalTotal(newTotal)
+        if(selectPayment.name == "cash On Delivery"){
+          let newTotal = total + Number(selectedMethod?.cod_rate)
+          setFinalTotal(newTotal)
+        }else{
+          let newTotal = total + Number(selectedMethod?.base_shipping_fee)
+          setFinalTotal(newTotal)
+        }
+       
       }
     }
-
-  }, [selectedMethod])
+  }, [selectPayment])
   // console.log(finalTotal,"finaltotal");
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
@@ -173,7 +193,7 @@ const CheckoutForm: React.FC = () => {
   useEffect(() => {
     let newCity = location?.city.toLowerCase()
     let newCountry = location?.country.toLowerCase()
-    if (location.city && location.country) {
+    if (newCity && newCountry) {
 
       axios({
         method: "get",
@@ -207,7 +227,7 @@ const CheckoutForm: React.FC = () => {
       // setIsDisabled(false)
 
     }
-  }, [location])
+  }, [location.city,location.country])
 
   useEffect(() => {
     if (Object.keys(domainData).length != 0) {
