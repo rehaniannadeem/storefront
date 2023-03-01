@@ -61,7 +61,7 @@ const CheckoutCard = (shipping: any) => {
       setCheck(shipping.shipping[0])
       shipping.setSelectedMethod(shipping.shipping[0])
     }
-  }, [shipping])
+  }, [shipping.shipping])
 
     // console.log(shipping, 'shipiing');
 
