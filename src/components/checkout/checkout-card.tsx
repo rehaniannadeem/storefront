@@ -45,7 +45,7 @@ const CheckoutCard = (shipping: any) => {
   //       //   final = (total + Number(check?.cod_rate))
   //       // }else{
   //         final = (total + Number(check?.base_shipping_fee))
-      
+
 
   //     } else {
   //       final = total
@@ -121,16 +121,16 @@ const CheckoutCard = (shipping: any) => {
           {shipping.shipping !== "Free" ? <span className="ms-auto flex-shrink-0"></span> : <span className="ms-auto flex-shrink-0">{shipping.shipping}</span>}
         </div>
         <div>
-          {shippingMethod !== "Free" && shippingMethod != undefined && shipping.isDelivery==true &&
+          {shippingMethod !== "Free" && shippingMethod != undefined && shipping.isDelivery == true &&
             shippingMethod?.map((method: any, index: any) => (
 
               <div
-                className="flex p-2 justify-between  cursor-pointer my-2 border-4 rounded-md border-solid  hover:bg-gray-200"
+                className="grid grid-cols-12  p-2 justify-between  cursor-pointer my-2 border-4 rounded-md border-solid  hover:bg-gray-200"
                 key={index}
                 onClick={() => { handleShippingMethod(method) }}
               >
 
-                <div className="w-full">
+                <div className="w-full col-span-7">
                   <label htmlFor={`methodType-${index}`} className="flex">
                     <input
                       style={{
@@ -151,10 +151,12 @@ const CheckoutCard = (shipping: any) => {
                     }
                     <span className="self-center px-1">{method.name}</span>
                   </label></div>
-                <div className="flex">
-
+             
+                <div className="flex flex-col justify-end col-span-5">
+                <span className="self-center"> {method?.is_cod === 1 ?<span> COD Fee: {Number(method?.cod_rate).toFixed(2)}</span> : null}</span>
+                  <span className="self-center">Delivery Fee: {Number(method.base_shipping_fee).toFixed(2)} </span>
+                 
                 </div>
-                <div className="flex justify-end"><span className="self-center">{/* method?.is_cod === 1 ? Number(method?.cod_rate).toFixed(2) : */ Number(method.base_shipping_fee).toFixed(2)} </span></div>
               </div>
             ))}
         </div>

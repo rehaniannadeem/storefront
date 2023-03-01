@@ -109,7 +109,6 @@ useEffect(() => {
           mapContainerStyle={containerStyle}
           center={selected}
           zoom={10}
-
           // onLoad={onLoad}
           //onUnmount={onUnmount} */
           //  autocomplete={true}
@@ -259,7 +258,7 @@ const PlaceAutocomplete = ({ setSelected, setAddress,setLocation }: any) => {
      
     }
     
-  }, [geolocation]);
+  }, [geolocation.latitude, geolocation.longitude]);
 
 
   // useEffect(() => {
