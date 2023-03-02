@@ -7,10 +7,10 @@ import { useEffect, useState } from "react";
 
 const CheckoutCard = (shipping: any) => {
   const { items, /* total */ isEmpty } = useCart();
-  const [domainData, setDomainData] = useState<any>({});
+  const [_domainData, setDomainData] = useState<any>({});
   const [_domainCurrencyCode, setDomainCurrencyCode] = useState("");
-  const [shippingMethod, setShippingMethod] = useState(shipping.shipping)
-  const [check, setCheck] = useState<any>()
+  const [_shippingMethod, setShippingMethod] = useState(shipping.shipping)
+  const [_check, setCheck] = useState<any>()
   // const [finalTotal, setFinalTotal] = useState(total)
   // setSelectedMethod(check)
   useEffect(() => {
@@ -89,11 +89,11 @@ const CheckoutCard = (shipping: any) => {
 
   // ];
 
-  const handleShippingMethod = (e: any) => {
-    //  console.log(e)
-    setCheck(e)
-    shipping.setSelectedMethod(e)
-  }
+  // const handleShippingMethod = (e: any) => {
+  //   //  console.log(e)
+  //   setCheck(e)
+  //   shipping.setSelectedMethod(e)
+  // }
 
   return (
     <div className="pt-12 md:pt-0 2xl:ps-4  border-gray-300">
@@ -117,7 +117,7 @@ const CheckoutCard = (shipping: any) => {
         {t("text-sub-total")}
         {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + total.toFixed(2)}</span>}
       </div > */}
-      <div className=' flex flex-col  py-4 lg:py-5 text-sm lg:px-3  '>
+      {/* <div className=' flex flex-col  py-4 lg:py-5 text-sm lg:px-3  '>
 
         {shippingMethod !== "Free" && shippingMethod != undefined && shipping.isDelivery == true &&
           <div className="border-b border-gray-300  ">
@@ -167,7 +167,7 @@ const CheckoutCard = (shipping: any) => {
 
            
                     
-      </div>
+      </div> */}
       {/* <div className="flex items-center py-4 lg:py-5 border-b border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
         {t("text-total")}
         {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + finalTotal.toFixed(2)}</span>}

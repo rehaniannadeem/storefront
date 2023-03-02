@@ -56,12 +56,12 @@ const CheckoutForm: React.FC = () => {
   const { mutate: updateUser } = useCheckoutMutation();
   const [user, setUser] = useState(false);
   const [selectPayment, setSelectPayment] = useState<any>({});
-  const [isDelivery,setIsDelivery]=useState(true)
+  const [isDelivery, setIsDelivery] = useState(true)
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
   const [host, setHost] = useState("");
   const [_orderResponse, setOrderResponse] = useState<any>();
   const [productsName, _setProductsName] = useState<any>([]);
-  const[shippingFee,setShippingFee]=useState<any>()
+  const [shippingFee, setShippingFee] = useState<any>()
   // const[city,setCity]=useState<any>("")
   // const[country,setCountry]=useState<any>("")
   const [location, setLocation] = useState<any>({
@@ -69,11 +69,12 @@ const CheckoutForm: React.FC = () => {
     country: ""
   })
   const { isAuthorized, openModal, setModalView } = useUI();
-  const [shipping, setShipping] = useState<string>("Free")
+  const [shipping, setShipping] = useState<any>("Free")
   // const [isCity,setIsCity]=useState(false)
   // const [isCountry,setIsCountry]=useState(false)
   const [selectedMethod, setSelectedMethod] = useState<any>({})
   const [finalTotal, setFinalTotal] = useState(total)
+  const [methodCheck, setMethodCheck] = useState<any>()
   const { clearCart } = useCart();
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let production_payment_url = process.env.NEXT_PUBLIC_IGNITE_PRODUCTION_PAYMENT_URL
@@ -96,16 +97,16 @@ const CheckoutForm: React.FC = () => {
     setUser(isAuthorized);
   }, [isAuthorized]);
 
-  useEffect(()=>{
-    if(checked==="Delivery"){
-      if(Object.keys(selectPayment).length!=0 && Object.keys(selectedMethod).length!=0){
+  useEffect(() => {
+    if (checked === "Delivery") {
+      if (Object.keys(selectPayment).length != 0 && Object.keys(selectedMethod).length != 0) {
         setIsDisabled(false)
-      }else{
+      } else {
         setIsDisabled(true)
       }
     }
-  
-  },[selectPayment])
+
+  }, [selectPayment])
 
   useEffect(() => {
     if (isAuthorized === false || items.length <= 0) {
@@ -128,21 +129,21 @@ const CheckoutForm: React.FC = () => {
   }, [selectedMethod])
   useEffect(() => {
     // setSelectPayment({})
-    if (Object.keys(selectPayment).length!=0 && Object.keys(selectedMethod).length!=0) {
+    if (Object.keys(selectPayment).length != 0 && Object.keys(selectedMethod).length != 0) {
       // setIsDisabled(false)
       if (shipping === "Free") {
         setFinalTotal(total)
       } else {
-        if(selectPayment.name == "cash On Delivery"){
+        if (selectPayment.name == "cash On Delivery") {
           let newTotal = total + Number(selectedMethod?.cod_rate)
           setFinalTotal(newTotal)
           setShippingFee(Number(selectedMethod?.cod_rate))
-        }else if(selectPayment.name){
+        } else if (selectPayment.name) {
           let newTotal = total + Number(selectedMethod?.base_shipping_fee)
           setFinalTotal(newTotal)
           setShippingFee(Number(selectedMethod?.base_shipping_fee))
         }
-       
+
       }
     }
   }, [selectPayment])
@@ -218,7 +219,7 @@ const CheckoutForm: React.FC = () => {
           if (response?.data.success === false) {
             setIsDelivery(false)
             toast.error(response.data.message)
-          }else{
+          } else {
             setIsDelivery(true)
           }
 
@@ -230,13 +231,13 @@ const CheckoutForm: React.FC = () => {
       // setIsDisabled(false)
 
     }
-  }, [location.city,location.country])
+  }, [location.city, location.country])
 
   useEffect(() => {
     if (Object.keys(domainData).length != 0) {
       axios({
         method: "get",
-        url: production_payment_url+ `/app/api/payment_gateway/${domainData?.currency?.code}`,
+        url: production_payment_url + `/app/api/payment_gateway/${domainData?.currency?.code}`,
 
         headers: {
           Accept: "Application/json",
@@ -260,24 +261,24 @@ const CheckoutForm: React.FC = () => {
     setMobileNumber(userData.mobile);
     setEmail(userData.email);
   }, [userData]);
-  useEffect(()=>{
-    if(checked==="Pickup"){
+  useEffect(() => {
+    if (checked === "Pickup") {
       setSelectPayment({
         id: 1,
         name: "cash On Delivery",
       })
-    }else{
+    } else {
       setSelectPayment({
-        
+
       })
     }
-  },[checked])
+  }, [checked])
   const get_url = (response: any) => {
     // console.log(response,'treu response');
 
     axios({
       method: "get",
-      url:production_payment_url+ "/app/api/get_url",
+      url: production_payment_url + "/app/api/get_url",
       headers: {
         Accept: "Application/json",
         "merchant-uuid": `${domainData.business_location.custom_field3}`,
@@ -322,7 +323,7 @@ const CheckoutForm: React.FC = () => {
       if (selectPayment.name == "cash On Delivery") {
         shippingCharges = Number(selectedMethod?.cod_rate)
         shippingMethod = selectedMethod?.name
-      }else{
+      } else {
         shippingCharges = Number(selectedMethod?.base_shipping_fee)
         shippingMethod = selectedMethod?.name
       }
@@ -391,6 +392,15 @@ const CheckoutForm: React.FC = () => {
 
     updateUser(input);
   }
+  useEffect(() => {
+    if (shipping === 'Free') {
+      setMethodCheck({})
+    } else if (shipping != undefined) {
+      setMethodCheck(shipping[0])
+      setSelectedMethod(shipping[0])
+    }
+  }, [shipping])
+
   const handleDeliveryOption = (e: any) => {
     setChecked(e)
     let value = e
@@ -409,6 +419,12 @@ const CheckoutForm: React.FC = () => {
     // console.log(e, 'e value');
 
   }
+  const handleShippingMethod = (e: any) => {
+    //  console.log(e)
+    setMethodCheck(e)
+    setSelectedMethod(e)
+  }
+
   // const handleCity=()=>{
   //   setIsCity(true)
 
@@ -657,7 +673,60 @@ const CheckoutForm: React.FC = () => {
           )}
         </div>
         <div className="md:w-full lg:w-2/5 md:ms-7 lg:ms-10 xl:ms-14 flex flex-col h-full -mt-1.5">
-          <CheckoutCard shipping={shipping} setSelectedMethod={setSelectedMethod} isDelivery={isDelivery} />
+          <CheckoutCard />
+
+          <div className=' flex flex-col  py-4 lg:py-5 text-sm lg:px-2  '>
+
+            {shipping !== "Free" && shipping != undefined && isDelivery == true &&
+              <div className="border-b border-gray-300  ">
+                <div className="flex items-center  border-gray-300 text-sm  w-full font-semibold  last:border-b-0 last:text-base last:pb-0">
+
+                  {t("text-shipping-method")}
+                </div>
+                {shipping?.map((method: any, index: any) => (
+                  <div
+                    className="grid grid-cols-12  p-2 justify-between  cursor-pointer my-2 border-4 rounded-md border-solid  hover:bg-gray-200"
+                    key={index}
+                    onClick={() => { handleShippingMethod(method) }}
+                  >
+
+                    <div className="w-full col-span-7">
+                      <label htmlFor={`methodType-${index}`} className="flex">
+                        <input
+                          style={{
+                            accentColor: domainData.theme_color,
+                            cursor: "pointer",
+                          }}
+                          type="radio"
+                          value={method}
+                          name="method"
+                          id={`methodType-${index}`}
+                          className="m-2"
+                          onChange={() => { handleShippingMethod(method) }}
+                          checked={method === methodCheck}
+                        />
+                        {method?.image &&
+                          <span className="self-center"> <img src={method?.image} width={20} height={20} alt="" /></span>
+
+                        }
+                        <span className="self-center px-1">{method.name}</span>
+                      </label></div>
+
+                    <div className="flex flex-col justify-end col-span-5">
+                      <span className="self-center"> {method?.is_cod === 1 ? <span> COD Fee: {Number(method?.cod_rate).toFixed(2)}</span> : null}</span>
+                      <span className="self-center">Delivery Fee: {Number(method.base_shipping_fee).toFixed(2)} </span>
+
+                    </div>
+                  </div>
+
+                ))}
+              </div>
+            }
+
+
+
+          </div>
+
           {paymentGateway && (
             <div className=" my-3 p-2 ">
               <h2 className="font-semibold p-1">{t("forms:payment-method")}</h2>
@@ -701,25 +770,25 @@ const CheckoutForm: React.FC = () => {
                   </div>
                   {paymentGateway?.map((type: any, index: any) => (
                     <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 ">
-                     <div className="col-span-5">
-                      <input
-                        style={{
-                          accentColor: domainData.theme_color,
-                          cursor: "pointer",
-                        }}
-                        type="radio"
-                        id={index}
-                        value={type}
-                        name="payment-option"
-                        className="m-2 "
-                        onChange={() => setSelectPayment(type)}
-                      //checked={(type.name = selectPayment.name)}
-                      />
+                      <div className="col-span-5 flex justify-center">
+                        <input
+                          style={{
+                            accentColor: domainData.theme_color,
+                            cursor: "pointer",
+                          }}
+                          type="radio"
+                          id={index}
+                          value={type}
+                          name="payment-option"
+                          className="m-2 "
+                          onChange={() => setSelectPayment(type)}
+                        //checked={(type.name = selectPayment.name)}
+                        />
 
-                      <label className="p-2">{t('common:online-payment')}</label>
+                        <label className="p-2 flex self-center">{t('common:online-payment')}</label>
                       </div>
                       <div className="inline-flex col-span-7 w-full  justify-end">
-                       
+
                         <img
                           className="flex h-14 w-fit self-center"
                           // style={{
@@ -729,8 +798,8 @@ const CheckoutForm: React.FC = () => {
                           // }}
                           src={type.logo}
                         />
-                     
-                       
+
+
                       </div>
                     </div>
                   ))}
@@ -740,25 +809,25 @@ const CheckoutForm: React.FC = () => {
                 selectedMethod && selectedMethod.is_cod === 0 ?
                   paymentGateway?.map((type: any, index: any) => (
                     <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 ">
-                     <div className="col-span-5">
-                      <input
-                        style={{
-                          accentColor: domainData.theme_color,
-                          cursor: "pointer",
-                        }}
-                        type="radio"
-                        id={index}
-                        value={type}
-                        name="payment-option"
-                        className="m-2 "
-                        onChange={() => setSelectPayment(type)}
-                      //checked={(type.name = selectPayment.name)}
-                      />
+                      <div className="col-span-5 flex justify-center">
+                        <input
+                          style={{
+                            accentColor: domainData.theme_color,
+                            cursor: "pointer",
+                          }}
+                          type="radio"
+                          id={index}
+                          value={type}
+                          name="payment-option"
+                          className="m-2 "
+                          onChange={() => setSelectPayment(type)}
+                        //checked={(type.name = selectPayment.name)}
+                        />
 
-                      <label className="p-2">{t('common:online-payment')}</label>
+                        <label className="p-2 flex self-center">{t('common:online-payment')}</label>
                       </div>
                       <div className="inline-flex col-span-7 w-full  justify-end">
-                       
+
                         <img
                           className="flex h-14 w-fit self-center"
                           // style={{
@@ -768,82 +837,82 @@ const CheckoutForm: React.FC = () => {
                           // }}
                           src={type.logo}
                         />
-                     
-                       
+
+
                       </div>
                     </div>
                   )) :
                   <div>
-                  <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
-                    <input
-                      style={{
-                        accentColor: domainData.theme_color,
-                        cursor: "pointer",
-                      }}
-                      type="radio"
-                      value="cash On Delivery"
-                      name="payment-option"
-                      className="m-2 "
-                      onChange={() =>
-                        setSelectPayment({ id: 1, name: "cash On Delivery" })
-                      }
-                      checked={"cash On Delivery" == selectPayment.name}
-                    />
-
-                    <label className="p-2">Cash On Delivery</label>
-                  </div>
-                  {paymentGateway?.map((type: any, index: any) => (
-                   <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 ">
-                   <div className="col-span-5">
-                    <input
-                      style={{
-                        accentColor: domainData.theme_color,
-                        cursor: "pointer",
-                      }}
-                      type="radio"
-                      id={index}
-                      value={type}
-                      name="payment-option"
-                      className="m-2 "
-                      onChange={() => setSelectPayment(type)}
-                    //checked={(type.name = selectPayment.name)}
-                    />
-
-                    <label className="p-2">{t('common:online-payment')}</label>
-                    </div>
-                    <div className="inline-flex col-span-7 w-full  justify-end">
-                     
-                      <img
-                        className="flex h-14 w-fit self-center"
-                        // style={{
-                        //   height: "3rem",
-
-                        //   display: "flex",
-                        // }}
-                        src={type.logo}
+                    <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
+                      <input
+                        style={{
+                          accentColor: domainData.theme_color,
+                          cursor: "pointer",
+                        }}
+                        type="radio"
+                        value="cash On Delivery"
+                        name="payment-option"
+                        className="m-2 "
+                        onChange={() =>
+                          setSelectPayment({ id: 1, name: "cash On Delivery" })
+                        }
+                        checked={"cash On Delivery" == selectPayment.name}
                       />
-                   
-                     
-                    </div>
-                  </div>
-                  ))}
-                </div>
-              }
-                <div className="flex items-center py-4 lg:py-5 border-b border-t border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
-        {t("text-sub-total")}
-        {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + total.toFixed(2)}</span>}
-      </div >
-      <div className="flex items-center py-4 lg:py-5 border-b  border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
-      {t("text-shipping")}
-          {shipping !== "Free" ? <span className="ms-auto flex-shrink-0">{shippingFee && domainCurrencyCode + " " +shippingFee.toFixed(2)}</span> : <span className="ms-auto flex-shrink-0">{shipping}</span>}
-          </div >
-           
-               <div className="flex items-center py-4 lg:py-5 border-b border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
-        {t("text-total")}
-        {<span className="ms-auto flex-shrink-0">{domainCurrencyCode+" " + finalTotal.toFixed(2)}</span>}
 
-      </div> 
-                    {/* // {paymentGateway?.map((type: any, index: any) => (
+                      <label className="p-2">Cash On Delivery</label>
+                    </div>
+                    {paymentGateway?.map((type: any, index: any) => (
+                      <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 ">
+                        <div className="col-span-5 flex justify-center">
+                          <input
+                            style={{
+                              accentColor: domainData.theme_color,
+                              cursor: "pointer",
+                            }}
+                            type="radio"
+                            id={index}
+                            value={type}
+                            name="payment-option"
+                            className="m-2 "
+                            onChange={() => setSelectPayment(type)}
+                          //checked={(type.name = selectPayment.name)}
+                          />
+
+                          <label className="p-2 flex self-center">{t('common:online-payment')}</label>
+                        </div>
+                        <div className="inline-flex col-span-7 w-full  justify-end">
+
+                          <img
+                            className="flex h-14 w-fit self-center"
+                            // style={{
+                            //   height: "3rem",
+
+                            //   display: "flex",
+                            // }}
+                            src={type.logo}
+                          />
+
+
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+              }
+              <div className="flex items-center py-4 lg:py-5 border-b border-t border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+                {t("text-sub-total")}
+                {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + total.toFixed(2)}</span>}
+              </div >
+              <div className="flex items-center py-4 lg:py-5 border-b  border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+                {t("text-shipping")}
+                {shipping !== "Free" ? <span className="ms-auto flex-shrink-0">{shippingFee && domainCurrencyCode + " " + shippingFee.toFixed(2)}</span> : <span className="ms-auto flex-shrink-0">{shipping}</span>}
+              </div >
+
+              <div className="flex items-center py-4 lg:py-5 border-b border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+                {t("text-total")}
+                {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + finalTotal.toFixed(2)}</span>}
+
+              </div>
+              {/* // {paymentGateway?.map((type: any, index: any) => (
                 //   <div className="flex my-2 border-4 h-16  rounded-md border-solid p-1 hover:bg-gray-200 ">
                 //     <input
                 //       style={{
@@ -874,23 +943,23 @@ const CheckoutForm: React.FC = () => {
                 //     </div>
                 //   </div>
                 // ))} */}
-                    <div className="flex w-full p-3">
-                      <Button
-                        className="w-full "
-                        loading={addToCartLoader}
-                        disabled={isDisabled}
-                        style={{
-                          backgroundColor: domainData.theme_color,
-                          color: "white",
-                        }}
-                        onClick={handleSubmit(onSubmit)}
-                      >
-                        {t("common:button-place-order")}
-                      </Button>
-                    </div>
-                  </div>
-          )}
+              <div className="flex w-full p-3">
+                <Button
+                  className="w-full "
+                  loading={addToCartLoader}
+                  disabled={isDisabled}
+                  style={{
+                    backgroundColor: domainData.theme_color,
+                    color: "white",
+                  }}
+                  onClick={handleSubmit(onSubmit)}
+                >
+                  {t("common:button-place-order")}
+                </Button>
+              </div>
             </div>
+          )}
+        </div>
       </div>
     </Container>
   );
