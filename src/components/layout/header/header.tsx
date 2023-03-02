@@ -64,7 +64,7 @@ const Header: React.FC = () => {
           <div>
             <Logo width={60} height={60} />
           </div>
-          {domain.name === "urbannecessity" ? (
+          {domain.domain === "un" ? (
             <HeaderMenu
               data={site_header.urbannecessity_menu}
               className="hidden lg:flex md:ms-6 xl:ms-10"

@@ -50,5 +50,6 @@
   "place-order":"لوضع النظام",
   "delivery-option":"خيارات التوصيل",
   "delivery-address":"عنوان التسليم",
-  "payment-method":"طريقة الدفع او السداد"
+  "payment-method":"طريقة الدفع او السداد",
+  "label-country":"دولة"
 }
