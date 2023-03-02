@@ -697,7 +697,7 @@ const CheckoutForm: React.FC = () => {
                       checked={"cash On Delivery" == selectPayment.name}
                     />
 
-                    <label className="p-2">Cash On Delivery</label>
+                    <label className="p-2">Cash On Pickup</label>
                   </div>
                   {paymentGateway?.map((type: any, index: any) => (
                     <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 ">
@@ -716,7 +716,7 @@ const CheckoutForm: React.FC = () => {
                       //checked={(type.name = selectPayment.name)}
                       />
 
-                      <label className="p-2">{type.name}</label>
+                      <label className="p-2">{t('common:online-payment')}</label>
                       </div>
                       <div className="inline-flex col-span-7 w-full  justify-end">
                        
@@ -755,7 +755,7 @@ const CheckoutForm: React.FC = () => {
                       //checked={(type.name = selectPayment.name)}
                       />
 
-                      <label className="p-2">{type.name}</label>
+                      <label className="p-2">{t('common:online-payment')}</label>
                       </div>
                       <div className="inline-flex col-span-7 w-full  justify-end">
                        
@@ -809,7 +809,7 @@ const CheckoutForm: React.FC = () => {
                     //checked={(type.name = selectPayment.name)}
                     />
 
-                    <label className="p-2">{type.name}</label>
+                    <label className="p-2">{t('common:online-payment')}</label>
                     </div>
                     <div className="inline-flex col-span-7 w-full  justify-end">
                      

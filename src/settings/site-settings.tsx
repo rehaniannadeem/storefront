@@ -73,18 +73,18 @@ export const siteSettings = {
           },
         ],
       },
-      {
-        id: 5,
-        path: "/",
-        label: "menu-faq",
-        // icon: <GrCube />,
-      },
-      {
-        id: 6,
-        path: "/search",
-        label: "menu-contact",
-        // icon: <GrCube />,
-      },
+    //   {
+    //     id: 5,
+    //     path: "/",
+    //     label: "menu-faq",
+    //     // icon: <GrCube />,
+    //   },
+    //   {
+    //     id: 6,
+    //     path: "/search",
+    //     label: "menu-contact",
+    //     // icon: <GrCube />,
+    //   },
     ],
     urbannecessity_mobile_menu: [
       {
@@ -135,18 +135,18 @@ export const siteSettings = {
           },
         ],
       },
-      {
-        id: 5,
-        path: "/",
-        label: "menu-faq",
-        // icon: <GrCube />,
-      },
-      {
-        id: 6,
-        path: "/search",
-        label: "menu-contact",
-        // icon: <GrCube />,
-      },
+    //   {
+    //     id: 5,
+    //     path: "/",
+    //     label: "menu-faq",
+    //     // icon: <GrCube />,
+    //   },
+    //   {
+    //     id: 6,
+    //     path: "/search",
+    //     label: "menu-contact",
+    //     // icon: <GrCube />,
+    //   },
     ],
     menu: [
       {

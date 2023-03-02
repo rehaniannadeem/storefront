@@ -186,6 +186,7 @@
   "order-type":"Order Type",
   "payment-method":"Payment Method",
   "text-variation":"Variation",
-  "text-shipping-method":"Shipping Method"
+  "text-shipping-method":"Shipping Method",
+  "online-payment":"Online Payment"
   
 }

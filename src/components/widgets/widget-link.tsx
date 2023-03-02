@@ -22,24 +22,38 @@ const WidgetLink: FC<Props> = ({ className, data }) => {
   const { widgetTitle, lists } = data;
   const { t } = useTranslation("footer");
   const { domain }: any = useContext(Context);
+
   // console.log(domain);
-  
-  const [faceLink, setFaceLink] = useState("#");
-  const [instaLink, setInstaLink] = useState("#");
+
+  const [faceLink, setFaceLink] = useState("");
+  const [instaLink, setInstaLink] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
+const[isLoading,setIsLoading]=useState(false)
   //  const [aboutUs, setAboutUs] = useState("#");
   //  const [privacyPolicy, setPrivacyPolicy] = useState("#");
   // const [termCondition, setTermCondition] = useState("#");
-  const [email, setEmail] = useState("");
-  const [mobile, setMobile] = useState("");
+
   // const [_domainData, setDomainData] = useState({});
   //business_location
   // console.log("sdljkfsldfk", domain.business_location);
 
   useEffect(() => {
-    if (domain.facebook != null && domain.instagram != null) {
-      setFaceLink(domain.facebook);
+    setIsLoading(true)
+    if (domain.instagram != null) {
       setInstaLink(domain.instagram);
     }
+    if (domain.facebook != null ) {
+      setFaceLink(domain.facebook);
+     ;
+    }
+    {
+      domain?.business_location?.email && setEmail(domain.business_location.email);
+    }
+    {
+      domain?.business_location?.mobile && setMobile(domain.business_location.mobile);
+    }
+    setIsLoading(false)
     /*    if (domain.about_us != null) {
       setAboutUs(domain.about_us);
     }
@@ -49,21 +63,26 @@ const WidgetLink: FC<Props> = ({ className, data }) => {
     if (domain.term_condition != null) {
       setTermCondition(domain.term_condition);
     } */
-    {domain?.business_location!=null && setEmail(domain?.business_location?.email)}
-if(domain?.whatsapp_no!=null){
-  setMobile(domain?.whatsapp_no);
-}
-   
+  
+    // if (domain?.whatsapp_no != null) {
+    //   setMobile(domain?.whatsapp_no);
+    // }
+
   }, [domain]);
-  // console.log(">>>>>>>>>>>", lists);
+  ;
 
   footer.widgets[0].lists[0].path = instaLink;
   footer.widgets[0].lists[1].path = faceLink;
   //footer.widgets[2].lists[0].path = aboutUs;
   // footer.widgets[3].lists[0].path = privacyPolicy;
   // footer.widgets[3].lists[1].path = termCondition;
-    footer.widgets[1].lists[0].title = email;
+  footer.widgets[1].lists[0].title = email;
   footer.widgets[1].lists[1].title = mobile;
+  if(isLoading){
+    return <div></div>
+  }
+
+  
   return (
     <div className={`${className}`}>
       <h4 className="text-heading text-sm md:text-base xl:text-lg font-semibold mb-5 2xl:mb-6 3xl:mb-7">
@@ -78,16 +97,21 @@ if(domain?.whatsapp_no!=null){
             key={`widget-list--key${list.id}`}
             className="flex items-baseline"
           >
-            {list.icon && (
-              <span className="me-3 relative top-0.5 lg:top-1 text-sm lg:text-base">
-                {list.icon}
-              </span>
-            )}
-            <Link href={list.path ? list.path : "#!"}>
-              <a className="transition-colors duration-200 hover:text-black">
-                {t(`${list.title}`)}
-              </a>
-            </Link>
+            {list?.path ?
+              <>
+                <span className="me-3 relative top-0.5 lg:top-1 text-sm lg:text-base">
+                  {list.icon}
+                </span>
+
+                <Link href={list.path ? list.path : "#!"}>
+                  <a className="transition-colors duration-200 hover:text-black">
+                    {t(`${list.title}`)}
+                  </a>
+                </Link>
+              </> : null
+            }
+
+
           </li>
         ))}
       </ul>

@@ -57,13 +57,13 @@ const CheckoutCard = (shipping: any) => {
   useEffect(() => {
     if (shipping.shipping === 'Free') {
       setCheck({})
-    }else if(shipping.shipping !=undefined){
+    } else if (shipping.shipping != undefined) {
       setCheck(shipping.shipping[0])
       shipping.setSelectedMethod(shipping.shipping[0])
     }
   }, [shipping.shipping])
 
-    // console.log(shipping, 'shipiing');
+  // console.log(shipping, 'shipiing');
 
   const { t } = useTranslation("common");
   // const checkoutFooter = [
@@ -96,7 +96,7 @@ const CheckoutCard = (shipping: any) => {
   }
 
   return (
-    <div className="pt-12 md:pt-0 2xl:ps-4 border-b border-gray-300">
+    <div className="pt-12 md:pt-0 2xl:ps-4  border-gray-300">
       <h2 className="text-lg md:text-xl xl:text-2xl font-bold text-heading mb-6 xl:mb-8">
         {t("text-your-order")}
       </h2>
@@ -117,63 +117,67 @@ const CheckoutCard = (shipping: any) => {
         {t("text-sub-total")}
         {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + total.toFixed(2)}</span>}
       </div > */}
-      <div className='border-b flex flex-col  py-4 lg:py-5 text-sm lg:px-3  '>
-        <div className="flex items-center  border-gray-300 text-sm  w-full font-semibold  last:border-b-0 last:text-base last:pb-0">
-          
-          {t("text-shipping-method")}
-          {/* {shipping.shipping !== "Free" ? <span className="ms-auto flex-shrink-0"></span> : <span className="ms-auto flex-shrink-0">{shipping.shipping}</span>} */}
-        </div>
-        <div>
-          {shippingMethod !== "Free" && shippingMethod != undefined && shipping.isDelivery == true &&
-            shippingMethod?.map((method: any, index: any) => (
+      <div className=' flex flex-col  py-4 lg:py-5 text-sm lg:px-3  '>
 
-              <div
-                className="grid grid-cols-12  p-2 justify-between  cursor-pointer my-2 border-4 rounded-md border-solid  hover:bg-gray-200"
-                key={index}
-                onClick={() => { handleShippingMethod(method) }}
-              >
+        {shippingMethod !== "Free" && shippingMethod != undefined && shipping.isDelivery == true &&
+          <div className="border-b border-gray-300  ">
+            <div className="flex items-center  border-gray-300 text-sm  w-full font-semibold  last:border-b-0 last:text-base last:pb-0">
 
-                <div className="w-full col-span-7">
-                  <label htmlFor={`methodType-${index}`} className="flex">
-                    <input
-                      style={{
-                        accentColor: domainData.theme_color,
-                        cursor: "pointer",
-                      }}
-                      type="radio"
-                      value={method}
-                      name="method"
-                      id={`methodType-${index}`}
-                      className="m-2"
-                      onChange={() => { handleShippingMethod(method) }}
-                      checked={method === check}
-                    />
-                    {method?.image &&
-                      <span className="self-center"> <img src={method?.image} width={20} height={20} alt="" /></span>
+              {t("text-shipping-method")}
+            </div>
+            {shippingMethod?.map((method: any, index: any) => (
+                <div
+                  className="grid grid-cols-12  p-2 justify-between  cursor-pointer my-2 border-4 rounded-md border-solid  hover:bg-gray-200"
+                  key={index}
+                  onClick={() => { handleShippingMethod(method) }}
+                >
 
-                    }
-                    <span className="self-center px-1">{method.name}</span>
-                  </label></div>
-             
-                <div className="flex flex-col justify-end col-span-5">
-                <span className="self-center"> {method?.is_cod === 1 ?<span> COD Fee: {Number(method?.cod_rate).toFixed(2)}</span> : null}</span>
-                  <span className="self-center">Delivery Fee: {Number(method.base_shipping_fee).toFixed(2)} </span>
-                 
+                  <div className="w-full col-span-7">
+                    <label htmlFor={`methodType-${index}`} className="flex">
+                      <input
+                        style={{
+                          accentColor: domainData.theme_color,
+                          cursor: "pointer",
+                        }}
+                        type="radio"
+                        value={method}
+                        name="method"
+                        id={`methodType-${index}`}
+                        className="m-2"
+                        onChange={() => { handleShippingMethod(method) }}
+                        checked={method === check}
+                      />
+                      {method?.image &&
+                        <span className="self-center"> <img src={method?.image} width={20} height={20} alt="" /></span>
+
+                      }
+                      <span className="self-center px-1">{method.name}</span>
+                    </label></div>
+
+                  <div className="flex flex-col justify-end col-span-5">
+                    <span className="self-center"> {method?.is_cod === 1 ? <span> COD Fee: {Number(method?.cod_rate).toFixed(2)}</span> : null}</span>
+                    <span className="self-center">Delivery Fee: {Number(method.base_shipping_fee).toFixed(2)} </span>
+
+                  </div>
                 </div>
-              </div>
+        
             ))}
-        </div>
+              </div>
+}
+
+           
+                    
       </div>
       {/* <div className="flex items-center py-4 lg:py-5 border-b border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
         {t("text-total")}
         {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + finalTotal.toFixed(2)}</span>}
 
       </div> */}
-      {/* {checkoutFooter.map((item: any) => (
+        {/* {checkoutFooter.map((item: any) => (
         <CheckoutCardFooterItem item={item} key={item.id}  />
       ))} */}
-    </div>
-  );
+      </div>
+      );
 };
 
-export default CheckoutCard;
+      export default CheckoutCard;
