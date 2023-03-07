@@ -55,7 +55,10 @@ const CheckoutForm: React.FC = () => {
   const [paymentGateway, setPaymentGateway] = useState<any>([]);
   const { mutate: updateUser } = useCheckoutMutation();
   const [user, setUser] = useState(false);
-  const [selectPayment, setSelectPayment] = useState<any>({});
+  const [selectPayment, setSelectPayment] = useState<any>({
+    id: 1,
+    name: "Cash On Pickup",
+  });
   const [isDelivery, setIsDelivery] = useState(true)
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
   const [host, setHost] = useState("");
@@ -116,7 +119,10 @@ const CheckoutForm: React.FC = () => {
     }
   }, [items])
   useEffect(() => {
-    setSelectPayment({})
+    if(Object.keys(selectedMethod).length!=0){
+      setSelectPayment({})
+    }
+   
     // if (selectedMethod) {
     //   // setIsDisabled(false)
     //   if (shipping === "Free") {
@@ -195,6 +201,8 @@ const CheckoutForm: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    setSelectedMethod({})
+    setSelectPayment({})
     let newCity = location?.city.toLowerCase()
     let newCountry = location?.country.toLowerCase()
     if (newCity && newCountry) {
@@ -233,6 +241,7 @@ const CheckoutForm: React.FC = () => {
     }
   }, [location.city, location.country])
 
+
   useEffect(() => {
     if (Object.keys(domainData).length != 0) {
       axios({
@@ -246,7 +255,7 @@ const CheckoutForm: React.FC = () => {
         },
       })
         .then((response) => {
-          console.log(response, "Payment Gateway");
+          // console.log(response, "Payment Gateway");
           setPaymentGateway(response.data.data);
         })
         .catch((err) => {
@@ -265,7 +274,7 @@ const CheckoutForm: React.FC = () => {
     if (checked === "Pickup") {
       setSelectPayment({
         id: 1,
-        name: "cash On Delivery",
+        name: "Cash On Pickup",
       })
     } else {
       setSelectPayment({
@@ -435,7 +444,7 @@ const CheckoutForm: React.FC = () => {
   // }
 
   // console.log(selectedMethod, "check");
-  //  console.log(paymentGateway, "country");
+   console.log(selectPayment, "country");
 
   return (
     <Container>
@@ -761,9 +770,9 @@ const CheckoutForm: React.FC = () => {
                       name="payment-option"
                       className="m-2 "
                       onChange={() =>
-                        setSelectPayment({ id: 1, name: "cash On Delivery" })
+                        setSelectPayment({ id: 1, name: "Cash On Pickup" })
                       }
-                      checked={"cash On Delivery" == selectPayment.name}
+                      checked={selectPayment?.name?.toLowerCase()=== "cash on pickup" }
                     />
 
                     <label className="p-2">Cash On Pickup</label>
@@ -821,7 +830,7 @@ const CheckoutForm: React.FC = () => {
                           name="payment-option"
                           className="m-2 "
                           onChange={() => setSelectPayment(type)}
-                        //checked={(type.name = selectPayment.name)}
+                        checked={(type.name === selectPayment.name)}
                         />
 
                         <label className="p-2 flex self-center">{type.name==='Tap'?type.name:t('common:online-payment')}</label>
@@ -875,7 +884,7 @@ const CheckoutForm: React.FC = () => {
                             name="payment-option"
                             className="m-2 "
                             onChange={() => setSelectPayment(type)}
-                          //checked={(type.name = selectPayment.name)}
+                          checked={(type.name === selectPayment.name)}
                           />
 
                           <label className="p-2 flex self-center">{type.name==='Tap'?type.name:t('common:online-payment')}</label>
