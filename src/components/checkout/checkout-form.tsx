@@ -435,7 +435,7 @@ const CheckoutForm: React.FC = () => {
   // }
 
   // console.log(selectedMethod, "check");
-  //  console.log(shippingFee, "country");
+  //  console.log(paymentGateway, "country");
 
   return (
     <Container>
@@ -770,7 +770,7 @@ const CheckoutForm: React.FC = () => {
                   </div>
                   {paymentGateway?.map((type: any, index: any) => (
                     <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 ">
-                      <div className="col-span-5 flex justify-center">
+                      <div className="col-span-5 flex justify-start">
                         <input
                           style={{
                             accentColor: domainData.theme_color,
@@ -785,7 +785,7 @@ const CheckoutForm: React.FC = () => {
                         //checked={(type.name = selectPayment.name)}
                         />
 
-                        <label className="p-2 flex self-center">{t('common:online-payment')}</label>
+                        <label className="p-2 flex self-center">{type.name==='Tap'?type.name:t('common:online-payment')}</label>
                       </div>
                       <div className="inline-flex col-span-7 w-full  justify-end">
 
@@ -809,7 +809,7 @@ const CheckoutForm: React.FC = () => {
                 selectedMethod && selectedMethod.is_cod === 0 ?
                   paymentGateway?.map((type: any, index: any) => (
                     <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 ">
-                      <div className="col-span-5 flex justify-center">
+                      <div className="col-span-5 flex justify-start">
                         <input
                           style={{
                             accentColor: domainData.theme_color,
@@ -824,7 +824,7 @@ const CheckoutForm: React.FC = () => {
                         //checked={(type.name = selectPayment.name)}
                         />
 
-                        <label className="p-2 flex self-center">{t('common:online-payment')}</label>
+                        <label className="p-2 flex self-center">{type.name==='Tap'?type.name:t('common:online-payment')}</label>
                       </div>
                       <div className="inline-flex col-span-7 w-full  justify-end">
 
@@ -863,7 +863,7 @@ const CheckoutForm: React.FC = () => {
                     </div>
                     {paymentGateway?.map((type: any, index: any) => (
                       <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 ">
-                        <div className="col-span-5 flex justify-center">
+                        <div className="col-span-5 flex justify-start">
                           <input
                             style={{
                               accentColor: domainData.theme_color,
@@ -878,7 +878,7 @@ const CheckoutForm: React.FC = () => {
                           //checked={(type.name = selectPayment.name)}
                           />
 
-                          <label className="p-2 flex self-center">{t('common:online-payment')}</label>
+                          <label className="p-2 flex self-center">{type.name==='Tap'?type.name:t('common:online-payment')}</label>
                         </div>
                         <div className="inline-flex col-span-7 w-full  justify-end">
 
