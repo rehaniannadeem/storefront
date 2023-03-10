@@ -94,6 +94,7 @@ const CheckoutCard = (shipping: any) => {
   //   setCheck(e)
   //   shipping.setSelectedMethod(e)
   // }
+// console.log(items,'items');
 
   return (
     <div className="pt-12 md:pt-0 2xl:ps-4  border-gray-300">
