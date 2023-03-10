@@ -76,8 +76,9 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
    }
     // let parts = host.split(".");
     // setBusiness(parts[0]);
+    
   }, []);
-console.log(business,'domainName');
+// console.log(business,'domainName');
 
   useEffect(() => {
     const fetchData = async () => {

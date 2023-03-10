@@ -34,7 +34,7 @@ const CheckoutForm: React.FC = () => {
   // console.log("item",items);
 
   // const { setOrder } = useContext(Context);
-
+  const [newTotal, setNewTotal] = useState<any>()
   const [userData, setUserData] = useState<any>({});
   // console.log(userData, "user data");
   const [firstName, setFirstName] = useState<string>();
@@ -65,6 +65,8 @@ const CheckoutForm: React.FC = () => {
   const [_orderResponse, setOrderResponse] = useState<any>();
   const [productsName, _setProductsName] = useState<any>([]);
   const [shippingFee, setShippingFee] = useState<any>()
+  const [couponCode, setCouponCode] = useState<any>()
+  const [discount, setDiscount] = useState<any>()
   // const[city,setCity]=useState<any>("")
   // const[country,setCountry]=useState<any>("")
   const [location, setLocation] = useState<any>({
@@ -119,10 +121,10 @@ const CheckoutForm: React.FC = () => {
     }
   }, [items])
   useEffect(() => {
-    if(Object.keys(selectedMethod).length!=0){
+    if (Object.keys(selectedMethod).length != 0) {
       setSelectPayment({})
     }
-   
+
     // if (selectedMethod) {
     //   // setIsDisabled(false)
     //   if (shipping === "Free") {
@@ -135,25 +137,43 @@ const CheckoutForm: React.FC = () => {
   }, [selectedMethod])
   useEffect(() => {
     // setSelectPayment({})
-    if (Object.keys(selectPayment).length != 0 && Object.keys(selectedMethod).length != 0) {
-      // setIsDisabled(false)
-      if (shipping === "Free") {
-        setFinalTotal(total)
-      } else {
-        if (selectPayment.name == "cash On Delivery") {
-          let newTotal = total + Number(selectedMethod?.cod_rate)
-          setFinalTotal(newTotal)
-          setShippingFee(Number(selectedMethod?.cod_rate))
-        } else if (selectPayment.name) {
-          let newTotal = total + Number(selectedMethod?.base_shipping_fee)
-          setFinalTotal(newTotal)
-          setShippingFee(Number(selectedMethod?.base_shipping_fee))
-        }
 
+
+    let subTotal = total;
+    // {discount ? subTotal=total-discount: subTotal=total}
+
+    if (subTotal) {
+      if (Object.keys(selectPayment).length != 0 && Object.keys(selectedMethod).length != 0) {
+        // setIsDisabled(false)
+        if (shipping === "Free") {
+          setFinalTotal(subTotal)
+        } else {
+          if (selectPayment.name == "Cash On Delivery") {
+            let newTotal = subTotal + Number(selectedMethod?.cod_rate)
+            setFinalTotal(newTotal)
+            setShippingFee(Number(selectedMethod?.cod_rate))
+          } else if (selectPayment.name) {
+            let newTotal = subTotal + Number(selectedMethod?.base_shipping_fee)
+            setFinalTotal(newTotal)
+            setShippingFee(Number(selectedMethod?.base_shipping_fee))
+          }
+
+        }
       }
     }
-  }, [selectPayment])
-  // console.log(finalTotal,"finaltotal");
+
+  }, [selectPayment, discount])
+  useEffect(() => {
+
+    {
+      discount && finalTotal ?
+      setNewTotal(finalTotal - discount) :
+      setNewTotal(finalTotal)
+    }
+
+
+  }, [discount, finalTotal])
+  // console.log(newTotal,"finaltotal");
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
@@ -271,11 +291,13 @@ const CheckoutForm: React.FC = () => {
     setEmail(userData.email);
   }, [userData]);
   useEffect(() => {
+    setSelectedMethod({})
     if (checked === "Pickup") {
       setSelectPayment({
         id: 1,
         name: "Cash On Pickup",
       })
+
     } else {
       setSelectPayment({
 
@@ -296,7 +318,7 @@ const CheckoutForm: React.FC = () => {
       params: {
         order_no: response.id,
         item_name: productsName.toString(),
-        amount: finalTotal,
+        amount: newTotal,
         email: userData.email,
         currency: domainData?.currency?.code,
         method_id: selectPayment.id,
@@ -322,14 +344,45 @@ const CheckoutForm: React.FC = () => {
         setAddToCartLoader(false);
       });
   };
+  const deleteItem = () => {
+    let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
+    var domainData = JSON.parse(localStorage.getItem("domainData")!);
+    let token=domainData.token
+    let cartId=localStorage.getItem("cart_id")
+      axios({
+        method: "get",
+        url: connector_base_url + "/abandonedcart/delete/"+cartId,
+        headers: {
+          Accept: "Application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        // data: {
+        //   contact_id: userData.id,
+        //    shipping_status: "pending", 
+        //    final_amount: item?.attributes.sell_price_inc_tax,
+        //    cart_detail:[item]
+        // },
+  
+      })
+        .then((response) => {
+          console.log(response, 'deletes response ');
+         
+        })
+        .catch((err) => {
+          console.log(err, "Response Error");
+  
+        });
+    }
   async function onSubmit(input: CheckoutInputType) {
+
+
     let shippingCharges = 0
     let shippingMethod = ""
     if (shipping === "Free") {
       shippingCharges = 0
       shippingMethod = ""
     } else {
-      if (selectPayment.name == "cash On Delivery") {
+      if (selectPayment.name == "Cash On Delivery") {
         shippingCharges = Number(selectedMethod?.cod_rate)
         shippingMethod = selectedMethod?.name
       } else {
@@ -368,7 +421,7 @@ const CheckoutForm: React.FC = () => {
               },
             ], */
             order_source: "storefront",
-            total_before_tax: finalTotal,
+            total_before_tax: newTotal,
             products: placeOrder,
           },
         ],
@@ -380,18 +433,20 @@ const CheckoutForm: React.FC = () => {
           toast.error(response.data[0].original.error.message);
           setAddToCartLoader(false);
         } else {
+
           setOrderResponse(response.data[0]);
           localStorage.setItem("orderDetail", JSON.stringify(response.data[0]));
 
           if (response.status == 200) {
-            if (selectPayment.name == "cash On Delivery") {
+            if (selectPayment.name == "Cash On Delivery" || selectPayment.name == "Cash On Pickup") {
               Router.push(ROUTES.ORDER);
             } else {
-
-
               get_url(response.data[0]);
             }
           }
+          setAddToCartLoader(false);
+          deleteItem()
+          localStorage.removeItem("cart_id");
         }
       })
       .catch((err) => {
@@ -433,6 +488,37 @@ const CheckoutForm: React.FC = () => {
     setMethodCheck(e)
     setSelectedMethod(e)
   }
+  const handleCoupon = () => {
+    setAddToCartLoader(true);
+    axios({
+      method: "get",
+      url: connector_base_url + "/coupon-code/" + couponCode,
+      headers: {
+        Accept: "Application/json",
+        Authorization: `Bearer ${domainToken}`,
+      },
+
+    })
+      .then((response) => {
+        // console.log(response,'response');
+        if (response?.data?.success) {
+          toast.success(response?.data?.msg)
+          setDiscount(response?.data.data.amount)
+          // setCouponCode("")
+          setAddToCartLoader(false);
+        } else {
+          toast.error(response?.data?.msg)
+          setAddToCartLoader(false);
+        }
+
+
+      })
+      .catch((err) => {
+        console.log(err, "Response Error");
+
+      });
+
+  }
 
   // const handleCity=()=>{
   //   setIsCity(true)
@@ -444,7 +530,8 @@ const CheckoutForm: React.FC = () => {
   // }
 
   // console.log(selectedMethod, "check");
-   console.log(selectPayment, "country");
+  // console.log(selectPayment, "country");
+  // console.log(couponCode,"coupon");
 
   return (
     <Container>
@@ -683,8 +770,39 @@ const CheckoutForm: React.FC = () => {
         </div>
         <div className="md:w-full lg:w-2/5 md:ms-7 lg:ms-10 xl:ms-14 flex flex-col h-full -mt-1.5">
           <CheckoutCard />
+          <div className="flex flex-col p-1 ">
+            <div className="p-2">
+              <label className="font-semibold">Enter Coupon Code</label>
+            </div>
+            <div className="p-2 w-full flex justify-between">
 
-          <div className=' flex flex-col  py-4 lg:py-5 text-sm lg:px-2  '>
+              <Input
+                // labelKey="forms:label-last-name"
+                name={"coupon"}
+                variant="solid"
+                className=" w-3/4 mr-2"
+                placeholder="Coupon Code"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                style={{
+                  height: "3.2rem"
+                }}
+              />
+              <span className=" w-1/4">
+                <Button className=""
+                  loading={addToCartLoader}
+                  disabled={!couponCode}
+                  onClick={handleCoupon}
+                  style={{
+                    background: domainData.theme_color,
+                    color: 'white'
+                  }}>Apply</Button>
+              </span>
+
+            </div>
+          </div>
+
+          <div className=' flex flex-col  py-4 lg:py-4 text-sm lg:px-2  '>
 
             {shipping !== "Free" && shipping != undefined && isDelivery == true &&
               <div className="border-b border-gray-300  ">
@@ -766,13 +884,13 @@ const CheckoutForm: React.FC = () => {
                         cursor: "pointer",
                       }}
                       type="radio"
-                      value="cash On Delivery"
+                      value="Cash On Delivery"
                       name="payment-option"
                       className="m-2 "
                       onChange={() =>
                         setSelectPayment({ id: 1, name: "Cash On Pickup" })
                       }
-                      checked={selectPayment?.name?.toLowerCase()=== "cash on pickup" }
+                      checked={selectPayment?.name?.toLowerCase() === "cash on pickup"}
                     />
 
                     <label className="p-2">Cash On Pickup</label>
@@ -794,7 +912,7 @@ const CheckoutForm: React.FC = () => {
                         //checked={(type.name = selectPayment.name)}
                         />
 
-                        <label className="p-2 flex self-center">{type.name==='Tap'?type.name:t('common:online-payment')}</label>
+                        <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label>
                       </div>
                       <div className="inline-flex col-span-7 w-full  justify-end">
 
@@ -830,10 +948,10 @@ const CheckoutForm: React.FC = () => {
                           name="payment-option"
                           className="m-2 "
                           onChange={() => setSelectPayment(type)}
-                        checked={(type.name === selectPayment.name)}
+                          checked={(type.name === selectPayment.name)}
                         />
 
-                        <label className="p-2 flex self-center">{type.name==='Tap'?type.name:t('common:online-payment')}</label>
+                        <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label>
                       </div>
                       <div className="inline-flex col-span-7 w-full  justify-end">
 
@@ -859,13 +977,13 @@ const CheckoutForm: React.FC = () => {
                           cursor: "pointer",
                         }}
                         type="radio"
-                        value="cash On Delivery"
+                        value="Cash On Delivery"
                         name="payment-option"
                         className="m-2 "
                         onChange={() =>
-                          setSelectPayment({ id: 1, name: "cash On Delivery" })
+                          setSelectPayment({ id: 1, name: "Cash On Delivery" })
                         }
-                        checked={"cash On Delivery" == selectPayment.name}
+                        checked={"Cash On Delivery" == selectPayment.name}
                       />
 
                       <label className="p-2">Cash On Delivery</label>
@@ -884,10 +1002,10 @@ const CheckoutForm: React.FC = () => {
                             name="payment-option"
                             className="m-2 "
                             onChange={() => setSelectPayment(type)}
-                          checked={(type.name === selectPayment.name)}
+                            checked={(type.name === selectPayment.name)}
                           />
 
-                          <label className="p-2 flex self-center">{type.name==='Tap'?type.name:t('common:online-payment')}</label>
+                          <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label>
                         </div>
                         <div className="inline-flex col-span-7 w-full  justify-end">
 
@@ -911,6 +1029,13 @@ const CheckoutForm: React.FC = () => {
                 {t("text-sub-total")}
                 {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + total.toFixed(2)}</span>}
               </div >
+              {discount &&
+                <div className="flex items-center py-4 lg:py-5 border-b  border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+                  {t("Discount")}
+                  <span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + Number(discount).toFixed(2)}</span>
+                </div >
+              }
+
               <div className="flex items-center py-4 lg:py-5 border-b  border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
                 {t("text-shipping")}
                 {shipping !== "Free" ? <span className="ms-auto flex-shrink-0">{shippingFee && domainCurrencyCode + " " + shippingFee.toFixed(2)}</span> : <span className="ms-auto flex-shrink-0">{shipping}</span>}
@@ -918,7 +1043,7 @@ const CheckoutForm: React.FC = () => {
 
               <div className="flex items-center py-4 lg:py-5 border-b border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
                 {t("text-total")}
-                {<span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + finalTotal.toFixed(2)}</span>}
+                <span className="ms-auto flex-shrink-0">{discount ? domainCurrencyCode + " " + (finalTotal - discount).toFixed(2) : domainCurrencyCode + " " + finalTotal.toFixed(2)}</span>
 
               </div>
               {/* // {paymentGateway?.map((type: any, index: any) => (
