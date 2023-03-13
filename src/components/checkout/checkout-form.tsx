@@ -84,7 +84,7 @@ const CheckoutForm: React.FC = () => {
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let production_payment_url = process.env.NEXT_PUBLIC_IGNITE_PRODUCTION_PAYMENT_URL
 const[source,setSource]=useState<any>()
-console.log(source,'source');
+// console.log(source,'source');
 
   function handleLogin() {
     setModalView("LOGIN_VIEW");
@@ -182,7 +182,7 @@ console.log(source,'source');
       setDomainData(domainData);
     }
     setDomainCurrencyCode(domainData?.currency?.code);
-    let source=localStorage.getItem('source')
+    let source=sessionStorage.getItem('source')
     setSource(source)
   }, []);
 
