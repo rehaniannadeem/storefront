@@ -54,15 +54,19 @@ export default function Home() {
   // },[])
 
 useEffect(()=>{
-  if(url[1]==="source=marketplace"){
+  if(url[1].toLowerCase().includes("source=")){
+    console.log('hi this is log');
+    
+  }
+  if(url[1].toLowerCase().includes("source=")){
     let newUrl=url[1].split("=")
     if(newUrl[1]){
-      localStorage.setItem("source",newUrl[1])
+      sessionStorage.setItem("source",newUrl[1])
     }
    
    }
   
-  {url[1]!=undefined &&  url[1]!="source=marketplace" &&
+  {url[1]!=undefined &&  url[1].toLowerCase().includes("sku=")&&
   router.push(`${ROUTES.PRODUCT}?${url[1]}`, undefined, {
     locale: router.locale,
   })}
