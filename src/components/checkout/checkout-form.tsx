@@ -83,6 +83,8 @@ const CheckoutForm: React.FC = () => {
   const { clearCart } = useCart();
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let production_payment_url = process.env.NEXT_PUBLIC_IGNITE_PRODUCTION_PAYMENT_URL
+const[source,setSource]=useState<any>()
+console.log(source,'source');
 
   function handleLogin() {
     setModalView("LOGIN_VIEW");
@@ -173,13 +175,15 @@ const CheckoutForm: React.FC = () => {
 
 
   }, [discount, finalTotal])
-  // console.log(newTotal,"finaltotal");
+  
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
       setDomainData(domainData);
     }
     setDomainCurrencyCode(domainData?.currency?.code);
+    let source=localStorage.getItem('source')
+    setSource(source)
   }, []);
 
   useEffect(() => {
@@ -412,6 +416,7 @@ const CheckoutForm: React.FC = () => {
             delivered_to: firstName + " " + lastName,
             shipping_charges: shippingCharges,
             shipping_custom_field_4: shippingMethod,
+            discount_amount:discount,
             payments: null,
             /*   payments: [
               {
@@ -420,7 +425,7 @@ const CheckoutForm: React.FC = () => {
                 card_type: "",
               },
             ], */
-            order_source: "storefront",
+            order_source:source ? source:"storefront" ,
             total_before_tax: newTotal,
             products: placeOrder,
           },
@@ -519,6 +524,7 @@ const CheckoutForm: React.FC = () => {
       });
 
   }
+// console.log(discount,'discount');
 
   // const handleCity=()=>{
   //   setIsCity(true)
@@ -1031,7 +1037,7 @@ const CheckoutForm: React.FC = () => {
               </div >
               {discount &&
                 <div className="flex items-center py-4 lg:py-5 border-b  border-gray-300 text-sm lg:px-3 w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
-                  {t("Discount")}
+                  {t("common:label-discount")}
                   <span className="ms-auto flex-shrink-0">{domainCurrencyCode + " " + Number(discount).toFixed(2)}</span>
                 </div >
               }

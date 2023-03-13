@@ -42,7 +42,8 @@ export default function OrderInformation() {
     var orderDetail:any = JSON.parse(localStorage.getItem("orderDetail")!);
     if (orderDetail) {
       setOrderDetail(orderDetail);
-      let total=orderDetail?.shipping_charges + orderDetail?.final_total
+      let total=(orderDetail?.shipping_charges + orderDetail?.final_total)
+     
       setTotal(total.toFixed(2))
     }
     setIsLoading(false)
