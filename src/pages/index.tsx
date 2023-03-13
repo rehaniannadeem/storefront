@@ -27,6 +27,7 @@ import { ROUTES } from "@utils/routes";
 //import { siteSettings } from "@settings/site-settings";
 import { useEffect } from 'react';
 
+
 const flashSaleCarouselBreakpoint = {
   "1281": {
     slidesPerView: 1,
@@ -46,14 +47,22 @@ export default function Home() {
   const router = useRouter();
 //  let domainData:any={}
   const url=router?.asPath.split("?")
- // console.log(domainData.name);
+//  console.log(router,'url');
+
   // useEffect(()=>{
   //   domainData=JSON?.parse(localStorage?.getItem("domainData")!)
   // },[])
 
 useEffect(()=>{
+  if(url[1]==="source=marketplace"){
+    let newUrl=url[1].split("=")
+    if(newUrl[1]){
+      localStorage.setItem("source",newUrl[1])
+    }
+   
+   }
   
-  {url[1]!=undefined &&
+  {url[1]!=undefined &&  url[1]!="source=marketplace" &&
   router.push(`${ROUTES.PRODUCT}?${url[1]}`, undefined, {
     locale: router.locale,
   })}

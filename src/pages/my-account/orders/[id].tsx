@@ -179,6 +179,7 @@ export default function OrderPage() {
                 <td className="p-4 italic">{ t("text-shipping")}:</td>
                 <td className="p-4"> {domainCurrencyCode} {Number(order?.shipping_charges).toFixed(2) }</td>
               </tr>
+           
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("common:date")}:</td>
                 <td className="p-4">{orderDetail[0].created_at}</td>
@@ -194,6 +195,10 @@ export default function OrderPage() {
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("text-note")}:</td>
                 <td className="p-4">{order.additional_notes}</td>
+              </tr>
+              <tr className="odd:bg-gray-150">
+                <td className="p-4 italic">{ t("common:label-discount")}:</td>
+                <td className="p-4"> {domainCurrencyCode} {Number(order?.discount_amount).toFixed(2) }</td>
               </tr>
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("text-total")}:</td>
