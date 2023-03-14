@@ -68,6 +68,9 @@ const ProductSingleDetails: React.FC = () => {
   let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   const [userData, setUserData] = useState<any>({});
   const[cartId,setCartId]=useState()
+
+  console.log(cartId,'idaiffsiadsfdc');
+ 
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
@@ -82,6 +85,7 @@ const ProductSingleDetails: React.FC = () => {
     let cartId:any=localStorage.getItem("cart_id")
     setCartId(cartId)
     // console.log(token);
+   
   }, []);
 
   useEffect(() => {
@@ -113,7 +117,10 @@ const ProductSingleDetails: React.FC = () => {
           console.log(err);
         });
     };
-    fetchData();
+    if(token){
+      fetchData();
+    }
+    
   }, [token]);
   useEffect(() => {
 
@@ -171,7 +178,7 @@ const ProductSingleDetails: React.FC = () => {
       .then((response) => {
         console.log(response.data, 'response server');
         if(response?.data?.success){
-          localStorage.setItem("cart_id",response.data.data.id)
+          // localStorage.setItem("cart_id",response.data.data.id)
           toast.success("Added to the cart")
 
           setAddToCartLoader(false);
@@ -207,6 +214,7 @@ const ProductSingleDetails: React.FC = () => {
         console.log(response.data, 'response server');
         if(response?.data?.success){
           localStorage.setItem("cart_id",response.data.data.id)
+          setCartId(response.data.data.id)
           toast.success("Added to the cart")
           setAddToCartLoader(false);
         }else{
@@ -221,7 +229,6 @@ const ProductSingleDetails: React.FC = () => {
 
       });
   }
-  // console.log(cartId);
   
   useEffect(()=>{
     if(isAuthorized){
@@ -230,7 +237,6 @@ const ProductSingleDetails: React.FC = () => {
       }else{
         addItemToServer(items)
       }
-      
     }
   
   },[items])
@@ -312,8 +318,8 @@ const ProductSingleDetails: React.FC = () => {
     if (Object.keys(attributes)?.length != 0 && product?.enable_stock == 1) {
       if (quantity <= Math.round(attributes?.variation_details[0]?.qty_available)) {
         addItemToCart(item, quantity);
-        console.log(item,"Item");
-        
+        // console.log(item,"Item");
+        setAddToCartLoader(false);
         // {isAuthorized &&  addItemToServer(item) }
         // toast.success("Added to the cart", {
         //   //type: "dark",
@@ -344,6 +350,7 @@ const ProductSingleDetails: React.FC = () => {
 
     } else {
       addItemToCart(item, quantity);
+      setAddToCartLoader(false);
       // {isAuthorized &&  addItemToServer(item) }
       // toast.success("Added to the cart", {
       //   //type: "dark",

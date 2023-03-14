@@ -13,7 +13,7 @@ const SearchProduct: React.FC<SearchProductProps> = ({ item }) => {
   const [_domainData, setDomainData] = useState({});
  // let urlName = item.name.replace(/\s+/g, "-");
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
-console.log(item,'tiem');
+// console.log(item,'tiem');
 const {locale}=useRouter()
   const { price, basePrice } = usePrice({
     amount: item.sale_price ? item.sale_price : item.price,

@@ -29,7 +29,7 @@ export default function Cart() {
   /*   const clearCart = () => {
     localStorage.removeItem("store-front-cart");
   }; */
-  console.log(items, "items");
+  // console.log(cartId, "items");
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
@@ -80,7 +80,10 @@ export default function Cart() {
   }
   useEffect(()=>{
     if(isAuthorized){
-      addItemToServer(items)
+      if(cartId){
+        addItemToServer(items)
+      }
+     
     }
   
   },[items])

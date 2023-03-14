@@ -778,7 +778,7 @@ const[source,setSource]=useState<any>()
           <CheckoutCard />
           <div className="flex flex-col p-1 ">
             <div className="p-2">
-              <label className="font-semibold">Enter Coupon Code</label>
+              <label className="font-semibold">{t('common:coupon-code')}</label>
             </div>
             <div className="p-2 w-full flex justify-between">
 
