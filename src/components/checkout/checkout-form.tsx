@@ -780,7 +780,7 @@ const[source,setSource]=useState<any>()
           <CheckoutCard />
           <div className="flex flex-col p-1 ">
             <div className="p-2">
-              <label className="font-semibold">{t('common:coupon-code')}</label>
+              {/* <label className="font-semibold">{t('common:discount-code')}</label> */}
             </div>
             <div className="p-2 w-full flex justify-between">
 
@@ -789,7 +789,7 @@ const[source,setSource]=useState<any>()
                 name={"coupon"}
                 variant="solid"
                 className=" w-3/4 mr-2"
-                placeholder="Coupon Code"
+                placeholder={t('common:discount-code')}
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value)}
                 style={{
