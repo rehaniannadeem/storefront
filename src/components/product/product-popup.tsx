@@ -147,7 +147,7 @@ export default function ProductPopup() {
       .then((response) => {
         console.log(response.data, 'response server');
         if(response?.data?.success){
-          localStorage.setItem("cart_id",response.data.data.id)
+          // localStorage.setItem("cart_id",response.data.data.id)
           toast.success("Added to the cart")
 
           setAddToCartLoader(false);
@@ -183,6 +183,7 @@ export default function ProductPopup() {
         console.log(response.data, 'response server');
         if(response?.data?.success){
           localStorage.setItem("cart_id",response.data.data.id)
+          setCartId(response.data.data.id)
           toast.success("Added to the cart")
           setAddToCartLoader(false);
         }else{
@@ -339,7 +340,7 @@ export default function ProductPopup() {
       openCart();
     }, 300);
   }
-  // console.log(data, "attributes");
+  // console.log( "attributes");
 
   return (
     <div className="rounded-lg bg-white">

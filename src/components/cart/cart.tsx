@@ -80,7 +80,10 @@ export default function Cart() {
   }
   useEffect(()=>{
     if(isAuthorized){
-      addItemToServer(items)
+      if(cartId){
+        addItemToServer(items)
+      }
+     
     }
   
   },[items])
