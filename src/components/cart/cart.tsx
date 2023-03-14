@@ -29,7 +29,7 @@ export default function Cart() {
   /*   const clearCart = () => {
     localStorage.removeItem("store-front-cart");
   }; */
-  // console.log(cartId, "items");
+  console.log(items, "items");
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {

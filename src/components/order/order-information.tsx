@@ -95,7 +95,7 @@ export default function OrderInformation() {
             <span className="uppercase text-[11px] block text-body font-normal leading-5">
               {t("text-payment-method")}:
             </span>
-            Cash On Delivery
+            Cash On {orderDetail.order_type}
           </li>
         </ul>
       ) : (

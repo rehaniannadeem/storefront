@@ -335,11 +335,12 @@ const[source,setSource]=useState<any>()
       .then((response) => {
         // console.log(response, "Payment ");
         if (response.status == 200) {
-          console.log("get_url");
-          setAddToCartLoader(false);
+          // console.log("get_url");
+          
           //  setIsDisabled(false);
           clearCart();
           window.open(response.data.Url, "_self");
+          setAddToCartLoader(false);
         }
         /// setPaymentGateway(response.data.data);
       })
@@ -444,12 +445,13 @@ const[source,setSource]=useState<any>()
 
           if (response.status == 200) {
             if (selectPayment.name == "Cash On Delivery" || selectPayment.name == "Cash On Pickup") {
+              setAddToCartLoader(false);
               Router.push(ROUTES.ORDER);
             } else {
               get_url(response.data[0]);
             }
           }
-          setAddToCartLoader(false);
+          
           deleteItem()
           localStorage.removeItem("cart_id");
         }
@@ -524,7 +526,7 @@ const[source,setSource]=useState<any>()
       });
 
   }
-// console.log(discount,'discount');
+// console.log(selectPayment,'discount');
 
   // const handleCity=()=>{
   //   setIsCity(true)
@@ -883,7 +885,10 @@ const[source,setSource]=useState<any>()
               </div> */}
               {checked === "Pickup" ? (
                 <div>
-                  <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
+                  <div onClick={() =>
+                        setSelectPayment({ id: 1, name: "Cash On Pickup" })
+                      } 
+                      className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
                     <input
                       style={{
                         accentColor: domainData.theme_color,
@@ -902,7 +907,12 @@ const[source,setSource]=useState<any>()
                     <label className="p-2">Cash On Pickup</label>
                   </div>
                   {paymentGateway?.map((type: any, index: any) => (
-                    <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 ">
+                    
+                    <div  className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
+                    onClick={() => setSelectPayment(type)}
+                    key={index}
+                    >
+                      
                       <div className="col-span-5 flex justify-start">
                         <input
                           style={{
@@ -915,7 +925,7 @@ const[source,setSource]=useState<any>()
                           name="payment-option"
                           className="m-2 "
                           onChange={() => setSelectPayment(type)}
-                        //checked={(type.name = selectPayment.name)}
+                        checked={type.name === selectPayment.name}
                         />
 
                         <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label>
@@ -941,7 +951,10 @@ const[source,setSource]=useState<any>()
               ) :
                 selectedMethod && selectedMethod.is_cod === 0 ?
                   paymentGateway?.map((type: any, index: any) => (
-                    <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 ">
+                    <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
+                    onClick={() => setSelectPayment(type)}
+                    key={index}
+                    >
                       <div className="col-span-5 flex justify-start">
                         <input
                           style={{
@@ -976,7 +989,9 @@ const[source,setSource]=useState<any>()
                     </div>
                   )) :
                   <div>
-                    <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
+                    <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 "
+                     onClick={() =>  setSelectPayment({ id: 1, name: "Cash On Delivery" })}
+                     >
                       <input
                         style={{
                           accentColor: domainData.theme_color,
@@ -995,7 +1010,10 @@ const[source,setSource]=useState<any>()
                       <label className="p-2">Cash On Delivery</label>
                     </div>
                     {paymentGateway?.map((type: any, index: any) => (
-                      <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 ">
+                      <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
+                      onClick={() => setSelectPayment(type)}
+                      key={index}
+                      >
                         <div className="col-span-5 flex justify-start">
                           <input
                             style={{
