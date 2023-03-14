@@ -121,7 +121,7 @@ const ProductSingleDetails: React.FC = () => {
       fetchData();
     }
     
-  }, [token]);
+  }, [token,productName]);
   useEffect(() => {
 
     if (product?.enable_stock == 1) {
@@ -214,6 +214,7 @@ const ProductSingleDetails: React.FC = () => {
         console.log(response.data, 'response server');
         if(response?.data?.success){
           localStorage.setItem("cart_id",response.data.data.id)
+          setCartId(response.data.data.id)
           toast.success("Added to the cart")
           setAddToCartLoader(false);
         }else{
