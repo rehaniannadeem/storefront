@@ -51,5 +51,6 @@
   "delivery-option":"Delivery Options",
   "delivery-address":"Delivery Address",
   "payment-method":"Payment Method",
-  "label-country":"Country"
+  "label-country":"Country",
+  "button-apply":"Apply"
 }

@@ -319,7 +319,9 @@ const ProductSingleDetails: React.FC = () => {
       if (quantity <= Math.round(attributes?.variation_details[0]?.qty_available)) {
         addItemToCart(item, quantity);
         // console.log(item,"Item");
-        setAddToCartLoader(false);
+        setTimeout(() => {
+          setAddToCartLoader(false);
+        }, 600);
         // {isAuthorized &&  addItemToServer(item) }
         // toast.success("Added to the cart", {
         //   //type: "dark",
@@ -345,12 +347,16 @@ const ProductSingleDetails: React.FC = () => {
           pauseOnHover: true,
           draggable: true,
         });
-        setAddToCartLoader(false);
+        setTimeout(() => {
+          setAddToCartLoader(false);
+        }, 600);
       }
 
     } else {
       addItemToCart(item, quantity);
-      setAddToCartLoader(false);
+      setTimeout(() => {
+        setAddToCartLoader(false);
+      }, 600);
       // {isAuthorized &&  addItemToServer(item) }
       // toast.success("Added to the cart", {
       //   //type: "dark",
