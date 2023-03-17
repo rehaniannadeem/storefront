@@ -793,7 +793,7 @@ const[source,setSource]=useState<any>()
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value)}
                 style={{
-                  height: "3.2rem"
+                  height: "3.3rem"
                 }}
               />
               <span className=" w-1/4">
@@ -804,7 +804,7 @@ const[source,setSource]=useState<any>()
                   style={{
                     background: domainData.theme_color,
                     color: 'white'
-                  }}>Apply</Button>
+                  }}>{t('forms:button-apply')}</Button>
               </span>
 
             </div>

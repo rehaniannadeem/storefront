@@ -270,8 +270,13 @@ export default function ProductPopup() {
     if (Object.keys(attributes).length != 0 && data.enable_stock == 1) {
       if(quantity<=Math.round(attributes?.variation_details[0]?.qty_available)){
         // {isAuthorized &&  addItemToServer(item) }
+        
        
         addItemToCart(item, quantity);
+        
+        setTimeout(() => {
+          setAddToCartLoader(false);
+        }, 600);
         // toast.success("Added to the cart", {
         //   //type: "dark",
         //   progressClassName: "fancy-progress-bar",
@@ -301,6 +306,8 @@ export default function ProductPopup() {
       }
     }else{
       addItemToCart(item, quantity);
+      
+   
       // {isAuthorized &&  addItemToServer(item) }
       // toast.success("Added to the cart", {
       //   //type: "dark",
@@ -316,6 +323,10 @@ export default function ProductPopup() {
       // setAddToCartLoader(false);
   
       // console.log(item, "item")
+      setTimeout(() => {
+        setAddToCartLoader(false);
+      }, 600);
+      // setAddToCartLoader(false);
     }
   }
 
