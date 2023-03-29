@@ -150,10 +150,12 @@ const[source,setSource]=useState<any>()
         if (shipping === "Free") {
           setFinalTotal(subTotal)
         } else {
+          // console.log('>>>>>>>>>>>', selectedMethod)
           if (selectPayment.name == "Cash On Delivery") {
-            let newTotal = subTotal + Number(selectedMethod?.cod_rate)
+            let newTotal = subTotal + Number(selectedMethod?.cod_rate)+Number(selectedMethod?.base_shipping_fee)
             setFinalTotal(newTotal)
-            setShippingFee(Number(selectedMethod?.cod_rate))
+            let totalFee=Number(selectedMethod?.base_shipping_fee)+Number(selectedMethod?.cod_rate)
+            setShippingFee(totalFee)
           } else if (selectPayment.name) {
             let newTotal = subTotal + Number(selectedMethod?.base_shipping_fee)
             setFinalTotal(newTotal)
@@ -388,7 +390,7 @@ const[source,setSource]=useState<any>()
       shippingMethod = ""
     } else {
       if (selectPayment.name == "Cash On Delivery") {
-        shippingCharges = Number(selectedMethod?.cod_rate)
+        shippingCharges = Number(selectedMethod?.cod_rate)+Number(selectedMethod?.base_shipping_fee)
         shippingMethod = selectedMethod?.name
       } else {
         shippingCharges = Number(selectedMethod?.base_shipping_fee)
