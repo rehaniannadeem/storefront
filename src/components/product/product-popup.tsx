@@ -201,7 +201,7 @@ export default function ProductPopup() {
   // console.log(cartId);
   
   useEffect(()=>{
-    if(isAuthorized){
+    if(isAuthorized && token){
       if(cartId){
         updateItemToServer(items)
       }else{
