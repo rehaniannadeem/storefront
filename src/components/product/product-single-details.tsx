@@ -67,7 +67,7 @@ const ProductSingleDetails: React.FC = () => {
   // let isSelected = Object.keys(attributes).length == 0 ? false : true;
   let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   const [userData, setUserData] = useState<any>({});
-  const[cartId,setCartId]=useState()
+  const[cartId,setCartId]=useState<any>()
 
   // console.log(cartId,'idaiffsiadsfdc');
  
@@ -229,15 +229,21 @@ const ProductSingleDetails: React.FC = () => {
 
       });
   }
+  useEffect(()=>{
+    let cartId:any=localStorage.getItem("cart_id")
+    setCartId(cartId)
+   
+  })
   
   useEffect(()=>{
-    if(isAuthorized){
+    if(isAuthorized && token){
       if(cartId){
         updateItemToServer(items)
       }else{
         addItemToServer(items)
       }
     }
+    
   
   },[items])
   // console.log(product, "product");

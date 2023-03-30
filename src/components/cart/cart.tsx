@@ -25,11 +25,12 @@ export default function Cart() {
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
   const [token, setToken] = useState("");
   const [userData, setUserData] = useState<any>({});
-  const[cartId,setCartId]=useState()
+  const[cartId,setCartId]=useState<any>()
   /*   const clearCart = () => {
     localStorage.removeItem("store-front-cart");
   }; */
-  console.log(items, "items");
+  // console.log(items, "items");
+ 
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
@@ -48,6 +49,34 @@ export default function Cart() {
     amount: total,
     currencyCode: domainCurrencyCode,
   });
+  useEffect(()=>{
+    let cartId:any=localStorage.getItem("cart_id")
+    setCartId(cartId)
+   
+  })
+  const deleteItem = () => {
+   
+    var domainData = JSON.parse(localStorage.getItem("domainData")!);
+    let token=domainData.token
+  
+      axios({
+        method: "get",
+        url: connector_base_url + "/abandonedcart/delete/"+cartId,
+        headers: {
+          Accept: "Application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          console.log(response, 'deletes response ');
+          setCartId('')
+         
+        })
+        .catch((err) => {
+          console.log(err, "Response Error");
+  
+        });
+    }
   const addItemToServer = (item:any) => {
     axios({
       method: "post",
@@ -66,8 +95,15 @@ export default function Cart() {
 
     })
       .then((response) => {
-        console.log(response.data, 'response server');
-        if(response?.data?.success){
+        console.log(response.data, 'update response ');
+        if(response?.data?.data.cart_detail.length==0){
+         
+          console.log('cart is empty', response?.data?.data.cart_detail);
+          
+            deleteItem()
+          localStorage.removeItem("cart_id");
+          
+         
    
         }else{
          
@@ -81,12 +117,15 @@ export default function Cart() {
   useEffect(()=>{
     if(isAuthorized){
       if(cartId){
-        addItemToServer(items)
+       addItemToServer(items) 
+       
       }
      
     }
-  
+   
   },[items])
+  // console.log(cartId,'thsi is item');
+  
   return (
     <div className="flex flex-col w-full h-full justify-between">
       <div className="w-full flex justify-between items-center relative ps-5 md:ps-7 py-0.5 border-b border-gray-100">
