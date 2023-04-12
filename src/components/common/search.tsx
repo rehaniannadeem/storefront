@@ -12,6 +12,7 @@ import {
 import Scrollbar from "@components/common/scrollbar";
 import SearchProduct from "@components/common/search-product";
 import { Context } from "src/pages/_app";
+import { debounce } from "lodash";
 
 export default function Search() {
   const { displaySearch, closeSearch } = useUI();
@@ -29,44 +30,45 @@ export default function Search() {
 
 useEffect(()=>{
 
-  if(searchText.length!=0){
-  setTimeout(() => {
-      let filter=  productData?.filter((item: any) => {
-        if (
-          item?.name
-            .toLocaleLowerCase()
-            .includes(searchText.toLocaleLowerCase())
-        ) {
-          return item;
-        }
-      })
-      setFilterArray(filter)
-  }, 1000);
-}
+//   if(searchText.length!=0){
+//   setTimeout(() => {
+//       let filter=  productData?.filter((item: any) => {
+//         if (
+//           item?.name
+//             .toLocaleLowerCase()
+//             .includes(searchText.toLocaleLowerCase())
+//         ) {
+//           return item;
+//         }
+//       })
+//       setFilterArray(filter)
+//   }, 1000);
+// }
  
-  // let filter=  productData?.filter((item: any) => {
-  //   if (
-  //     item?.name
-  //       .toLocaleLowerCase()
-  //       .includes(searchText.toLocaleLowerCase())
-  //   ) {
-  //     return item;
-  //   }
-  // })
-  // setFilterArray(filter)
+
   if(searchText.length===0){
     setFilterArray([])
   }
   
 },[searchText])
 
+const debouncedSearch = debounce((text, data, setFilterArray) => {
+  const filter = data?.filter((item:any) => {
+    if (item?.name?.toLowerCase().includes(text.toLowerCase())) {
+      return item;
+    }
+  });
+  setFilterArray(filter);
+}, 500); 
 
   function handleSearch(e: React.SyntheticEvent) {
     e.preventDefault();
   }
-  // function handleAutoSearch(e: React.FormEvent<HTMLInputElement>) {
-  //   setSearchText(e.currentTarget.value);
-  // }
+  function handleAutoSearch(e: React.FormEvent<HTMLInputElement>) {
+    const text=e.currentTarget.value
+    setSearchText(e.currentTarget.value);
+    debouncedSearch(text, productData, setFilterArray);
+  }
   function clear() {
     setSearchText("");
   }
@@ -107,7 +109,7 @@ useEffect(()=>{
             <div className="flex flex-col mx-auto mb-1.5 w-full ">
               <SearchBox
                 onSubmit={handleSearch}
-                onChange={(e)=>{setSearchText(e.currentTarget.value)}}
+                onChange={handleAutoSearch}
                 name="search"
                 value={searchText}
                 onClear={clear}
