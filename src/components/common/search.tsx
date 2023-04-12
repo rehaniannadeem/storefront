@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import cn from "classnames";
 import SearchResultLoader from "@components/ui/loaders/search-result-loader";
 import { useUI } from "@contexts/ui.context";
@@ -11,41 +11,80 @@ import {
 } from "body-scroll-lock";
 import Scrollbar from "@components/common/scrollbar";
 import SearchProduct from "@components/common/search-product";
-import { Context } from "src/pages/_app";
+// import { Context } from "src/pages/_app";
+import axios from "axios";
 
 export default function Search() {
   const { displaySearch, closeSearch } = useUI();
-  const { products }: any = useContext(Context);
+  // const { products }: any = useContext(Context);
   const [searchText, setSearchText] = useState("");
-  const [productData, setProductData] = useState<any>();
+  // const [productData, setProductData] = useState<any>();
+  const [domain, setDomain] = useState<any>();
   const [filterArray, setFilterArray] = useState<any>();
+  const[isLoading,setIsLoading]=useState(false)
+  let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   /*   const { data, isLoading } = useSearchQuery({
     text: searchText,
   }); */
   //console.log(data, "search data");
-  useEffect(() => {
-    setProductData(products);
-  }, [products]);
+
+  const getProduct = () => {
+    axios({
+      method: "get",
+      url: storefront_base_url + "/products?name="+searchText,
+      // data: bodyFormData,
+      headers: {
+        "Content-Type": "Application/json",
+        Authorization: `Bearer ${domain.token}`,
+      },
+    })
+      .then((response: any) => {
+        console.log(response.data, "this is product detail");
+        setFilterArray(response.data)
+        setIsLoading(false)
+      
+      })
+      .catch(function (err: any) {
+        //handle error
+        console.log(err);
+        setIsLoading(false)
+      });
+  };
+  // useEffect(() => {
+  //   setProductData(products);
+  // }, [products]);
+  useEffect(()=>{
+    var domainData = JSON.parse(localStorage.getItem("domainData")!);
+    setDomain(domainData)
+  },[])
 
 useEffect(()=>{
 
-  if(searchText.length!=0){
+ 
+   if(searchText){
+    setIsLoading(true)
   setTimeout(() => {
-      let filter=  productData?.filter((item: any) => {
-        if (
-          item?.name
-            .toLocaleLowerCase()
-            .includes(searchText.toLocaleLowerCase())
-        ) {
-          return item;
-        }
-      })
-      setFilterArray(filter)
-  }, 1000);
-}
+    getProduct();
+  }, 500);
+ }
+
+//   if(searchText.length!=0){
+//   setTimeout(() => {
+//       let filter=  productData?.filter((item: any) => {
+//         if (
+//           item?.name
+//             .toLocaleLowerCase()
+//             .includes(searchText.toLocaleLowerCase())
+//         ) {
+//           return item;
+//         }
+//       })
+//       setFilterArray(filter)
+//   }, 1000);
+// }
  
 
-  if(searchText.length===0){
+  if(!searchText){
     setFilterArray([])
   }
   
@@ -105,11 +144,11 @@ useEffect(()=>{
                 ref={(input) => input && input.focus()}
               />
             </div>
-            {filterArray && (
+            
               <div className="bg-white flex flex-col rounded-md overflow-hidden h-full max-h-64vh lg:max-h-[550px]">
                 <Scrollbar className="os-host-flexbox">
                   <div className="h-full">
-                    {!productData ? (
+                    {isLoading ? (
                       <div className="p-5 border-b border-gray-300 border-opacity-30 last:border-b-0">
                         {Array.from({ length: 5 }).map((_, idx) => (
                           <SearchResultLoader
@@ -149,7 +188,7 @@ useEffect(()=>{
                   </div>
                 </Scrollbar>
               </div>
-            )}
+           
           </div>
         </div>
       </div>
