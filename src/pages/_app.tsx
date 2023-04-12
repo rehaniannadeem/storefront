@@ -88,13 +88,13 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
     // let parts = host.split(".");
     // setBusiness(parts[0]);
    
-      window.Trengo = window.Trengo || {};
-      window.Trengo.key = 'ByGdzSo2L0OI2OKu';
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.async = true;
-      script.src = 'https://static.widget.trengo.eu/embed.js';
-      document.getElementsByTagName('head')[0].appendChild(script);
+      // window.Trengo = window.Trengo || {};
+      // window.Trengo.key = 'ByGdzSo2L0OI2OKu';
+      // const script = document.createElement('script');
+      // script.type = 'text/javascript';
+      // script.async = true;
+      // script.src = 'https://static.widget.trengo.eu/embed.js';
+      // document.getElementsByTagName('head')[0].appendChild(script);
   
 
   }, []);
