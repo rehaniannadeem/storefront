@@ -71,7 +71,7 @@ const fav_icon:string=domain?.fav_icon;
       >
         {children}
         {domain?.whatsapp_no!=null?
-        (<div className="bottom-0 right-0 fixed w-12 mr-8 mb-20 z-10">
+        (<div className="bottom-0 left-0 fixed w-12 ml-8 mb-20 z-10">
           <a href={`https://wa.me/${domain.whatsapp_no}`} target="_blank">
             <img
               src="/assets/images/whatsapp.png"

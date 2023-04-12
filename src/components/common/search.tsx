@@ -18,6 +18,7 @@ export default function Search() {
   const { products }: any = useContext(Context);
   const [searchText, setSearchText] = useState("");
   const [productData, setProductData] = useState<any>();
+  const [filterArray, setFilterArray] = useState<any>();
   /*   const { data, isLoading } = useSearchQuery({
     text: searchText,
   }); */
@@ -25,6 +26,23 @@ export default function Search() {
   useEffect(() => {
     setProductData(products);
   }, [products]);
+
+useEffect(()=>{
+  let filter=  productData
+  ?.filter((item: any) => {
+    if (
+      item?.name
+        .toLocaleLowerCase()
+        .includes(searchText.toLocaleLowerCase())
+    ) {
+      return item;
+    }
+  })
+  setFilterArray(filter)
+  
+},[searchText])
+
+
   function handleSearch(e: React.SyntheticEvent) {
     e.preventDefault();
   }
@@ -78,7 +96,7 @@ export default function Search() {
                 ref={(input) => input && input.focus()}
               />
             </div>
-            {searchText && (
+            {filterArray && (
               <div className="bg-white flex flex-col rounded-md overflow-hidden h-full max-h-64vh lg:max-h-[550px]">
                 <Scrollbar className="os-host-flexbox">
                   <div className="h-full">
@@ -92,17 +110,17 @@ export default function Search() {
                         ))}
                       </div>
                     ) : (
-                      productData
-                        ?.filter((item: any) => {
-                          if (
-                            item?.name
-                              .toLocaleLowerCase()
-                              .includes(searchText.toLocaleLowerCase())
-                          ) {
-                            return item;
-                          }
-                        })
-                        ?.map((item: any, index: any) => {
+                    
+                        // ?.filter((item: any) => {
+                        //   if (
+                        //     item?.name
+                        //       .toLocaleLowerCase()
+                        //       .includes(searchText.toLocaleLowerCase())
+                        //   ) {
+                        //     return item;
+                        //   }
+                        // })
+                        filterArray?.map((item: any, index: any) => {
                           // if (
                           //   item.name.toLocaleLowerCase() === "open product"
                           // ) {
