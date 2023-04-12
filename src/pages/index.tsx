@@ -13,7 +13,7 @@ import { ROUTES } from "@utils/routes";
 */
 import Container from "@components/ui/container";
 import BrandBlock from "@containers/brand-block";
-import FeatureBlock from "@containers/feature-block";
+// import FeatureBlock from "@containers/feature-block";
 import Layout from "@components/layout/layout";
 import Divider from "@components/ui/divider";
 import ProductsWithFlashSale from "@containers/products-with-flash-sale";
@@ -26,6 +26,8 @@ import { ROUTES } from "@utils/routes";
 //import Head from "next/head";
 //import { siteSettings } from "@settings/site-settings";
 import { useEffect } from 'react';
+
+
 
 const flashSaleCarouselBreakpoint = {
   "1281": {
@@ -44,25 +46,34 @@ const flashSaleCarouselBreakpoint = {
 
 export default function Home() {
   const router = useRouter();
- let domainData:any={}
+//  let domainData:any={}
   const url=router?.asPath.split("?")
- // console.log(domainData.name);
-  useEffect(()=>{
-    domainData=JSON?.parse(localStorage?.getItem("domainData")!)
-  },[])
+//  console.log(router,'url');
+
+  // useEffect(()=>{
+  //   domainData=JSON?.parse(localStorage?.getItem("domainData")!)
+  // },[])
 
 useEffect(()=>{
+ 
+  if(url[1]!=undefined && url[1].toLowerCase().includes("source")){
+    let newUrl=url[1].split("=")
+    if(newUrl[1]){
+      sessionStorage.setItem("source",newUrl[1])
+    }
+   
+   }
   
-  {url[1]!=undefined &&
+  {url[1]!=undefined &&  url[1].toLowerCase().includes("sku")&&
   router.push(`${ROUTES.PRODUCT}?${url[1]}`, undefined, {
     locale: router.locale,
   })}
-  if(domainData?.name==="urbannecessity" && url[1]==undefined){
-    router.push(`${ROUTES.SEARCH}`, undefined, {
-      locale: router.locale,
-    })
+  // if(domainData?.name==="urbannecessity" && url[1]==undefined){
+  //   router.push(`${ROUTES.SEARCH}`, undefined, {
+  //     locale: router.locale,
+  //   })
 
-  }
+  // }
 },[url])
   /** 
   const [title, setTitle] = useState("");
@@ -91,6 +102,7 @@ useEffect(()=>{
 */
   return (
     <Container>
+    
       <HeroWithCategory />
       <ProductsWithFlashSale carouselBreakpoint={flashSaleCarouselBreakpoint} />
       {/**
@@ -112,7 +124,7 @@ useEffect(()=>{
       */}
       <Divider />
       <BrandBlock sectionHeading="text-top-brands" />
-      <FeatureBlock />
+      {/* <FeatureBlock /> */}
     </Container>
   );
 }

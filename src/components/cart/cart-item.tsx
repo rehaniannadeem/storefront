@@ -11,24 +11,30 @@ import { generateCartItemName } from "@utils/generate-cart-item-name";
 import { useTranslation } from "next-i18next";
 import { useEffect, useState } from "react";
 import getSymbolFromCurrency from "currency-symbol-map";
+// import axios from "axios";
+// import { toast } from 'react-toastify';
 
 type CartItemProps = {
   item: any;
 };
 
 const CartItem: React.FC<CartItemProps> = ({ item }) => {
-  const urlName = item.name.replace(/\s+/g, "-");
+ // const urlName = item.name.replace(/\s+/g, "-");
   const { t } = useTranslation("common");
   const { addItemToCart, removeItemFromCart, clearItemFromCart } = useCart();
   const [_domainData, setDomainData] = useState({});
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
+  
+  // let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
 
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
       setDomainData(domainData);
+      
     }
     setDomainCurrencyCode(domainData.currency.code);
+    // setToken(domainData.token);
   }, []);
   /*  const { price } = usePrice({
     amount: item.price,
@@ -38,6 +44,42 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
     amount: item.itemTotal,
     currencyCode: domainCurrencyCode,
   }); */
+  // const deleteItem = (item:any) => {
+  //   axios({
+  //     method: "get",
+  //     url: connector_base_url + "/abandonedcart/delete/"+item.indexId,
+  //     headers: {
+  //       Accept: "Application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //     // data: {
+  //     //   contact_id: userData.id,
+  //     //    shipping_status: "pending", 
+  //     //    final_amount: item?.attributes.sell_price_inc_tax,
+  //     //    cart_detail:[item]
+  //     // },
+
+  //   })
+  //     .then((response) => {
+  //       // console.log(response.data.success, 'deletes response ');
+  //       if(response.data.success==true){
+  //         clearItemFromCart(item.id)
+  //         // toast.success("Item Deleted Successfully")
+  //       }else{
+  //         toast.error("Something Went Wrong")
+  //       }
+
+  //     })
+  //     .catch((err) => {
+  //       console.log(err, "Response Error");
+
+  //     });
+  // }
+  const handleDeleteItem=(item:any)=>{
+    // console.log(item,'item');
+    clearItemFromCart(item.id)
+    // deleteItem(item)
+  }
 
   return (
     <motion.div
@@ -60,7 +102,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
         />
         <div
           className="absolute top-0 start-0 h-full w-full bg-black bg-opacity-30 md:bg-opacity-0 flex justify-center items-center transition duration-200 ease-in-out md:group-hover:bg-opacity-30"
-          onClick={() => clearItemFromCart(item.id)}
+          onClick={()=>{handleDeleteItem(item)}}
           role="button"
         >
           <IoIosCloseCircle className="relative text-white text-2xl transform md:scale-0 md:opacity-0 transition duration-300 ease-in-out md:group-hover:scale-100 md:group-hover:opacity-100" />
@@ -69,15 +111,15 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
       <div className="flex flex-col w-full overflow-hidden">
         <Link
-          href={`${ROUTES.PRODUCTS}/${urlName}`}
+          href={`${ROUTES.PRODUCTS}/${item?.name}`}
           className="truncate text-sm text-heading mb-1.5 -mt-1"
         >
-          {generateCartItemName(item.name, item.attributes)}
+          {generateCartItemName(item)}
         </Link>
         <span className="text-sm text-gray-400 mb-2.5">
           {t("text-unit-price")} : &nbsp;
           {getSymbolFromCurrency(domainCurrencyCode)}
-          {Math.round(item.attributes.default_sell_price)}
+          {Number(item.attributes.sell_price_inc_tax).toFixed(2)}
           {/* {price} */}
         </span>
 
@@ -90,7 +132,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
           />
           <span className="font-semibold p-1 text-sm md:text-base text-heading leading-5">
             {getSymbolFromCurrency(domainCurrencyCode)}
-            {Math.round(item.itemTotal)}
+            {Number(item.itemTotal).toFixed(2)}
             {/*   {totalPrice} */}
           </span>
         </div>

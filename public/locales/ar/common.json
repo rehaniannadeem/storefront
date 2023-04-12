@@ -185,6 +185,10 @@
   "date":"تاريخ",
   "order-type":"نوع الطلب",
   "payment-method":"طريقة الدفع او السداد",
-  "text-variation":"الاختلاف"
+  "text-variation":"الاختلاف",
+  "text-shipping-method":"طريقة الشحن",
+  "online-payment":"الدفع الالكتروني",
+  "label-discount":"تخفيض",
+  "discount-code":"Discount Code"
   
 }

@@ -30,7 +30,7 @@ const OrderItemCard = ({ product }: { product: any }) => {
   }, []);
 
   const { price: itemTotal }: any = usePrice({
-    amount: product.unit_price * product.quantity,
+    amount: product.unit_price_inc_tax * product.quantity,
     currencyCode: domainCurrencyCode,
   });
 
@@ -56,7 +56,7 @@ export default function OrderPage() {
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
   const [orderDetail, setOrderDetail] = useState<any>([]);
   const [_productData, setProductData] = useState<any>({});
-  const [subTotal, setSubTotal] = useState<any>();
+  //const [subTotal, setSubTotal] = useState<any>();
   const [order, setOrder] = useState<any>({});
   let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   useEffect(() => {
@@ -81,7 +81,7 @@ export default function OrderPage() {
           console.log(">>>>>>>>>>>", response);
           setOrder(response.data.data[0]);
           setOrderDetail(response.data.data[0].sell_lines);
-          setSubTotal(response.data.data[0].total_before_tax);
+          //setSubTotal(response.data.data[0].total_before_tax);
           /*  console.log(response.data.data[0].total_before_tax, "this is total");
           console.log(subTotal, " total");
           console.log(response.data.data, "order"); */
@@ -105,6 +105,8 @@ export default function OrderPage() {
   ); */
   //console.log(subtotal, "this is total");
   //  console.log(orderDetail, "order Detail");
+  // console.log(order);
+  
   return (
     <AccountLayout>
       {/*  <OrderDetails className="p-0" /> */}
@@ -115,9 +117,17 @@ export default function OrderPage() {
               {t("text-order-details")}:
             </h2>
             <div className="inline-flex  md:ml-10  w-3/5 justify-end">
-              <h2 className="font-bold text-lg rounded-full text-white bg-red-600 p-2 w-fit h-fit">
+              {order?.payment_status.toLowerCase()==="due"?
+               <h2 className="font-bold text-lg rounded-full text-white bg-red-600 p-2 w-fit h-fit">
+               {order.payment_status}
+             </h2>:
+              <h2 className="font-bold text-lg rounded-full text-white bg-green-600 p-2 w-fit h-fit">
+              {order.payment_status}
+            </h2>
+              }
+              {/* <h2 className="font-bold text-lg rounded-full text-white bg-red-600 p-2 w-fit h-fit">
                 {order.payment_status}
-              </h2>
+              </h2> */}
             </div>
           </div>
 
@@ -150,12 +160,12 @@ export default function OrderPage() {
             </tbody>
 
             <tfoot>
-              <tr className="odd:bg-gray-150">
+              {/* <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("text-sub-total")}:</td>
                 <td className="p-4">
                   {domainCurrencyCode} {Math.round(subTotal)}
                 </td>
-              </tr>
+              </tr> */}
               {/*   <tr className="odd:bg-gray-150">
           <td className="p-4 italic">{t("text-shipping")}:</td>
           <td className="p-4">
@@ -165,6 +175,11 @@ export default function OrderPage() {
             </span>
           </td>
         </tr> */}
+        <tr className="odd:bg-gray-150">
+                <td className="p-4 italic">{ t("text-shipping")}:</td>
+                <td className="p-4"> {domainCurrencyCode} {Number(order?.shipping_charges).toFixed(2) }</td>
+              </tr>
+           
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("common:date")}:</td>
                 <td className="p-4">{orderDetail[0].created_at}</td>
@@ -182,9 +197,13 @@ export default function OrderPage() {
                 <td className="p-4">{order.additional_notes}</td>
               </tr>
               <tr className="odd:bg-gray-150">
+                <td className="p-4 italic">{ t("common:label-discount")}:</td>
+                <td className="p-4"> {domainCurrencyCode} {Number(order?.discount_amount).toFixed(2) }</td>
+              </tr>
+              <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("text-total")}:</td>
                 <td className="p-4">
-                  {domainCurrencyCode} {Math.round(subTotal)}
+                  {domainCurrencyCode} {(Number(order?.final_total)+Number(order?.shipping_charges)).toFixed(2)}
                 </td>
               </tr>
             </tfoot>

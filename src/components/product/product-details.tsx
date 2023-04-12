@@ -38,7 +38,7 @@ const ProductSingleDetails: React.FC = () => {
     query: { slug },
   } = useRouter(); */
   const router = useRouter();
- 
+  const {locale} = useRouter();
   const url=router.asPath.split("?")
   const sku=url[1]
  
@@ -195,7 +195,7 @@ const ProductSingleDetails: React.FC = () => {
                   <img
                     src={
                       item?.original ??
-                      "/assets/placeholder/products/product-gallery.svg"
+                      "/icons/ignite-default.png"
                     }
                     // alt={`${data?.name}--${index}`}
                     className="object-contain w-full "
@@ -238,14 +238,15 @@ const ProductSingleDetails: React.FC = () => {
       
         <div className="col-span-4 ">
           <div className="col-span-1 transition duration-150 ease-in hover:opacity-90">
-            <img src={"/assets/images/default.png"} alt="product Image" />
+            <img src={"/icons/ignite-default.png"} alt="product Image" />
           </div>
         </div>
       )}
       <div className="col-span-5 pt-8 lg:pt-0">
         <div className="pb-7 mb-7 border-b border-gray-300">
           <h2 className="text-heading text-lg md:text-xl lg:text-2xl 2xl:text-3xl font-bold hover:text-black mb-3.5">
-            {product?.name}
+          {locale==='ar' && product?.arabic_name ? product?.arabic_name : product?.name}
+            {/* {product?.name} */}
           </h2>
           <p className="text-body text-sm lg:text-base leading-6 lg:leading-8">
             {product?.description && (
@@ -258,7 +259,7 @@ const ProductSingleDetails: React.FC = () => {
             <div className="text-heading font-bold text-base md:text-xl lg:text-2xl 2xl:text-4xl pe-2 md:pe-0 lg:pe-2 2xl:pe-0">
               {getSymbolFromCurrency(domainCurrencyCode)}{" "}
               {Object.keys(attributes).length == 0
-                ? (product?.price?.toFixed(2))
+                ? Number(product?.price).toFixed(2)
                 : Number(attributes?.sell_price_inc_tax).toFixed(2)}
            
             </div>

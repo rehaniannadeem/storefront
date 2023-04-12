@@ -22,6 +22,7 @@ import { useTranslation } from "next-i18next";
 import getSymbolFromCurrency from "currency-symbol-map";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
+import { useUI } from "@contexts/ui.context";
 
 const productGalleryCarouselResponsive = {
   "768": {
@@ -34,10 +35,15 @@ const productGalleryCarouselResponsive = {
 
 const ProductSingleDetails: React.FC = () => {
   const { t } = useTranslation("common");
+  const { items,total} = useCart();
+  // console.log(items,'this is Item');
+  
   const {
     query: { slug },
+    locale
   } = useRouter();
-
+  const { isAuthorized } = useUI();
+  let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   const productName = slug?.toString().split("%").join(" ");
 
   //  const productName = slug;
@@ -59,8 +65,12 @@ const ProductSingleDetails: React.FC = () => {
   const [isSelected, setIsSelected] = useState(false);
   //const [isCategory, setIsCategory] = useState(false);
   // let isSelected = Object.keys(attributes).length == 0 ? false : true;
-  let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
+  let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
+  const [userData, setUserData] = useState<any>({});
+  const[cartId,setCartId]=useState<any>()
 
+  // console.log(cartId,'idaiffsiadsfdc');
+ 
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
@@ -68,14 +78,21 @@ const ProductSingleDetails: React.FC = () => {
     }
     setDomainCurrencyCode(domainData.currency.code);
     setToken(domainData.token);
+    var userData = JSON.parse(localStorage.getItem("userData")!);
+    if (userData) {
+      setUserData(userData);
+    }
+    let cartId:any=localStorage.getItem("cart_id")
+    setCartId(cartId)
     // console.log(token);
+   
   }, []);
 
   useEffect(() => {
     const fetchData = () => {
       axios({
         method: "get",
-        url:storefront_base_url+ "/products",
+        url: storefront_base_url + "/products",
         params: {
           name: productName,
         },
@@ -100,16 +117,19 @@ const ProductSingleDetails: React.FC = () => {
           console.log(err);
         });
     };
-    fetchData();
-  }, [token]);
-  useEffect(() => {
+    if(token){
+      fetchData();
+    }
     
+  }, [token,productName]);
+  useEffect(() => {
+
     if (product?.enable_stock == 1) {
-     
+
       if (
         Object.keys(attributes).length != 0) {
-        
-        if (quantity<=Math.round(attributes?.variation_details[0]?.qty_available) ) {
+
+        if (quantity <= Math.round(attributes?.variation_details[0]?.qty_available)) {
           setIsDisable(false);
         } else {
           setIsDisable(true);
@@ -138,6 +158,94 @@ const ProductSingleDetails: React.FC = () => {
       }
     }
   }, [product]);
+  const updateItemToServer = (item:any) => {
+    axios({
+      method: "post",
+      url: connector_base_url + "/abandonedcart/store",
+      headers: {
+        Accept: "Application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        contact_id: userData.id,
+        id:cartId,
+         shipping_status: "pending", 
+         final_amount: total,
+         cart_detail:item
+      },
+
+    })
+      .then((response) => {
+        console.log(response.data, 'response server');
+        if(response?.data?.success){
+          // localStorage.setItem("cart_id",response.data.data.id)
+          toast.success("Added to the cart")
+
+          setAddToCartLoader(false);
+        }else{
+          toast.error("Something went wrong")
+          setAddToCartLoader(false);
+        }
+
+
+      })
+      .catch((err) => {
+        console.log(err, "Response Error");
+
+      });
+  }
+  const addItemToServer = (item:any) => {
+    axios({
+      method: "post",
+      url: connector_base_url + "/abandonedcart/store",
+      headers: {
+        Accept: "Application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        contact_id: userData.id,
+         shipping_status: "pending", 
+         final_amount: total,
+         cart_detail:item
+      },
+
+    })
+      .then((response) => {
+        console.log(response.data, 'response server');
+        if(response?.data?.success){
+          localStorage.setItem("cart_id",response.data.data.id)
+          setCartId(response.data.data.id)
+          toast.success("Added to the cart")
+          setAddToCartLoader(false);
+        }else{
+          toast.error("Something went wrong")
+          setAddToCartLoader(false);
+        }
+
+
+      })
+      .catch((err) => {
+        console.log(err, "Response Error");
+
+      });
+  }
+  useEffect(()=>{
+    let cartId:any=localStorage.getItem("cart_id")
+    setCartId(cartId)
+   
+  })
+  
+  useEffect(()=>{
+    if(isAuthorized && token){
+      if(cartId){
+        updateItemToServer(items)
+      }else{
+        addItemToServer(items)
+      }
+    }
+    
+  
+  },[items])
   // console.log(product, "product");
   /*   const { price } = usePrice(
     data && {
@@ -155,6 +263,8 @@ const ProductSingleDetails: React.FC = () => {
         attributes.hasOwnProperty(variation)
       )
     : true; */
+   
+ 
 
   function addToCart() {
     if (!isSelected) return;
@@ -212,22 +322,27 @@ const ProductSingleDetails: React.FC = () => {
 
     const item = generateCartItem(product!, attributes);
     if (Object.keys(attributes)?.length != 0 && product?.enable_stock == 1) {
-      if(quantity<=Math.round(attributes?.variation_details[0]?.qty_available)){
+      if (quantity <= Math.round(attributes?.variation_details[0]?.qty_available)) {
         addItemToCart(item, quantity);
-        toast.success("Added to the cart", {
-          //type: "dark",
-          progressClassName: "fancy-progress-bar",
-          position: width > 768 ? "bottom-right" : "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-        setAddToCartLoader(false);
-    
-        console.log(item, "item")
-      }else{
+        // console.log(item,"Item");
+        setTimeout(() => {
+          setAddToCartLoader(false);
+        }, 600);
+        // {isAuthorized &&  addItemToServer(item) }
+        // toast.success("Added to the cart", {
+        //   //type: "dark",
+        //   progressClassName: "fancy-progress-bar",
+        //   position: width > 768 ? "bottom-right" : "top-right",
+        //   autoClose: 2000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        // });
+        // setAddToCartLoader(false);
+
+        // console.log(item, "item")
+      } else {
         toast.error("Out of Stock", {
           //type: "dark",
           progressClassName: "fancy-progress-bar",
@@ -238,28 +353,31 @@ const ProductSingleDetails: React.FC = () => {
           pauseOnHover: true,
           draggable: true,
         });
-        setAddToCartLoader(false);
+        setTimeout(() => {
+          setAddToCartLoader(false);
+        }, 600);
       }
-    
-    }else{
+
+    } else {
       addItemToCart(item, quantity);
-      toast.success("Added to the cart", {
-        //type: "dark",
-        progressClassName: "fancy-progress-bar",
-        position: width > 768 ? "bottom-right" : "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-      setAddToCartLoader(false);
-  
-      console.log(item, "item")
+      setTimeout(() => {
+        setAddToCartLoader(false);
+      }, 600);
+      // {isAuthorized &&  addItemToServer(item) }
+      // toast.success("Added to the cart", {
+      //   //type: "dark",
+      //   progressClassName: "fancy-progress-bar",
+      //   position: width > 768 ? "bottom-right" : "top-right",
+      //   autoClose: 2000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      // });
+      // setAddToCartLoader(false);
+
+      // console.log(item, "item")
     }
-  
-   
-  
   }
 
   function handleAttribute(attribute: any) {
@@ -273,7 +391,7 @@ const ProductSingleDetails: React.FC = () => {
   console.log(Object.keys(attributes).length, "quantity");
    console.log(product.enable_stock, "stock"); */
   // console.log(product, "product");
-  // console.log("attributes", attributes);
+  //console.log("attributes", attributes);
 
   return (
     //block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start
@@ -294,7 +412,7 @@ const ProductSingleDetails: React.FC = () => {
                   <img
                     src={
                       item?.original ??
-                      "/assets/placeholder/products/product-gallery.svg"
+                      "/icons/ignite-default.png"
                     }
                     alt={`${data?.name}--${index}`}
                     className="object-contain w-full "
@@ -316,7 +434,7 @@ const ProductSingleDetails: React.FC = () => {
             <SwiperSlide key={`product-gallery-key`}>
               <div className="col-span-5 ">
                 <div className="col-span-1 transition duration-150 ease-in hover:opacity-90">
-                  <img src={"/assets/images/default.png"} alt="product Image" />
+                  <img src={"/icons/ignite-default.png"} alt="product Image" className="object-cover"/>
                 </div>
               </div>
             </SwiperSlide>
@@ -330,6 +448,7 @@ const ProductSingleDetails: React.FC = () => {
               showNav={false}
               showPlayButton={false}
               showFullscreenButton={false}
+             
             />
           </div>
         )
@@ -353,14 +472,15 @@ const ProductSingleDetails: React.FC = () => {
         </div> */
         <div className="col-span-5 ">
           <div className="col-span-1 transition duration-150 ease-in hover:opacity-90">
-            <img src={"/assets/images/default.png"} alt="product Image" />
+            <img src={"/icons/ignite-default.png"} className="w-full object-cover" style={{ height: '400px' }} alt="product Image" />
           </div>
         </div>
       )}
       <div className="col-span-4 pt-8 lg:pt-0">
         <div className="pb-7 mb-7 border-b border-gray-300">
           <h2 className="text-heading text-lg md:text-xl lg:text-2xl 2xl:text-3xl font-bold hover:text-black mb-3.5">
-            {product?.name}
+            {locale === 'ar' && product?.arabic_name ? product?.arabic_name : product?.name}
+            {/* {product?.name} */}
           </h2>
           <p className="text-body text-sm lg:text-base leading-6 lg:leading-8">
             {product?.description && (
@@ -373,8 +493,8 @@ const ProductSingleDetails: React.FC = () => {
             <div className="text-heading font-bold text-base md:text-xl lg:text-2xl 2xl:text-4xl pe-2 md:pe-0 lg:pe-2 2xl:pe-0">
               {getSymbolFromCurrency(domainCurrencyCode)}{" "}
               {Object.keys(attributes).length == 0
-                ? Math.round(product.price)
-                : Math.round(attributes.sell_price_inc_tax)}
+                ? Number(product.price).toFixed(2)
+                : Number(attributes.sell_price_inc_tax).toFixed(2)}
               {/*  {price} */}
             </div>
             {/*  {discount && (
@@ -405,7 +525,7 @@ const ProductSingleDetails: React.FC = () => {
           <Counter
             quantity={quantity}
             onIncrement={() => {
-             // console.log(quantity, "dslfkjalfskjaslkfjj");
+              // console.log(quantity, "dslfkjalfskjaslkfjj");
               if (quantity == 0) {
                 alert("out of stock");
               } else {
@@ -418,21 +538,20 @@ const ProductSingleDetails: React.FC = () => {
                 if (
                   Object.keys(attributes)?.length != 0 &&
                   quantity <
-                    Math.round(attributes.variation_details[0]?.qty_available)
+                  Math.round(attributes.variation_details[0]?.qty_available)
                 ) {
                   setIsDisable(false);
                 }
               }
             }}
             disableDecrement={quantity === 0}
-           // disableIncrement={isDisable}
+          // disableIncrement={isDisable}
           />
           <Button
             onClick={addToCart}
             variant="slim"
-            className={`w-full md:w-6/12 xl:w-80 ${
-              !isSelected && "bg-gray-400 hover:bg-gray-400"
-            } `}
+            className={`w-full md:w-6/12 xl:w-80 ${!isSelected && "bg-gray-400 hover:bg-gray-400"
+              } `}
             style={
               !isSelected
                 ? { backgroundColor: "bg-gray-400" }

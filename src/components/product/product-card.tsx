@@ -2,8 +2,9 @@ import cn from "classnames";
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import { useUI } from "@contexts/ui.context";
-import usePrice from "@framework/product/use-price";
+// import usePrice from "@framework/product/use-price";
 import { Product } from "@framework/types";
+import {  useRouter } from "next/router";
 //import { useTranslation } from "next-i18next";
 
 interface ProductProps {
@@ -28,10 +29,15 @@ const ProductCard: FC<ProductProps> = ({
 }) => {
   // const { t } = useTranslation("common");
   const { openModal, setModalView, setModalData } = useUI();
-  const placeholderImage = `/assets/placeholder/products/product-${variant}.svg`;
+  // const placeholderImage = `/assets/placeholder/products/product-${variant}.svg`;
   const [_domainData, setDomainData] = useState({});
 
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
+const {locale}=useRouter()
+
+
+
+
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
@@ -39,17 +45,17 @@ const ProductCard: FC<ProductProps> = ({
     }
     setDomainCurrencyCode(domainData.currency.code);
   }, []);
-  const { price, basePrice, discount } = usePrice({
-    amount: product.sale_price ? product.sale_price : product.price,
-    baseAmount: product.price,
-    currencyCode: domainCurrencyCode,
-  });
+  // const { price, basePrice, discount } = usePrice({
+  //   amount: product.sale_price ? product.sale_price : product.price,
+  //   baseAmount: product.price,
+  //   currencyCode: domainCurrencyCode,
+  // });
   function handlePopupView() {
     setModalData({ data: product });
     setModalView("PRODUCT_VIEW");
     return openModal();
   }
-  // console.log(product);
+  //  console.log(product);
   return (
     <div
       className={cn(
@@ -82,7 +88,7 @@ const ProductCard: FC<ProductProps> = ({
         )}
       >
         <Image
-          src={product?.image?.thumbnail ?? placeholderImage}
+          src={product?.image?.thumbnail ?? '/icons/ignite-default.png'}
           width={imgWidth}
           height={imgHeight}
           loading={imgLoading}
@@ -119,7 +125,8 @@ const ProductCard: FC<ProductProps> = ({
               variant === "list",
           })}
         >
-          {product?.name}
+          {locale==='ar' && product?.arabic_name ? product?.arabic_name : product?.name}
+        
         </h2>
 
         {product?.description && (
@@ -137,12 +144,12 @@ const ProductCard: FC<ProductProps> = ({
               : "sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3"
           }`}
         >
-          <span className="inline-block">{price}</span>
-          {discount && (
+          <span className="inline-block">{domainCurrencyCode+" "+ product?.price.toFixed(2)}</span>
+          {/* {discount && (
             <del className="sm:text-base font-normal text-gray-800">
               {basePrice}
             </del>
-          )}
+          )} */}
         </div>
       </div>
     </div>

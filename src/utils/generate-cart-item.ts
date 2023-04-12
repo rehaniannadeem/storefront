@@ -1,4 +1,4 @@
-import isEmpty from "lodash/isEmpty";
+// import isEmpty from "lodash/isEmpty";
 
 /* interface Item {
   id: string | number;
@@ -13,12 +13,13 @@ import isEmpty from "lodash/isEmpty";
   [key: string]: unknown;
 } */
 export function generateCartItem(item: any, attributes: object) {
-  const { id, name, slug, image, price,tax_id, /* sale_price, */variations } = item;
+  const { id, name, slug, image, price,tax_id, /* sale_price, */variations,arabic_name } = item;
 
   return {
-    id: !isEmpty(attributes)
-      ? `${id}.${Object.values(attributes).join(".")}`
-      : id,
+    // id: !isEmpty(attributes)
+    //   ? `${id}.${Object.values(attributes).join(".")}`
+    //   : id,
+    id:id,
     name,
     slug,
     image: image.thumbnail,
@@ -27,6 +28,8 @@ export function generateCartItem(item: any, attributes: object) {
     tax_id,
     variations:variations,
     attributes,
+    arabic_name,
+    
 
   };
 }

@@ -13,6 +13,7 @@ import { getVariations } from "@framework/utils/get-variations";
 import { useTranslation } from "next-i18next";
 import getSymbolFromCurrency from "currency-symbol-map";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 export default function ProductPopup() {
   const { t } = useTranslation("common");
@@ -20,9 +21,14 @@ export default function ProductPopup() {
     modalData: { data },
     closeModal,
     openCart,
+    isAuthorized
   } = useUI();
+  // console.log(isAuthorized,'autho');
+  const { items,total} = useCart();
+  let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   const router = useRouter();
-  const { addItemToCart } = useCart();
+  const {locale}=useRouter()
+    const { addItemToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [attributes, setAttributes] = useState<{ [key: string]: string | any }>(
     {}
@@ -34,12 +40,22 @@ export default function ProductPopup() {
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
   const [isDisable, setIsDisable] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
+  const [token, setToken] = useState("");
+  const [userData, setUserData] = useState<any>({});
+  const[cartId,setCartId]=useState()
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
       setDomainData(domainData);
     }
     setDomainCurrencyCode(domainData.currency.code);
+    setToken(domainData.token);
+    var userData = JSON.parse(localStorage.getItem("userData")!);
+    if (userData) {
+      setUserData(userData);
+    }
+    let cartId:any=localStorage.getItem("cart_id")
+    setCartId(cartId)
   }, []);
   useEffect(() => {
     if (data?.enable_stock == 1) {
@@ -97,6 +113,7 @@ export default function ProductPopup() {
   }); */
 
   /* function addToCart() {
+
     if (!isSelected) return;
     // to show btn feedback while product carting
     setAddToCartLoader(true);
@@ -110,6 +127,90 @@ export default function ProductPopup() {
     console.log(item, "item");
   }
  */
+  const updateItemToServer = (item:any) => {
+    axios({
+      method: "post",
+      url: connector_base_url + "/abandonedcart/store",
+      headers: {
+        Accept: "Application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        contact_id: userData.id,
+        id:cartId,
+         shipping_status: "pending", 
+         final_amount: total,
+         cart_detail:item
+      },
+
+    })
+      .then((response) => {
+        console.log(response.data, 'response server');
+        if(response?.data?.success){
+          // localStorage.setItem("cart_id",response.data.data.id)
+          toast.success("Added to the cart")
+
+          setAddToCartLoader(false);
+        }else{
+          toast.error("Something went wrong")
+          setAddToCartLoader(false);
+        }
+
+
+      })
+      .catch((err) => {
+        console.log(err, "Response Error");
+
+      });
+  }
+  const addItemToServer = (item:any) => {
+    axios({
+      method: "post",
+      url: connector_base_url + "/abandonedcart/store",
+      headers: {
+        Accept: "Application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        contact_id: userData.id,
+         shipping_status: "pending", 
+         final_amount: total,
+         cart_detail:item
+      },
+
+    })
+      .then((response) => {
+        console.log(response.data, 'response server');
+        if(response?.data?.success){
+          localStorage.setItem("cart_id",response.data.data.id)
+          setCartId(response.data.data.id)
+          toast.success("Added to the cart")
+          setAddToCartLoader(false);
+        }else{
+          toast.error("Something went wrong")
+          setAddToCartLoader(false);
+        }
+
+
+      })
+      .catch((err) => {
+        console.log(err, "Response Error");
+
+      });
+  }
+  // console.log(cartId);
+  
+  useEffect(()=>{
+    if(isAuthorized && token){
+      if(cartId){
+        updateItemToServer(items)
+      }else{
+        addItemToServer(items)
+      }
+      
+    }
+  
+  },[items])
 
   function addToCart() {
     if (!isSelected) return;
@@ -168,21 +269,28 @@ export default function ProductPopup() {
     const item = generateCartItem(data!, attributes);
     if (Object.keys(attributes).length != 0 && data.enable_stock == 1) {
       if(quantity<=Math.round(attributes?.variation_details[0]?.qty_available)){
+        // {isAuthorized &&  addItemToServer(item) }
+        
+       
         addItemToCart(item, quantity);
-        toast.success("Added to the cart", {
-          //type: "dark",
-          progressClassName: "fancy-progress-bar",
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
+        
+        setTimeout(() => {
+          setAddToCartLoader(false);
+        }, 600);
+        // toast.success("Added to the cart", {
+        //   //type: "dark",
+        //   progressClassName: "fancy-progress-bar",
+        //   position: "bottom-right",
+        //   autoClose: 2000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        // });
         setViewCartBtn(true);
-        setAddToCartLoader(false);
+        // setAddToCartLoader(false);
     
-        console.log(item, "item")
+        // console.log(item, "item")
       }else{
         toast.error("Out of Stock", {
           //type: "dark",
@@ -198,20 +306,27 @@ export default function ProductPopup() {
       }
     }else{
       addItemToCart(item, quantity);
-      toast.success("Added to the cart", {
-        //type: "dark",
-        progressClassName: "fancy-progress-bar",
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      
+   
+      // {isAuthorized &&  addItemToServer(item) }
+      // toast.success("Added to the cart", {
+      //   //type: "dark",
+      //   progressClassName: "fancy-progress-bar",
+      //   position: "bottom-right",
+      //   autoClose: 2000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      // });
       setViewCartBtn(true);
-      setAddToCartLoader(false);
+      // setAddToCartLoader(false);
   
-      console.log(item, "item")
+      // console.log(item, "item")
+      setTimeout(() => {
+        setAddToCartLoader(false);
+      }, 600);
+      // setAddToCartLoader(false);
     }
   }
 
@@ -236,7 +351,7 @@ export default function ProductPopup() {
       openCart();
     }, 300);
   }
-  console.log(data, "attributes");
+  // console.log( "attributes");
 
   return (
     <div className="rounded-lg bg-white">
@@ -245,7 +360,7 @@ export default function ProductPopup() {
           <img
             src={
               image?.original ??
-              "/assets/placeholder/products/product-thumbnail.svg"
+              "/icons/ignite-default.png"
             }
             alt={name}
             className="lg:object-contain md:object-contain sm:object-contain lg:w-full lg:h-full"
@@ -260,7 +375,8 @@ export default function ProductPopup() {
               role="button"
             >
               <h2 className="text-heading text-lg md:text-xl lg:text-2xl font-semibold hover:text-black">
-                {name}
+              {locale==='ar' && data?.arabic_name ? data?.arabic_name : data?.name}
+                {/* {name} */}
               </h2>
             </div>
             <p className="text-sm leading-6 md:text-body md:leading-7">
@@ -273,8 +389,8 @@ export default function ProductPopup() {
               <div className="text-heading font-semibold text-base md:text-xl lg:text-2xl">
                 {getSymbolFromCurrency(domainCurrencyCode)}{" "}
                 {Object.keys(attributes).length == 0
-                  ? Math.round(data.price)
-                  : Math.round(attributes.sell_price_inc_tax)}
+                  ? Number(data?.price).toFixed(2)
+                  : Number(attributes?.sell_price_inc_tax).toFixed(2)}
               </div>
               {/*   {discount && (
                 <del className="font-segoe text-gray-400 text-base lg:text-xl ps-2.5 -mt-0.5 md:mt-0">

@@ -51,9 +51,10 @@ const HeroWithCategory: React.FC<Props> = ({
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   const [items, setItems] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState(false)
   //fetch banner method
   const getBanner = () => {
-    //  setIsLoading(true);
+    setIsLoading(true);
     fetch(connector_base_url + "/banner", {
       method: "get",
       headers: {
@@ -67,7 +68,7 @@ const HeroWithCategory: React.FC<Props> = ({
       })
       .then((data) => {
         setBanners(data.data);
-        // setIsLoading(false);
+        setIsLoading(false);
 
         // setSlider(data.data[0].banner_image);
         console.log(data.data, "slider");
@@ -75,7 +76,7 @@ const HeroWithCategory: React.FC<Props> = ({
   };
   //get categories
   const getCategory = () => {
-    //  setCategoryLoading(true);
+    setIsLoading(true);
     axios({
       method: "get",
       url: storefront_base_url + "/categories",
@@ -89,10 +90,12 @@ const HeroWithCategory: React.FC<Props> = ({
         // console.log(response.data, "this is product detail");
         setItems(response.data.data);
         localStorage.setItem("categories", JSON.stringify(response.data.data));
+        setIsLoading(false);
       })
       .catch(function (err: any) {
         //handle error
         console.log(err);
+        setIsLoading(false);
       });
   };
   useEffect(() => {
@@ -100,6 +103,7 @@ const HeroWithCategory: React.FC<Props> = ({
     if (domain.token !== undefined) {
       getCategory();
     }
+
 
   }, [domain]);
 
@@ -143,32 +147,41 @@ const HeroWithCategory: React.FC<Props> = ({
     >
       {width < 1500 ? (
         <div>
-          <Carousel breakpoints={categoryResponsive} buttonSize="small">
-            {/*changed data.categories.data.length into data*/}
-            {items.length == 0
-              ? Array.from({ length: 8 }).map((_, idx) => (
+          { isLoading ?
+          (  <Carousel breakpoints={categoryResponsive} buttonSize="small">
+              {/*changed data.categories.data.length into data*/}
+
+              {Array.from({ length: 8 }).map((_, idx) => (
                 <SwiperSlide key={`category-list-${idx}`}>
                   <CategoryListCardLoader
                     uniqueKey={`category-list-${idx}`}
                   />
                 </SwiperSlide>
-              ))
-              : items?.map((category: any, index: any) => (
+              ))}
+
+            </Carousel> ):(
+              items.length == 0 ?(<div></div>):
+             
+           ( <Carousel breakpoints={categoryResponsive} buttonSize="small">
+              {/*changed data.categories.data.length into data*/}
+              {items?.map((category: any, index: any) => (
                 <SwiperSlide key={index}>
+             
                   <CategoryListCard
                     key={`category--key${category.id}`}
                     category={category}
                   />
                 </SwiperSlide>
-                /*   <div className="w-full mx-1 sm-w-full ">
-                  <CategoryListCard category={category} />
-                </div> */
+                //   <div className="w-full mx-1 sm-w-full ">
+                //   <CategoryListCard category={category} />
+                // </div>
               ))}
-          </Carousel>
+
+            </Carousel>))}
         </div>
       ) : (
         <div className="2xl:-me-14 grid grid-cols-1 gap-3">
-          {items.length == 0 ? (
+          {items.length == 0 && isLoading ? (
             <CategoryListFeedLoader limit={8} />
           ) : (
             //changed data.categories.data into data.data
@@ -188,7 +201,7 @@ const HeroWithCategory: React.FC<Props> = ({
           className="-mx-0"
           buttonClassName="hidden"
         >
-          {placeholder.length == 0
+          {placeholder.length == 0 && isLoading
             ? Array.from({ length: 8 }).map((_, idx) => (
               <SwiperSlide key={`category-list-${idx}`}>
                 <CategoryListCardLoader uniqueKey={`category-list-${idx}`} />

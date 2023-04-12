@@ -109,6 +109,7 @@ const AccountDetails = (data: any) => {
               variant="solid"
               className="w-full sm:w-1/2"
               errorKey={errors.mobile?.message}
+              readOnly
             />
             <Input
               type="email"

@@ -50,5 +50,7 @@
   "place-order":"To place order",
   "delivery-option":"Delivery Options",
   "delivery-address":"Delivery Address",
-  "payment-method":"Payment Method"
+  "payment-method":"Payment Method",
+  "label-country":"Country",
+  "button-apply":"Apply"
 }

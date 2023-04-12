@@ -89,7 +89,7 @@ export default function MobileMenu() {
       <li className={`mb-0.5 ${className}`}>
         <div
           className="flex flex-row items-center justify-between"
-          // onClick={closeSidebar}
+           onClick={closeSidebar}
         >
           <Link
             href={

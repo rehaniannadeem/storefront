@@ -18,6 +18,7 @@ export default function Search() {
   const { products }: any = useContext(Context);
   const [searchText, setSearchText] = useState("");
   const [productData, setProductData] = useState<any>();
+  const [filterArray, setFilterArray] = useState<any>();
   /*   const { data, isLoading } = useSearchQuery({
     text: searchText,
   }); */
@@ -25,12 +26,38 @@ export default function Search() {
   useEffect(() => {
     setProductData(products);
   }, [products]);
+
+useEffect(()=>{
+
+  if(searchText.length!=0){
+  setTimeout(() => {
+      let filter=  productData?.filter((item: any) => {
+        if (
+          item?.name
+            .toLocaleLowerCase()
+            .includes(searchText.toLocaleLowerCase())
+        ) {
+          return item;
+        }
+      })
+      setFilterArray(filter)
+  }, 1000);
+}
+ 
+
+  if(searchText.length===0){
+    setFilterArray([])
+  }
+  
+},[searchText])
+
+
   function handleSearch(e: React.SyntheticEvent) {
     e.preventDefault();
   }
-  function handleAutoSearch(e: React.FormEvent<HTMLInputElement>) {
-    setSearchText(e.currentTarget.value);
-  }
+  // function handleAutoSearch(e: React.FormEvent<HTMLInputElement>) {
+  //   setSearchText(e.currentTarget.value);
+  // }
   function clear() {
     setSearchText("");
   }
@@ -71,14 +98,14 @@ export default function Search() {
             <div className="flex flex-col mx-auto mb-1.5 w-full ">
               <SearchBox
                 onSubmit={handleSearch}
-                onChange={handleAutoSearch}
+                onChange={(e)=>{setSearchText(e.currentTarget.value)}}
                 name="search"
                 value={searchText}
                 onClear={clear}
                 ref={(input) => input && input.focus()}
               />
             </div>
-            {searchText && (
+            {filterArray && (
               <div className="bg-white flex flex-col rounded-md overflow-hidden h-full max-h-64vh lg:max-h-[550px]">
                 <Scrollbar className="os-host-flexbox">
                   <div className="h-full">
@@ -92,22 +119,22 @@ export default function Search() {
                         ))}
                       </div>
                     ) : (
-                      productData
-                        ?.filter((item: any) => {
-                          if (
-                            item?.name
-                              .toLocaleLowerCase()
-                              .includes(searchText.toLocaleLowerCase())
-                          ) {
-                            return item;
-                          }
-                        })
-                        ?.map((item: any, index: any) => {
-                          if (
-                            item.name.toLocaleLowerCase() === "open product"
-                          ) {
-                            item.visibility = "hidden";
-                          } else {
+                    
+                        // ?.filter((item: any) => {
+                        //   if (
+                        //     item?.name
+                        //       .toLocaleLowerCase()
+                        //       .includes(searchText.toLocaleLowerCase())
+                        //   ) {
+                        //     return item;
+                        //   }
+                        // })
+                        filterArray?.map((item: any, index: any) => {
+                          // if (
+                          //   item.name.toLocaleLowerCase() === "open product"
+                          // ) {
+                          //   item.visibility = "hidden";
+                          // } else {
                             return (
                               <div
                                 className=" p-5 border-b border-gray-150 relative last:border-b-0"
@@ -116,7 +143,7 @@ export default function Search() {
                                 <SearchProduct item={item} key={index} />
                               </div>
                             );
-                          }
+                        
                         })
                     )}
                   </div>
