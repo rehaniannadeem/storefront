@@ -28,16 +28,26 @@ import Head from "next/head";
 //import { siteSettings } from "@settings/site-settings";
 import React from "react";
 import axios from "axios";
+declare global {
+  interface Window {
+    Trengo?: any;
+  }
+}
+// import Drift from "react-driftjs";
+// import TrengoWidget from './../TrengoWidget';
+// import Intercom from './../Intercom';
+// import Drift from './../Drift';
+
 
 export const Context = React.createContext({
   user: {},
-  setUser: (_p: object) => {},
+  setUser: (_p: object) => { },
   order: {},
-  setOrder: (_p: object) => {},
+  setOrder: (_p: object) => { },
   domain: {},
-  setDomain: (_p: object) => {},
+  setDomain: (_p: object) => { },
   products: {},
-  setProducts: (_p: object) => {},
+  setProducts: (_p: object) => { },
 });
 function handleExitComplete() {
   if (typeof window !== "undefined") {
@@ -53,7 +63,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   }
   // const { isAuthorized } = useUI();
   const router = useRouter();
-//console.log(router);
+  //console.log(router);
 
 
   const dir = getDirection(router.locale);
@@ -64,26 +74,36 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   const [domain, setDomain] = useState<any>({});
   const [products, setProducts] = useState<any>({});
   const [business, setBusiness] = useState<any>();
-  let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
-  let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
+  let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
+  let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
+ 
   useEffect(() => {
     let host = window.location.host;
-   if(host.includes('myignite.site')){
+    // if (host.includes('myignite.site')) {
+    //   let parts = host.split(".");
+    //   setBusiness(parts[0]);
+    // } else {
+    //   setBusiness(host);
+    // }
     let parts = host.split(".");
     setBusiness(parts[0]);
-   }else{
-    setBusiness(host);
-   }
-    // let parts = host.split(".");
-    // setBusiness(parts[0]);
-    
+   
+      window.Trengo = window.Trengo || {};
+      window.Trengo.key = 'ByGdzSo2L0OI2OKu';
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.async = true;
+      script.src = 'https://static.widget.trengo.eu/embed.js';
+      document.getElementsByTagName('head')[0].appendChild(script);
+  
+
   }, []);
-// console.log(business,'domainName');
+  // console.log(business,'domainName');
 
   useEffect(() => {
     const fetchData = async () => {
       await fetch(
-        connector_base_url+`/business/${business}`,
+        connector_base_url + `/business/${business}`,
         {
           method: "get",
         }
@@ -102,9 +122,9 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           //console.log(error);
         });
     };
-{business!=undefined&& fetchData(); }
+    { business != undefined && fetchData(); }
 
-   
+
     /*    const localData = JSON.parse(localStorage.getItem("domainData")!);
 
     setDomain((prev) => ({ ...prev, ...localData })); */
@@ -115,7 +135,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
     const getProduct = () => {
       axios({
         method: "get",
-        url: storefront_base_url+"/products",
+        url: storefront_base_url + "/products",
         // data: bodyFormData,
         headers: {
           "Content-Type": "Application/json",
@@ -131,9 +151,9 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           console.log(err);
         });
     };
-  {Object.keys(domain).length!=0 &&   getProduct();}
-   
-  
+    { Object.keys(domain).length != 0 && getProduct(); }
+
+
   }, [domain]);
 
   useEffect(() => {
@@ -174,6 +194,10 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
                 <Layout pageProps={pageProps}>
                   <DefaultSeo />
                   <Component {...pageProps} key={router.route} />
+                
+                    {/* <TrengoWidget apiKey="ByGdzSo2L0OI2OKu" /> */}
+                   {/* <Intercom /> */}
+                  {/* <Drift /> */}
                   <ToastContainer />
                 </Layout>
                 <ManagedModal />

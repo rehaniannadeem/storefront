@@ -28,6 +28,7 @@ import { ROUTES } from "@utils/routes";
 import { useEffect } from 'react';
 
 
+
 const flashSaleCarouselBreakpoint = {
   "1281": {
     slidesPerView: 1,
@@ -101,6 +102,7 @@ useEffect(()=>{
 */
   return (
     <Container>
+    
       <HeroWithCategory />
       <ProductsWithFlashSale carouselBreakpoint={flashSaleCarouselBreakpoint} />
       {/**
