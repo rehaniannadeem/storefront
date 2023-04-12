@@ -28,17 +28,35 @@ export default function Search() {
   }, [products]);
 
 useEffect(()=>{
-  let filter=  productData
-  ?.filter((item: any) => {
-    if (
-      item?.name
-        .toLocaleLowerCase()
-        .includes(searchText.toLocaleLowerCase())
-    ) {
-      return item;
-    }
-  })
-  setFilterArray(filter)
+
+  if(searchText.length!=0){
+  setTimeout(() => {
+      let filter=  productData?.filter((item: any) => {
+        if (
+          item?.name
+            .toLocaleLowerCase()
+            .includes(searchText.toLocaleLowerCase())
+        ) {
+          return item;
+        }
+      })
+      setFilterArray(filter)
+  }, 1000);
+}
+ 
+  // let filter=  productData?.filter((item: any) => {
+  //   if (
+  //     item?.name
+  //       .toLocaleLowerCase()
+  //       .includes(searchText.toLocaleLowerCase())
+  //   ) {
+  //     return item;
+  //   }
+  // })
+  // setFilterArray(filter)
+  if(searchText.length===0){
+    setFilterArray([])
+  }
   
 },[searchText])
 
@@ -46,9 +64,9 @@ useEffect(()=>{
   function handleSearch(e: React.SyntheticEvent) {
     e.preventDefault();
   }
-  function handleAutoSearch(e: React.FormEvent<HTMLInputElement>) {
-    setSearchText(e.currentTarget.value);
-  }
+  // function handleAutoSearch(e: React.FormEvent<HTMLInputElement>) {
+  //   setSearchText(e.currentTarget.value);
+  // }
   function clear() {
     setSearchText("");
   }
@@ -89,7 +107,7 @@ useEffect(()=>{
             <div className="flex flex-col mx-auto mb-1.5 w-full ">
               <SearchBox
                 onSubmit={handleSearch}
-                onChange={handleAutoSearch}
+                onChange={(e)=>{setSearchText(e.currentTarget.value)}}
                 name="search"
                 value={searchText}
                 onClear={clear}
