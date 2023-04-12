@@ -59,15 +59,15 @@ const debouncedSearch = debounce((text, data, setFilterArray) => {
     }
   });
   setFilterArray(filter);
-}, 500); 
+}, 1000); 
 
   function handleSearch(e: React.SyntheticEvent) {
     e.preventDefault();
   }
   function handleAutoSearch(e: React.FormEvent<HTMLInputElement>) {
     const text=e.currentTarget.value
-    setSearchText(e.currentTarget.value);
     debouncedSearch(text, productData, setFilterArray);
+    setSearchText(e.currentTarget.value);
   }
   function clear() {
     setSearchText("");
