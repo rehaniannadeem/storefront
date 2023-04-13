@@ -90,13 +90,15 @@ export default function Search() {
     }
 
   }, [searchText])
+// console.log(closeSearch,'sdjfhasdf');
 
   function handleSearch(e: React.SyntheticEvent) {
     e.preventDefault();
     router.push(`${ROUTES.SEARCH}?name=${encodeURIComponent(searchText)}`);
-    setTimeout(() => {
-      window.location.reload()
-    }, 600);
+    closeSearch()
+    // setTimeout(() => {
+     
+    // }, 600);
   }
   const handleAutoSearch = (e: any) => {
   setSearchText(e.target.value)

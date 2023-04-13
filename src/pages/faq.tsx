@@ -1,9 +1,9 @@
 import Container from "@components/ui/container";
 import Layout from "@components/layout/layout";
-import Subscription from "@components/common/subscription";
-import Accordion from "@components/common/accordion";
+// import Subscription from "@components/common/subscription";
+// import Accordion from "@components/common/accordion";
 import PageHeader from "@components/ui/page-header";
-import { faq } from "@settings/faq.settings";
+// import { faq } from "@settings/faq.settings";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 
@@ -13,9 +13,9 @@ export default function FAQ() {
 			<PageHeader pageHeader="text-page-faq" />
 			<Container>
 				<div className="py-16 lg:py-20 px-0 max-w-5xl mx-auto space-y-4">
-					<Accordion items={faq} translatorNS="faq" />
+					{/* <Accordion items={faq} translatorNS="faq" /> */}
 				</div>
-				<Subscription />
+				{/* <Subscription /> */}
 			</Container>
 		</>
 	);

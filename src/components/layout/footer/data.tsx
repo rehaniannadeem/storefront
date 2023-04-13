@@ -108,16 +108,16 @@ export const footer = {
           title: "link-terms",
           path: "/terms",
         },
-        /*  {
+         {
           id: 3,
-          title: "link-return-policy",
-          path: "/privacy",
+          title: "link-faq",
+          path: "/faq",
         },
-        {
-          id: 4,
-          title: "link-site-map",
-          path: "/",
-        }, */
+        // {
+        //   id: 4,
+        //   title: "link-site-map",
+        //   path: "/",
+        // }, 
       ],
     },
     /*  {

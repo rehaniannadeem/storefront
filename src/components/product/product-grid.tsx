@@ -123,7 +123,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
     }
     // setIsLoading(false)
   }, [router]);
-  console.log(query.name,'filter');
+  // console.log(query.name,'filter');
 
   useEffect(() => {
     let length = productData?.filter((item: any) => {
