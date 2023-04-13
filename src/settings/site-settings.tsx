@@ -73,12 +73,12 @@ export const siteSettings = {
           },
         ],
       },
-    //   {
-    //     id: 5,
-    //     path: "/",
-    //     label: "menu-faq",
-    //     // icon: <GrCube />,
-    //   },
+      {
+        id: 5,
+        path: "/faq",
+        label: "menu-faq",
+        // icon: <GrCube />,
+      },
     //   {
     //     id: 6,
     //     path: "/search",
@@ -135,12 +135,12 @@ export const siteSettings = {
           },
         ],
       },
-    //   {
-    //     id: 5,
-    //     path: "/",
-    //     label: "menu-faq",
-    //     // icon: <GrCube />,
-    //   },
+      {
+        id: 5,
+        path: "/faq",
+        label: "menu-faq",
+        // icon: <GrCube />,
+      },
     //   {
     //     id: 6,
     //     path: "/search",

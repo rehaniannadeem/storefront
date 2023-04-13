@@ -84,38 +84,33 @@ const[isLoading,setIsLoading]=useState(false)
 
   
   return (
-    <div className={`${className}`}>
-      <h4 className="text-heading text-sm md:text-base xl:text-lg font-semibold mb-5 2xl:mb-6 3xl:mb-7">
-        {t(`${widgetTitle}`)}
-      </h4>
-      <ul
-        id="mylist"
-        className="text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5"
-      >
-        {lists.map((list) => (
-          <li
-            key={`widget-list--key${list.id}`}
-            className="flex items-baseline"
-          >
-            {list?.path ?
-              <>
-                <span className="me-3 relative top-0.5 lg:top-1 text-sm lg:text-base">
-                  {list.icon}
-                </span>
-
-                <Link href={list.path ? list.path : "#!"}>
-                  <a className="transition-colors duration-200 hover:text-black">
-                    {t(`${list.title}`)}
-                  </a>
-                </Link>
-              </> : null
-            }
-
-
-          </li>
-        ))}
-      </ul>
-    </div>
+    <div className={`${className} bg-white rounded-md shadow-md p-4 lg:p-6`}>
+    <h4 className="text-heading text-sm md:text-base lg:text-lg xl:text-xl font-semibold mb-4 lg:mb-6">
+      {t(`${widgetTitle}`)}
+    </h4>
+    <ul
+      id="mylist"
+      className="text-xs md:text-sm text-body flex flex-col space-y-3 lg:space-y-4"
+    >
+      {lists.map((list) => (
+      <li key={`widget-list--key${list.id}`} className="flex items-center whitespace-normal md:whitespace-nowrap lg:whitespace-normal">
+      {list?.path && (
+        <>
+          <span className="mr-2 md:mr-3 lg:mr-4 relative top-0.5 text-sm lg:text-base">
+            {list.icon}
+          </span>
+          <Link href={list.path}>
+            <a className="transition-colors duration-200 hover:text-black break-all">
+              {t(`${list.title}`)}
+            </a>
+          </Link>
+        </>
+      )}
+    </li>
+        
+      ))}
+    </ul>
+  </div>
   );
 };
 
