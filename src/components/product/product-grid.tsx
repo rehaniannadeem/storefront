@@ -123,7 +123,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
     }
     // setIsLoading(false)
   }, [router]);
-  //console.log(sortedFilter,'filter');
+  console.log(query.name,'filter');
 
   useEffect(() => {
     let length = productData?.filter((item: any) => {
@@ -180,6 +180,19 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
         if (item.price >= priceArray[0] && item.price <= priceArray[1]) {
           return item;
         }
+      } else {
+        return item
+      }
+
+    }).filter((item: any) => {
+      if (query.name?.length) {
+        if (
+                    item?.name
+                      .toLocaleLowerCase()
+                      .includes(query.name.toString().toLocaleLowerCase())
+                  ) {
+                    return item;
+                  }
       } else {
         return item
       }
@@ -367,6 +380,19 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
 
                   return item
                 }
+              }).filter((item: any) => {
+                if (query.name?.length) {
+                  if (
+                              item?.name
+                                .toLocaleLowerCase()
+                                .includes(query.name.toString().toLocaleLowerCase())
+                            ) {
+                              return item;
+                            }
+                } else {
+                  return item
+                }
+          
               }).sort((firstItem: any, secondItem: any) => {
                 if (selectedItem?.value === 'high-low') {
                   return secondItem?.price - firstItem?.price;
