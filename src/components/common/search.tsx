@@ -17,13 +17,13 @@ import { useRouter } from "next/router";
 // import { Context } from "src/pages/_app";
 
 
-export default function Search() {
+export default function Search(token:any) {
   const router = useRouter();
   const { displaySearch, closeSearch } = useUI();
   // const { products }: any = useContext(Context);
   const [searchText, setSearchText] = useState("");
   // const [productData, setProductData] = useState<any>();
-  const [domain, setDomain] = useState<any>();
+  // const [domain, setDomain] = useState<any>();
   const [filterArray, setFilterArray] = useState<any>();
   const [isLoading, setIsLoading] = useState(false)
   let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
@@ -36,11 +36,12 @@ export default function Search() {
   // useEffect(() => {
   //   setProductData(products);
   // }, [products]);
-  useEffect(() => {
-    var domainData = JSON.parse(localStorage.getItem("domainData")!);
-    setDomain(domainData)
-  }, [])
+  // useEffect(() => {
+  //   var domainData = JSON.parse(localStorage.getItem("domainData")!);
+  //   setDomain(domainData)
+  // })
 
+// console.log(token,'domaindomain');
 
   function GetFunction(value: any) {
    setIsLoading(true)
@@ -49,7 +50,7 @@ export default function Search() {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${domain.token}`,
+          Authorization: `Bearer ${token.token}`,
         },
       };
   

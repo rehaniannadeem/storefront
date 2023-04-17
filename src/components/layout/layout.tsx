@@ -15,19 +15,19 @@ const Layout: React.FC = ({ children }) => {
   // const { acceptedCookies, onAcceptCookies } = useAcceptCookies();
   //const { t } = useTranslation("common");
   const { domain }: any = useContext(Context);
-  //const [domainData, setDomainData] = useState<any>({});
+  // const [domainData, setDomainData] = useState<any>({});
 //console.log(domain);
 
 const meta_title:string=domain?.meta_title;
 const meta_description:string=domain?.meta_description;
 const fav_icon:string=domain?.fav_icon;
 
-  /*  useEffect(() => {
-    var domainData = JSON.parse(localStorage.getItem("domainData")!);
+  //  useEffect(() => {
+  //   var domainData = localStorage.getItem("user_token");
 
-    setDomainData(domainData);
-  }, []); */
-  //console.log(domainData, "data");
+  //   setDomainData(domainData);
+  // }, []);
+  // console.log(domain, "data");
   return (
     <div className="flex flex-col min-h-screen">
       <NextSeo
@@ -85,7 +85,7 @@ const fav_icon:string=domain?.fav_icon;
 
       <Footer />
       <MobileNavigation />
-      <Search />
+      <Search token={domain.token} />
       {/* <CookieBar
         title={t("text-cookies-title")}
         hide={acceptedCookies}
