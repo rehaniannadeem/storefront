@@ -7,7 +7,7 @@ export default function ErrorPage() {
 	return <ErrorInformation />;
 }
 
-ErrorPage.Layout = Layout;
+// ErrorPage.Layout = Layout;
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
 	return {
