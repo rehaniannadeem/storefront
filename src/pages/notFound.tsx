@@ -1,4 +1,4 @@
-import Layout from "@components/layout/layout";
+// import Layout from "@components/layout/layout";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ErrorInformation from "@components/404/not-found";
 import { GetStaticProps } from "next";
