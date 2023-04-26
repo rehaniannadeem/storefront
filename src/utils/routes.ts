@@ -19,5 +19,6 @@ export const ROUTES = {
   COLLECTIONS: "/collections",
   CATEGORY: "/category",
   ORDER: "/order",
+  NOTFOUND:"/notFound"
  
 };

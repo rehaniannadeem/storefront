@@ -189,7 +189,8 @@
   "text-shipping-method":"Shipping Method",
   "online-payment":"Online Payment",
   "label-discount":"Discount",
-  "discount-code":"Discount Code"
+  "discount-code":"Discount Code",
+  "domain-error":"No Results found against this domain"
   
   
 }
