@@ -28,11 +28,8 @@ import Head from "next/head";
 //import { siteSettings } from "@settings/site-settings";
 import React from "react";
 import axios from "axios";
-declare global {
-  interface Window {
-    Trengo?: any;
-  }
-}
+import { ROUTES } from "@utils/routes";
+
 // import Drift from "react-driftjs";
 // import TrengoWidget from './../TrengoWidget';
 // import Intercom from './../Intercom';
@@ -112,6 +109,13 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           return response.json();
         })
         .then((data) => {
+          // console.log(data,'this isdata');
+          if(data.status===false){
+            router.push(`${ROUTES.NOTFOUND}`, undefined, {
+              locale: router.locale,
+            })
+
+          }
           setTitle(data.data[0].name);
           setFav_icon(data.data[0].fav_icon);
           setDomain(data.data[0]);
@@ -119,7 +123,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           localStorage.setItem("user_token", data.data[0].token);
         })
         .catch((_error) => {
-          //console.log(error);
+          // console.log(error,'errror tesgt');
         });
     };
     { business != undefined && fetchData(); }
