@@ -6,9 +6,11 @@ import { Context } from "src/pages/_app";
 export const DefaultSeo = () => {
   const { domain }: any = useContext(Context);
 
+// console.log(domain,'domaidomain');
 
 const meta_title:string=domain?.meta_title;
 const meta_description:string=domain?.meta_description;
+const logo=domain?.logo
 //console.log('>>>>>>>>>>>',meta_description )
 //sconst fav_icon:string=domain?.fav_icon;
   return (
@@ -42,12 +44,12 @@ const meta_description:string=domain?.meta_description;
       additionalLinkTags={[
         {
           rel: "apple-touch-icon",
-          href: "icons/apple-icon-180.png",
+          href: logo,
         },
-        {
-          rel: "manifest",
-          href: "/manifest.json",
-        },
+        // {
+        //   rel: "manifest",
+        //   href: "/manifest.json",
+        // },
       ]}
     />
   );

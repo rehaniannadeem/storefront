@@ -14,6 +14,7 @@ import { useUI } from "@contexts/ui.context";
 import { Drawer } from "@components/common/drawer/drawer";
 import { getDirection } from "@utils/get-direction";
 import FilterSidebar from "@components/shop/filter-sidebar";
+import axios from "axios";
 interface ProductGridProps {
   className?: string;
 }
@@ -48,7 +49,9 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
   const { openFilter, displayFilter, closeFilter } = useUI();
   const { locale } = useRouter();
   const dir = getDirection(locale);
+  const { domain }: any = useContext(Context);
   const contentWrapperCSS = dir === "ltr" ? { left: 0 } : { right: 0 };
+  let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   //console.log('>>>>>>>>>>>', productData)
   const options = [
     { name: "text-sorting-options", value: "options" },
@@ -92,6 +95,35 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
   useEffect(() => {
     Array.isArray(products) ? setProductData(products) : null;
   }, [products]);
+  console.log(query,'query');
+  
+
+  useEffect(() => {
+    const getCategory = () => {
+      // setIsLoading(true);
+      axios({
+        method: "get",
+        url: storefront_base_url+"/categories",
+        // data: bodyFormData,
+        headers: {
+          "Content-Type": "Application/json",
+          Authorization: `Bearer ${domain.token}`,
+        },
+      })
+        .then((response: any) => {
+          console.log(response, "this is category detail");
+      
+        })
+        .catch(function (err: any) {
+          //handle error
+          console.log(err);
+        });
+    };
+    
+    {Object.keys(domain).length!=0 &&  getCategory();}
+   // getCategory();
+    // setIsLoading(false);
+  }, [query.category]);
   useEffect(() => {
     // setIsLoading(true)
 
