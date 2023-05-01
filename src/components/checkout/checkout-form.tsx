@@ -930,7 +930,8 @@ const[source,setSource]=useState<any>()
                         checked={type.name === selectPayment.name}
                         />
 
-                        <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label>
+                        {/* <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label> */}
+                        <label className="p-2 flex self-center">{ t('common:online-payment')+` (${type?.name})`}</label>
                       </div>
                       <div className="inline-flex col-span-7 w-full  justify-end">
 
@@ -972,7 +973,8 @@ const[source,setSource]=useState<any>()
                           checked={(type.name === selectPayment.name)}
                         />
 
-                        <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label>
+                        {/* <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label> */}
+                        <label className="p-2 flex self-center">{ t('common:online-payment')+` (${type?.name})`}</label>
                       </div>
                       <div className="inline-flex col-span-7 w-full  justify-end">
 
@@ -1031,7 +1033,8 @@ const[source,setSource]=useState<any>()
                             checked={(type.name === selectPayment.name)}
                           />
 
-                          <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label>
+                          {/* <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label> */}
+                          <label className="p-2 flex self-center">{ t('common:online-payment')+` (${type?.name})`}</label>
                         </div>
                         <div className="inline-flex col-span-7 w-full  justify-end">
 
