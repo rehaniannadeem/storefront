@@ -49,20 +49,20 @@ const business_name=domain?.name
         },
         {
           name:business_name,
-          icons: [
-            {
-              "src": logo,
-              "sizes": "192x192",
-              "type": "image/png",
-              "purpose": "maskable any"
-            },
-            {
-              "src": logo,
-              "sizes": "512x512",
-              "type": "image/png",
-              "purpose": "maskable any"
-            }
-          ],
+          // icons: [
+          //   {
+          //     "src": logo,
+          //     "sizes": "192x192",
+          //     "type": "image/png",
+          //     "purpose": "maskable any"
+          //   },
+          //   {
+          //     "src": logo,
+          //     "sizes": "512x512",
+          //     "type": "image/png",
+          //     "purpose": "maskable any"
+          //   }
+          // ],
         }
         
         // {
