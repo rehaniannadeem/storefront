@@ -91,6 +91,7 @@ const[source,setSource]=useState<any>()
     return openModal();
   }
 
+// console.log(shipping,'shipping');
 
   // let host = window.location.host;
   // console.log(">>>>>>>>>>>", `https://${host}/my-account/orders/244582`);
@@ -248,7 +249,7 @@ const[source,setSource]=useState<any>()
         },
       })
         .then((response) => {
-          //  console.log(response,'this is response');
+           console.log(response,'this is response');
           setShipping(response?.data?.data)
           if (response?.data.success === false) {
             setIsDelivery(false)

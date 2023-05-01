@@ -190,6 +190,9 @@
   "online-payment":"الدفع الالكتروني",
   "label-discount":"تخفيض",
   "discount-code":"الرقم التسلسلي للخصم",
-  "domain-error":"لم يتم العثور على أعمال ضد هذا المجال"
+  "domain-error":"لم يتم العثور على أعمال ضد هذا المجال",
+  "customer-name":"اسم الزبون",
+  "shipping-address":"عنوان الشحن",
+  "shipping-fee":"رسوم الشحن"
   
 }

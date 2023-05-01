@@ -176,7 +176,7 @@ export default function OrderPage() {
           </td>
         </tr> */}
         <tr className="odd:bg-gray-150">
-                <td className="p-4 italic">{ t("text-shipping")}:</td>
+                <td className="p-4 italic">{ t("common:shipping-fee")}:</td>
                 <td className="p-4"> {domainCurrencyCode} {Number(order?.shipping_charges).toFixed(2) }</td>
               </tr>
            
@@ -187,6 +187,14 @@ export default function OrderPage() {
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("common:order-type")}:</td>
                 <td className="p-4">{order.order_type}</td>
+              </tr>
+              <tr className="odd:bg-gray-150">
+                <td className="p-4 italic">{t("common:customer-name")}:</td>
+                <td className="p-4">{order.delivered_to}</td>
+              </tr>
+              <tr className="odd:bg-gray-150">
+                <td className="p-4 italic">{t("common:shipping-address")}:</td>
+                <td className="p-4">{order.shipping_address}</td>
               </tr>
               {/*  <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("common:payment-method")}:</td>
