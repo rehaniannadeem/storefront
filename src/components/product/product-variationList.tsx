@@ -69,7 +69,7 @@ const currencyCode=domainData?.currency?.code
                         //         textDecorationThickness: "2px", */
                         // }
                     >
-                       { console.log(attribute?.variation_details[0]?.qty_available)}
+                       {/* { console.log(attribute?.variation_details[0]?.qty_available)} */}
                         
                         <div className="flex flex-col  ">
                             <span className="flex justify-center p-2"> SIZE:{attribute?.value}</span>

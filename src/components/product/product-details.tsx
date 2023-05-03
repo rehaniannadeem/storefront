@@ -22,6 +22,7 @@ import axios from "axios";
 import getSymbolFromCurrency from "currency-symbol-map";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
+import Loader from "@components/ui/loaders/loader/loader";
 
 const productGalleryCarouselResponsive = {
   "768": {
@@ -59,6 +60,7 @@ const ProductSingleDetails: React.FC = () => {
   const [token, setToken] = useState("");
   const [product, setProduct] = useState<any>({});
   const [isGalleryImg, setIsGalleryImg] = useState(true);
+  const [isLoading,setIsLoading]=useState(false)
  // const [isDisable, setIsDisable] = useState(false);
   //const [isSelected, setIsSelected] = useState(false);
 
@@ -75,6 +77,7 @@ const ProductSingleDetails: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    setIsLoading(true)
     const fetchData = () => {
       axios({
         method: "get",
@@ -98,12 +101,18 @@ const ProductSingleDetails: React.FC = () => {
           } else {
             setIsGalleryImg(true);
           }
+          setIsLoading(false)
         })
         .catch((err) => {
           console.log(err);
+          setIsLoading(false)
         });
     };
-    fetchData();
+
+    if(token){
+      fetchData();
+    }
+   
   }, [token]);
 //   useEffect(() => {
 //     if (product.enable_stock == 1) {
@@ -125,6 +134,8 @@ const ProductSingleDetails: React.FC = () => {
     //     ? setIsSelected(true)
     //     : setIsSelected(false);
     // }
+
+    setIsLoading(true)
     if (Object.keys(attributes).length != 0 && product.enable_stock == 1) {
       if (attributes.variation_details[0].qty_available <= 0) {
         setQuantity(0);
@@ -132,13 +143,16 @@ const ProductSingleDetails: React.FC = () => {
       //  setIsSelected(false);
       }
     }
+    setIsLoading(false)
   }, [attributes]);
   useEffect(() => {
+    setIsLoading(true)
     if (Object.keys(product).length != 0) {
       if (product.variations.length == 1) {
         setAttributes(product.variations[0]);
       }
     }
+    setIsLoading(false)
   }, [product]);
 
 //   if (isLoading) return <p>Loading...</p>;
@@ -174,7 +188,10 @@ const ProductSingleDetails: React.FC = () => {
     }));
   }
 
-;
+
+  if(isLoading){
+    return <Loader/>
+  }
 
   return (
     //block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start
