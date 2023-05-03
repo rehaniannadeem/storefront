@@ -744,7 +744,18 @@ const[source,setSource]=useState<any>()
                     <DeliveryAddress setAddress={setAddress} setLocation={setLocation} />
                   </div>
                 </div>
-              ) : null}
+              ) : 
+              <TextArea
+              labelKey="forms:label-order-notes"
+              {...register("note")}
+              placeholderKey="forms:placeholder-order-notes"
+              className="relative pt-3 xl:pt-6"
+              value={additionalNote}
+              onChange={(e) => {
+                setAdditionalNote(e.target.value);
+              }}
+            />
+              }
 
               {/* <div className="flex mt-2 w-full border-2 border-solid p-1 rounded">
           <input

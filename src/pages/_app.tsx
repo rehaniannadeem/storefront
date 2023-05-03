@@ -1,7 +1,7 @@
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { AnimatePresence } from "framer-motion";
-import { ManagedUIContext } from "@contexts/ui.context";
+import { ManagedUIContext} from "@contexts/ui.context";
 import ManagedModal from "@components/common/modal/managed-modal";
 import ManagedDrawer from "@components/common/drawer/managed-drawer";
 import { useEffect, useRef, useState } from "react";
@@ -29,11 +29,13 @@ import Head from "next/head";
 import React from "react";
 import axios from "axios";
 import { ROUTES } from "@utils/routes";
-
+import Loader from "@components/ui/loaders/loader/loader";
 // import Drift from "react-driftjs";
 // import TrengoWidget from './../TrengoWidget';
 // import Intercom from './../Intercom';
 // import Drift from './../Drift';
+
+
 
 
 export const Context = React.createContext({
@@ -60,9 +62,6 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   }
   // const { isAuthorized } = useUI();
   const router = useRouter();
-  //console.log(router);
-
-
   const dir = getDirection(router.locale);
   const [title, setTitle] = useState("");
   const [fav_icon, setFav_icon] = useState("");
@@ -71,10 +70,12 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   const [domain, setDomain] = useState<any>({});
   const [products, setProducts] = useState<any>({});
   const [business, setBusiness] = useState<any>();
+  const [isLoading,setIsLoading]=useState(false)
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
  
   useEffect(() => {
+    setIsLoading(true)
     let host = window.location.host;
     if (host.includes('myignite.site')) {
       let parts = host.split(".");
@@ -82,6 +83,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
     } else {
       setBusiness(host);
     }
+   
+    
     // let parts = host.split(".");
     // setBusiness(parts[0]);
    
@@ -92,13 +95,15 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
       // script.async = true;
       // script.src = 'https://static.widget.trengo.eu/embed.js';
       // document.getElementsByTagName('head')[0].appendChild(script);
-  
-
+ 
+      setIsLoading(false)
   }, []);
   // console.log(business,'domainName');
 
   useEffect(() => {
+   
     const fetchData = async () => {
+      setIsLoading(true)
       await fetch(
         connector_base_url + `/business/${business}`,
         {
@@ -125,10 +130,11 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
         .catch((_error) => {
           // console.log(error,'errror tesgt');
         });
+        setIsLoading(false)
     };
     { business != undefined && fetchData(); }
 
-
+   
     /*    const localData = JSON.parse(localStorage.getItem("domainData")!);
 
     setDomain((prev) => ({ ...prev, ...localData })); */
@@ -163,9 +169,15 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     document.documentElement.dir = dir;
   }, [dir]);
+
+
+
   //console.log(order, "orders");
   //console.log(user, "user Data");
   const Layout = (Component as any).Layout || Noop;
+  if(isLoading){
+    return <Loader/>
+  }
 
   return (
     <>
@@ -198,7 +210,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
                 <Layout pageProps={pageProps}>
                   <DefaultSeo />
                   <Component {...pageProps} key={router.route} />
-                
+             
                     {/* <TrengoWidget apiKey="ByGdzSo2L0OI2OKu" /> */}
                    {/* <Intercom /> */}
                   {/* <Drift /> */}

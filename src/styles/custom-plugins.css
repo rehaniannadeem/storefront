@@ -99,3 +99,7 @@
 	display: flex !important;
     flex-direction: row-reverse;
 } */
+.popup-content{
+	border-radius: 10px;
+	width: 70%;
+}

@@ -547,6 +547,7 @@ const ProductSingleDetails: React.FC = () => {
             disableDecrement={quantity === 0}
           // disableIncrement={isDisable}
           />
+          { domainData?.is_open==="true"?
           <Button
             onClick={addToCart}
             variant="slim"
@@ -561,7 +562,13 @@ const ProductSingleDetails: React.FC = () => {
             loading={addToCartLoader}
           >
             <span className="py-2 3xl:px-8"> {t("text-add-to-cart")}</span>
-          </Button>
+          </Button>:
+            <p className="font-semibold text-red-600">
+            { t('common:close-message')}
+           </p>
+
+
+}
         </div>
         <div className="py-6">
           <ul className="text-sm space-y-5 pb-1">
