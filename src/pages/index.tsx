@@ -49,13 +49,12 @@ function PopupContent({ closePopup, business, domain }: any) {
 
         <Text variant="mediumHeading" className="mt-4">{t("close-message")}</Text>
         <div className="py-2">
-          <button className="p-2 rounded text-lg font-semibold border-none focus:border-none "
+          <button className="p-2 rounded text-lg font-semibold"
             style={{
               backgroundColor: domain.theme_color,
               cursor: "pointer",
               color: "white"
             }}
-            autoFocus={false}         
             onClick={closePopup}>Continue</button>
         </div>
 
@@ -162,7 +161,7 @@ export default function Home() {
   return (
     <Container>
       {domain?.is_open === "false" &&
-        <Popup modal open  className="">
+        <Popup modal open className="">
           {(close: any) => <PopupContent closePopup={close} business={business} domain={domain} />}
         </Popup>
       }

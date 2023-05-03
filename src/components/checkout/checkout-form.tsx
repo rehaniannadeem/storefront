@@ -71,8 +71,11 @@ const CheckoutForm: React.FC = () => {
   // const[country,setCountry]=useState<any>("")
   const [location, setLocation] = useState<any>({
     city: "",
-    country: ""
+    country: "",
+    latlng:{}
   })
+  console.log(location,'location');
+  
   const { isAuthorized, openModal, setModalView } = useUI();
   const [shipping, setShipping] = useState<any>("Free")
   // const [isCity,setIsCity]=useState(false)
@@ -249,7 +252,7 @@ const[source,setSource]=useState<any>()
         },
       })
         .then((response) => {
-           console.log(response,'this is response');
+           console.log(response,'this is shipping method');
           setShipping(response?.data?.data)
           if (response?.data.success === false) {
             setIsDelivery(false)
@@ -421,6 +424,8 @@ const[source,setSource]=useState<any>()
             shipping_charges: shippingCharges,
             shipping_custom_field_4: shippingMethod,
             discount_amount:discount,
+            shipping_longitude:location?.latlng?.lng, 
+            shipping_latitude:location?.latlng?.lat,
             payments: null,
             /*   payments: [
               {
@@ -861,9 +866,9 @@ const[source,setSource]=useState<any>()
                         <span className="self-center px-1">{method.name}</span>
                       </label></div>
 
-                    <div className="flex flex-col justify-end col-span-5">
-                      <span className="self-center"> {method?.is_cod === 1 ? <span> COD Fee: {Number(method?.cod_rate).toFixed(2)}</span> : null}</span>
-                      <span className="self-center">Delivery Fee: {Number(method.base_shipping_fee).toFixed(2)} </span>
+                    <div className="flex flex-col  justify-center col-span-5">
+                    {domainData?.store_payment_methods?.cod === true && <span className="self-center"> <span> COD Fee: {Number(method?.cod_rate).toFixed(2)}</span></span>}
+                      <span className="self-center align-item-center">Delivery Fee: {Number(method.base_shipping_fee).toFixed(2)} </span>
 
                     </div>
                   </div>
@@ -878,7 +883,9 @@ const[source,setSource]=useState<any>()
 
           {paymentGateway && (
             <div className=" my-3 p-2 ">
-              <h2 className="font-semibold p-1">{t("forms:payment-method")}</h2>
+            {domainData?.store_payment_methods?.cod === true ||  domainData?.store_payment_methods?.ignitepay === true &&
+            <h2 className="font-semibold p-1">{t("forms:payment-method")}</h2>
+            }  
               {/* <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
                 <input
                   style={{
@@ -899,6 +906,7 @@ const[source,setSource]=useState<any>()
               </div> */}
               {checked === "Pickup" ? (
                 <div>
+                  
                   <div onClick={() =>
                         setSelectPayment({ id: 1, name: "Cash On Pickup" })
                       } 
@@ -920,7 +928,7 @@ const[source,setSource]=useState<any>()
 
                     <label className="p-2">Cash On Pickup</label>
                   </div>
-                  {paymentGateway?.map((type: any, index: any) => (
+                  {   domainData?.store_payment_methods?.ignitepay === true && paymentGateway?.map((type: any, index: any) => (
                     
                     <div  className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
                     onClick={() => setSelectPayment(type)}
@@ -1005,6 +1013,7 @@ const[source,setSource]=useState<any>()
                     </div>
                   )) :
                   <div>
+                     {domainData?.store_payment_methods?.cod === true && 
                     <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 "
                      onClick={() =>  setSelectPayment({ id: 1, name: "Cash On Delivery" })}
                      >
@@ -1024,8 +1033,8 @@ const[source,setSource]=useState<any>()
                       />
 
                       <label className="p-2">Cash On Delivery</label>
-                    </div>
-                    {paymentGateway?.map((type: any, index: any) => (
+                    </div>}
+                    { domainData?.store_payment_methods?.ignitepay === true &&   paymentGateway?.map((type: any, index: any) => (
                       <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
                       onClick={() => setSelectPayment(type)}
                       key={index}
