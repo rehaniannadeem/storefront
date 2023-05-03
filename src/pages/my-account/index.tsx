@@ -5,9 +5,37 @@ import { ROUTES } from "@utils/routes";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import { GetStaticProps } from "next";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useUI } from "@contexts/ui.context";
+import Loader from "@components/ui/loaders/loader/loader";
 
 export default function AccountPage() {
+  const {
+    isAuthorized,
+  } = useUI();
+
+const [isLoading,setIsLoading]=useState(false)
+const router=useRouter()
+  useEffect(() => {
+    setIsLoading(true)
+    if(router.asPath.includes("my-account") && !isAuthorized){
+     router.push('/')
+     setTimeout(() => {
+      setIsLoading(false)
+    }, 1500);
+ 
+    }else{
+      setIsLoading(false)
+    }
+   
+     
+  }, []);
+
   const { t } = useTranslation("common");
+  if(isLoading){
+    return <Loader/>
+  }
   return (
     <AccountLayout>
       <h2 className="text-lg md:text-xl xl:text-2xl font-bold text-heading mb-3 xl:mb-5">

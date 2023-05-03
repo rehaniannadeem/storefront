@@ -193,7 +193,9 @@
   "domain-error":"No business found against this domain",
   "customer-name":"Customer Name",
   "shipping-address":"Shipping Address",
-  "shipping-fee":"Shipping Fee"
+  "shipping-fee":"Shipping Fee",
+  "currently-close":" is currently closed",
+  "close-message":"This store is close right now. you can take a look at the store to plan for your next order."
   
   
 }

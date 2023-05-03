@@ -25,9 +25,55 @@ import { ROUTES } from "@utils/routes";
 //import { useEffect, useState } from "react";
 //import Head from "next/head";
 //import { siteSettings } from "@settings/site-settings";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Popup from "reactjs-popup";
+import 'reactjs-popup/dist/index.css';
+import Image from "next/image";
+import Text from "@components/ui/text";
+import closeStore from '../../public/store-close.svg'
+import { useTranslation } from "next-i18next";
+function PopupContent({ closePopup, business, domain }: any) {
+  const { t } = useTranslation("common");
+  return (
+    <div className="border-t border-b h-1/2 border-gray-300 text-center px-4 py-2 flex flex-col items-center justify-center sm:px-8 md:px-12 lg:px-16">
+      <div>
+        <Text variant="mediumHeading">{business + " "}{t("currently-close")} </Text>
+      </div>
+      <div>
+        <Image
+          src={closeStore}
+          alt={t("error-heading")}
+          width={200}
+          height={200}
+        />
 
+        <Text variant="mediumHeading" className="mt-4">{t("close-message")}</Text>
+        <div className="py-2">
+          <button className="p-2 rounded text-lg font-semibold border-none focus:border-none "
+            style={{
+              backgroundColor: domain.theme_color,
+              cursor: "pointer",
+              color: "white"
+            }}
+            autoFocus={false}         
+            onClick={closePopup}>Continue</button>
+        </div>
 
+      </div>
+
+      <style jsx>{`
+        @media only screen and (min-width: 640px) {
+          .border-t {
+            border-top-width: 1px;
+          }
+          .border-b {
+            border-bottom-width: 1px;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
 
 const flashSaleCarouselBreakpoint = {
   "1281": {
@@ -46,35 +92,48 @@ const flashSaleCarouselBreakpoint = {
 
 export default function Home() {
   const router = useRouter();
-//  let domainData:any={}
-  const url=router?.asPath.split("?")
-//  console.log(router,'url');
+  const [business, setBusiness] = useState('')
+  const [domain, setDomain] = useState<any>({})
+  const url = router?.asPath.split("?")
+  //  console.log(router,'url');
 
-  // useEffect(()=>{
-  //   domainData=JSON?.parse(localStorage?.getItem("domainData")!)
-  // },[])
+  useEffect(() => {
+    let host = window.location.host;
+    let parts = host.split(".");
+    setBusiness(parts[0])
 
-useEffect(()=>{
- 
-  if(url[1]!=undefined && url[1].toLowerCase().includes("source")){
-    let newUrl=url[1].split("=")
-    if(newUrl[1]){
-      sessionStorage.setItem("source",newUrl[1])
+    var domainData = JSON.parse(localStorage.getItem("domainData")!);
+    if (domainData) {
+      setDomain(domainData);
     }
-   
-   }
-  
-  {url[1]!=undefined &&  url[1].toLowerCase().includes("sku")&&
-  router.push(`${ROUTES.PRODUCT}?${url[1]}`, undefined, {
-    locale: router.locale,
-  })}
-  // if(domainData?.name==="urbannecessity" && url[1]==undefined){
-  //   router.push(`${ROUTES.SEARCH}`, undefined, {
-  //     locale: router.locale,
-  //   })
+  }, [])
 
-  // }
-},[url])
+  useEffect(() => {
+
+    if (url[1] != undefined && url[1].toLowerCase().includes("source")) {
+      let newUrl = url[1].split("=")
+      if (newUrl[1]) {
+        sessionStorage.setItem("source", newUrl[1])
+      }
+
+    }
+
+    {
+      url[1] != undefined && url[1].toLowerCase().includes("sku") &&
+        router.push(`${ROUTES.PRODUCT}?${url[1]}`, undefined, {
+          locale: router.locale,
+        })
+    }
+
+    // if(domainData?.name==="urbannecessity" && url[1]==undefined){
+    //   router.push(`${ROUTES.SEARCH}`, undefined, {
+    //     locale: router.locale,
+    //   })
+
+    // }
+  }, [url])
+
+
   /** 
   const [title, setTitle] = useState("");
   useEffect(() => {
@@ -102,7 +161,12 @@ useEffect(()=>{
 */
   return (
     <Container>
-    
+      {domain?.is_open === "false" &&
+        <Popup modal open  className="">
+          {(close: any) => <PopupContent closePopup={close} business={business} domain={domain} />}
+        </Popup>
+      }
+
       <HeroWithCategory />
       <ProductsWithFlashSale carouselBreakpoint={flashSaleCarouselBreakpoint} />
       {/**

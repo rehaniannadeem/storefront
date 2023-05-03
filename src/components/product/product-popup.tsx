@@ -443,6 +443,7 @@ export default function ProductPopup() {
                 disableDecrement={quantity === 0}
                // disableIncrement={isDisable}
               />
+              {domainData?.is_open==="true"?
               <Button
                 onClick={addToCart}
                 variant="flat"
@@ -458,7 +459,11 @@ export default function ProductPopup() {
                 loading={addToCartLoader}
               >
                 {t("text-add-to-cart")}
-              </Button>
+              </Button>:
+              <p className="font-semibold text-red-600">
+               { t('common:close-message')}
+              </p>
+}
             </div>
 
             {viewCartBtn && (
