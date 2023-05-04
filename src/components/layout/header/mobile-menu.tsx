@@ -89,7 +89,7 @@ export default function MobileMenu() {
       <li className={`mb-0.5 ${className}`}>
         <div
           className="flex flex-row items-center justify-between"
-           onClick={closeSidebar}
+          //  onClick={closeSidebar}
         >
           <Link
             href={
@@ -226,7 +226,7 @@ export default function MobileMenu() {
         <Scrollbar className="menu-scrollbar flex-grow mb-auto">
           <div className="flex flex-col py-7 px-0 lg:px-2 text-heading">
             <ul className="mobileMenu">
-              {domain?.name === "urbannecessity"
+              {domain?.name === "un"
                 ? site_header?.urbannecessity_mobile_menu?.map((menu, index) => {
                     const dept: number = 1;
                     const menuName: string = `sidebar-menu-${dept}-${index}`;
@@ -250,7 +250,7 @@ export default function MobileMenu() {
                       <ListMenu
                         dept={dept}
                         data={menu}
-                        //hasSubMenu={menu.subMenu}
+                        // hasSubMenu={true}
                         menuName={menuName}
                         key={menuName}
                         menuIndex={index}
