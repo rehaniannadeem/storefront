@@ -20,6 +20,7 @@ const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
     brands = JSON.parse(localStorage.getItem("brands")!);
     categories = JSON.parse(localStorage.getItem("categories")!);
   }
+// console.log(categories,'categories');
 
   return (
     <nav className={classNames(`headerMenu flex w-full relative`, className)}>
@@ -48,10 +49,13 @@ const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
               </span>
             )}
           </Link>
+          {item.label==='menu-products' &&  categories.length!=0 &&
+          <MegaMenu columns={categories} />
+          }
 
-          {item?.columns && Array.isArray(item.columns) && (
+          {/* {item?.columns && Array.isArray(item.columns) && (
             <MegaMenu columns={item.columns} />
-          )}
+          )} */}
 
           {item?.subMenu && Array.isArray(item.subMenu) && (
             <div className="subMenu shadow-header bg-gray-200 absolute start-0 opacity-0 group-hover:opacity-100">
