@@ -111,12 +111,12 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
   // console.log(categoryArray, 'query');
 
 
-  useEffect(() => {
+  useEffect(() => { 
     let arr: any = []
     categoryArray.map((category: any) => {
       allCategories.map((cat: any) => {
-        if (cat.name.toLowerCase() === category) {
-          cat.sub_categories.map((sub: any) => {
+        if (cat?.name.toLowerCase() === category.toLowerCase()) {
+          cat?.sub_categories?.map((sub: any) => {
             // setSubCatArray((current:any) => [...current, sub]);
             arr = [...arr, sub]
           })

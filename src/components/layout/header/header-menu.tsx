@@ -49,7 +49,7 @@ const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
               </span>
             )}
           </Link>
-          {item.label==='menu-products' &&  categories.length!=0 &&
+          {item.label==='menu-products' &&  categories?.length!=0 &&
           <MegaMenu columns={categories} />
           }
 
