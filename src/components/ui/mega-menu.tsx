@@ -38,33 +38,56 @@ const MegaMenu = ({ columns }: any) => {
 
 const columnsArray:any=[]
 
-categoriesWithSubCategories.map((item:any,index:any)=>{
+columns?.map((_item:any,index:any)=>{
   const withOUtSub=categoriesWithoutSubCategories.map((newItem:any)=>{
     return(
       newItem
     )
    
   })
-console.log(withOUtSub);
-
-  columnsArray.push(  {
-    id:index+1,
-    columnItems:[
-      {
-        id:item.id,
-        label:item.name,
-        columnItemItems:item?.sub_categories
-      },{
-        id: item.id,
-        label:withOUtSub[index]?.name,
+  const withSub=categoriesWithSubCategories.map((newItem:any)=>{
+    return(
+      newItem
+    )
+   
+  })
+  if(index<=categoriesWithSubCategories.length && index<=categoriesWithoutSubCategories.length){
+    if(index>categoriesWithSubCategories){
+      columnsArray.push(  {
+        id:index+1,
+        columnItems:[
+          {
+            id:index,
+            label:withSub[index]?.name,
+            columnItemItems:withSub[index]?.sub_categories
+          },{
+            id: index+1,
+            label:withOUtSub[index]?.name,
+          }
+    
+        ]
       }
-
-    ]
+    )
+    }
+    columnsArray.push(  {
+      id:index+1,
+      columnItems:[
+        {
+          id:index,
+          label:withSub[index]?.name,
+          columnItemItems:withSub[index]?.sub_categories
+        },{
+          id: index+1,
+          label:withOUtSub[index]?.name,
+        }
+  
+      ]
+    }
+  )
   }
-)
-
 })
 
+  
   // console.log(columnsArray,'result');
 
   return (
@@ -81,12 +104,14 @@ console.log(withOUtSub);
           {column?.columnItems?.map((columnItem:any) => (
             <React.Fragment key={columnItem.id}>
               <li className="mb-1.5">
+                {columnItem?.label &&
                 <Link
                  href={{ pathname: ROUTES.SEARCH, query: { category: columnItem?.label} }}
                   className="block text-sm py-1.5 text-heading font-semibold px-5 xl:px-8 2xl:px-10 hover:text-heading hover:bg-gray-300"
                 >
-                  {t(columnItem.label)}
+                  {t(columnItem?.label)}
                 </Link>
+}
               </li>
               {columnItem?.columnItemItems?.map((item: any,ind:any) => (
                 <li
@@ -97,13 +122,14 @@ console.log(withOUtSub);
                       : ""
                   }
                 >
-                 
+                 {item?.name &&
                   <Link
                    href={{ pathname: ROUTES.SEARCH, query: { category: columnItem?.label } }}
-                    className="text-body text-sm block py-1.5 px-5 xl:px-8 2xl:px-10 hover:text-heading hover:bg-gray-300"
+                    className="text-body text-sm block py-1.5 px-5 xl:px-8 2xl:px-10 hover:text-heading hover:bg-gray-300 "
                   >
-                    {t(item.name)}
+                    {t(item?.name)}
                   </Link>
+}
                 </li>
               ))}
             </React.Fragment>
