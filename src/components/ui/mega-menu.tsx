@@ -32,52 +32,86 @@ const MegaMenu = ({ columns }: any) => {
       categoriesWithoutSubCategories.push(category);
     }
   });
+  // console.log(categoriesWithSubCategories,'sub');
 
+  // console.log(categoriesWithoutSubCategories,'without sub');
 
-  const sortedArray = categoriesWithSubCategories.concat(categoriesWithoutSubCategories);
-  console.log(columns?.length);
+const columnsArray:any=[]
 
+categoriesWithSubCategories.map((item:any,index:any)=>{
+  const withOUtSub=categoriesWithoutSubCategories.map((newItem:any)=>{
+    return(
+      newItem
+    )
+   
+  })
+console.log(withOUtSub);
+
+  columnsArray.push(  {
+    id:index+1,
+    columnItems:[
+      {
+        id:item.id,
+        label:item.name,
+        columnItemItems:item?.sub_categories
+      },{
+        id: item.id,
+        label:withOUtSub[index]?.name,
+      }
+
+    ]
+  }
+)
+
+})
+
+  // console.log(columnsArray,'result');
 
   return (
-    <div className=" shadow-header bg-gray-200 absolute -start-20 xl:start-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible ">
+    <div className="megaMenu shadow-header bg-gray-200 absolute -start-20 xl:start-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible">
+    <div className={`${
+      columnsArray?.length>=5?"grid grid-cols-5":`grid grid-cols-${columnsArray?.length}`
 
-      <div className={` ${sortedArray?.length >= 10 ? "grid grid-cols-5 gap-x-1" : "grid grid-cols-3 gap-x-1"
-        }`}
-
-      >
-        {sortedArray?.map((category: any, ind: any) => (
-          <div key={ind} className="pb-2">
-            <Link
-              href={{ pathname: ROUTES.SEARCH, query: { category: category?.name } }}
-              className="text-heading justify-center flex align-middle py-2 font-semibold hover:bg-gray-100 bg-gray-50"
-            >
-              <h2 className="text-heading justify-center flex align-middle py-2 font-semibold ">{t(category?.name)}</h2>
-            </Link>
-
-            {category?.sub_categories && (
-              <div className="flex flex-wrap mt-3">
-                {category?.sub_categories?.map((sub_category: any, index: number) => (
-                  index % 3 === 0 && (
-                    <ul key={sub_category.id} className="mr-8">
-                      {category?.sub_categories.slice(index, index + 3).map((sub_category: any) => (
-                        <li key={sub_category.id} className="mb-3 flex justify-center">
-                          <Link
-                            href={{ pathname: ROUTES.SEARCH, query: { category: category?.name } }}
-                            className="text-body text-sm block py-1.5 px-5 xl:px-8 2xl:px-10 hover:text-heading hover:bg-gray-300"
-                          >
-                            {t(sub_category.name)}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+    }`}>
+      {columnsArray?.map((column:any) => (
+        <ul
+          className="even:bg-gray-150 pb-7 2xl:pb-8 pt-6 2xl:pt-7"
+          key={column.id}
+        >
+          {column?.columnItems?.map((columnItem:any) => (
+            <React.Fragment key={columnItem.id}>
+              <li className="mb-1.5">
+                <Link
+                 href={{ pathname: ROUTES.SEARCH, query: { category: columnItem?.label} }}
+                  className="block text-sm py-1.5 text-heading font-semibold px-5 xl:px-8 2xl:px-10 hover:text-heading hover:bg-gray-300"
+                >
+                  {t(columnItem.label)}
+                </Link>
+              </li>
+              {columnItem?.columnItemItems?.map((item: any,ind:any) => (
+                <li
+                  key={item.id}
+                  className={
+                    columnItem?.columnItemItems?.length === ind+1
+                      ? "border-b border-gray-300 pb-3.5 mb-3"
+                      : ""
+                  }
+                >
+                 
+                  <Link
+                   href={{ pathname: ROUTES.SEARCH, query: { category: columnItem?.label } }}
+                    className="text-body text-sm block py-1.5 px-5 xl:px-8 2xl:px-10 hover:text-heading hover:bg-gray-300"
+                  >
+                    {t(item.name)}
+                  </Link>
+                </li>
+              ))}
+            </React.Fragment>
+          ))}
+        </ul>
+      ))}
     </div>
+  </div>
   );
 };
 

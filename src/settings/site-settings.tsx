@@ -201,7 +201,16 @@ export const siteSettings = {
 							},
 						],
 					},
-				
+					{
+						id: 2,
+						path: "/search?q=belt-scarves",
+						label: "menu-belt-scarves",
+					},
+					{
+						id: 3,
+						path: "/search?q=watches-wearables",
+						label: "menu-watches-wearables",
+					},
 				],
 			},
 			{
@@ -244,7 +253,16 @@ export const siteSettings = {
 							},
 						],
 					},
-				
+					{
+						id: 2,
+						path: "/search?q=plus-size",
+						label: "menu-plus-size",
+					},
+					{
+						id: 3,
+						path: "/search?q=sunglasses-frames",
+						label: "menu-sunglasses-frames",
+					},
 				],
 			},
 			{
@@ -277,28 +295,28 @@ export const siteSettings = {
 							},
 						],
 					},
-					// {
-					// 	id: 2,
-					// 	path: "/search?q=sports-active-wear",
-					// 	label: "menu-sports-active-wear",
-					// 	columnItemItems: [
-					// 		{
-					// 			id: 1,
-					// 			path: "/search?q=clothing",
-					// 			label: "menu-clothing",
-					// 		},
-					// 		{
-					// 			id: 2,
-					// 			path: "/search?q=footwear",
-					// 			label: "menu-footwear",
-					// 		},
-					// 		{
-					// 			id: 3,
-					// 			path: "/search?q=sports-accessories",
-					// 			label: "menu-sports-accessories",
-					// 		},
-					// 	],
-					// },
+					{
+						id: 2,
+						path: "/search?q=sports-active-wear",
+						label: "menu-sports-active-wear",
+						columnItemItems: [
+							{
+								id: 1,
+								path: "/search?q=clothing",
+								label: "menu-clothing",
+							},
+							{
+								id: 2,
+								path: "/search?q=footwear",
+								label: "menu-footwear",
+							},
+							{
+								id: 3,
+								path: "/search?q=sports-accessories",
+								label: "menu-sports-accessories",
+							},
+						],
+					},
 				],
 			},
 			{
@@ -326,33 +344,33 @@ export const siteSettings = {
 							},
 						],
 					},
-					// {
-					// 	id: 2,
-					// 	path: "/search?q=belt-scarves",
-					// 	label: "menu-belt-scarves",
-					// 	columnItemItems: [
-					// 		{
-					// 			id: 1,
-					// 			path: "/search?q=makeup",
-					// 			label: "menu-makeup",
-					// 		},
-					// 		{
-					// 			id: 2,
-					// 			path: "/search?q=skincare",
-					// 			label: "menu-skincare",
-					// 		},
-					// 		{
-					// 			id: 3,
-					// 			path: "/search?q=premium-beauty",
-					// 			label: "menu-premium-beauty",
-					// 		},
-					// 		{
-					// 			id: 4,
-					// 			path: "/search?q=lipsticks",
-					// 			label: "menu-lipsticks",
-					// 		},
-					// 	],
-					// },
+					{
+						id: 2,
+						path: "/search?q=belt-scarves",
+						label: "menu-belt-scarves",
+						columnItemItems: [
+							{
+								id: 1,
+								path: "/search?q=makeup",
+								label: "menu-makeup",
+							},
+							{
+								id: 2,
+								path: "/search?q=skincare",
+								label: "menu-skincare",
+							},
+							{
+								id: 3,
+								path: "/search?q=premium-beauty",
+								label: "menu-premium-beauty",
+							},
+							{
+								id: 4,
+								path: "/search?q=lipsticks",
+								label: "menu-lipsticks",
+							},
+						],
+					},
 				],
 			},
 			{
@@ -392,7 +410,16 @@ export const siteSettings = {
 							},
 						],
 					},
-				
+					{
+						id: 3,
+						path: "/search?q=backpacks",
+						label: "menu-backpacks",
+					},
+					{
+						id: 4,
+						path: "/search?q=handbags-wallets",
+						label: "menu-handbags-wallets",
+					},
 				],
 			},
 		],

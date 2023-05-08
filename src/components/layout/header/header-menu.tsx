@@ -22,6 +22,12 @@ const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
   }
 // console.log(categories,'categories');
 
+
+
+
+
+
+
   return (
     <nav className={classNames(`headerMenu flex w-full relative`, className)}>
       {data?.map((item: any, index: any) => (
