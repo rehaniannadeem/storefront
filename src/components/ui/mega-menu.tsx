@@ -32,13 +32,16 @@ const MegaMenu = ({ columns }: any) => {
       categoriesWithoutSubCategories.push(category);
     }
   });
+  // console.log(columns,'col');
+  
   // console.log(categoriesWithSubCategories,'sub');
 
   // console.log(categoriesWithoutSubCategories,'without sub');
 
 const columnsArray:any=[]
 
-columns?.map((_item:any,index:any)=>{
+// columns?.map((_item:any,index:any)=>{
+  for(let index=0;index<columns.length;index++){
   const withOUtSub=categoriesWithoutSubCategories.map((newItem:any)=>{
     return(
       newItem
@@ -51,8 +54,9 @@ columns?.map((_item:any,index:any)=>{
     )
    
   })
-  if(index<=categoriesWithSubCategories.length && index<=categoriesWithoutSubCategories.length){
-    if(index>categoriesWithSubCategories){
+  if(index<=categoriesWithSubCategories?.length || index<=categoriesWithoutSubCategories?.length){
+
+      
       columnsArray.push(  {
         id:index+1,
         columnItems:[
@@ -68,24 +72,10 @@ columns?.map((_item:any,index:any)=>{
         ]
       }
     )
-    }
-    columnsArray.push(  {
-      id:index+1,
-      columnItems:[
-        {
-          id:index,
-          label:withSub[index]?.name,
-          columnItemItems:withSub[index]?.sub_categories
-        },{
-          id: index+1,
-          label:withOUtSub[index]?.name,
-        }
+ 
   
-      ]
-    }
-  )
   }
-})
+  }
 
   
   // console.log(columnsArray,'result');
