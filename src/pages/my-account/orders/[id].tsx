@@ -122,7 +122,7 @@ export default function OrderPage() {
     }
   ); */
   //console.log(subtotal, "this is total");
-  //  console.log(orderDetail, "order Detail");
+   console.log(order, "order Detail");
   // console.log(order);
 
   
@@ -205,19 +205,23 @@ export default function OrderPage() {
            
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("common:date")}:</td>
-                <td className="p-4">{orderDetail[0].created_at}</td>
+                <td className="p-4">{orderDetail[0]?.created_at}</td>
+              </tr>
+              <tr className="odd:bg-gray-150">
+                <td className="p-4 italic">{t("common:tracking-info")}:</td>
+                <td className="p-4">{order?.shipping_custom_field_5}</td>
               </tr>
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("common:order-type")}:</td>
-                <td className="p-4">{order.order_type}</td>
+                <td className="p-4">{order?.order_type}</td>
               </tr>
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("common:customer-name")}:</td>
-                <td className="p-4">{order.delivered_to}</td>
+                <td className="p-4">{order?.delivered_to}</td>
               </tr>
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("common:shipping-address")}:</td>
-                <td className="p-4">{order.shipping_address}</td>
+                <td className="p-4">{order?.shipping_address}</td>
               </tr>
               {/*  <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("common:payment-method")}:</td>
@@ -225,7 +229,7 @@ export default function OrderPage() {
               </tr> */}
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{t("text-note")}:</td>
-                <td className="p-4">{order.additional_notes}</td>
+                <td className="p-4">{order?.additional_notes}</td>
               </tr>
               <tr className="odd:bg-gray-150">
                 <td className="p-4 italic">{ t("common:label-discount")}:</td>
