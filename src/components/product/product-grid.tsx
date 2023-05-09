@@ -128,7 +128,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
       name: "All",
 
     }
-    if(arr.length!=0){
+    if(arr?.length!=0){
       setSubCatArray([all, ...arr])
     }else{
       setSubCatArray(arr)
@@ -207,7 +207,7 @@ setSelectedSubCategory({
 
   useEffect(() => {
     let length = productData?.filter((item: any) => {
-      if (Object.keys(query).length === 0) {
+      if (Object.keys(query)?.length === 0) {
         return item;
       } else {
         // if (item.price >= priceArray[0] && item.price <= priceArray[1]) {
@@ -452,7 +452,7 @@ setSelectedSubCategory({
           ) : (
             productData
               .filter((item: any) => {
-                if (Object.keys(query).length === 0) {
+                if (Object.keys(query)?.length === 0) {
                   return item;
                 } else {
 

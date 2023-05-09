@@ -161,7 +161,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           console.log(err);
         });
     };
-    { Object.keys(domain).length != 0 && getProduct(); }
+    { Object.keys(domain)?.length != 0 && getProduct(); }
 
 
   }, [domain]);

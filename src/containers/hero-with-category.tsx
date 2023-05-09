@@ -160,7 +160,7 @@ const HeroWithCategory: React.FC<Props> = ({
               ))}
 
             </Carousel> ):(
-              items.length == 0 ?(<div></div>):
+              items?.length == 0 ?(<div></div>):
              
            ( <Carousel breakpoints={categoryResponsive} buttonSize="small">
               {/*changed data.categories.data.length into data*/}
@@ -181,7 +181,7 @@ const HeroWithCategory: React.FC<Props> = ({
         </div>
       ) : (
         <div className="2xl:-me-14 grid grid-cols-1 gap-3">
-          {items.length == 0 && isLoading ? (
+          {items?.length == 0 && isLoading ? (
             <CategoryListFeedLoader limit={8} />
           ) : (
             //changed data.categories.data into data.data
@@ -201,7 +201,7 @@ const HeroWithCategory: React.FC<Props> = ({
           className="-mx-0"
           buttonClassName="hidden"
         >
-          {placeholder.length == 0 && isLoading
+          {placeholder?.length == 0 && isLoading
             ? Array.from({ length: 8 }).map((_, idx) => (
               <SwiperSlide key={`category-list-${idx}`}>
                 <CategoryListCardLoader uniqueKey={`category-list-${idx}`} />

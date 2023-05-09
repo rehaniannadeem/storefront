@@ -110,7 +110,7 @@ const[source,setSource]=useState<any>()
 
   useEffect(() => {
     if (checked === "Delivery") {
-      if (Object.keys(selectPayment).length != 0 && Object.keys(selectedMethod).length != 0) {
+      if (Object.keys(selectPayment)?.length != 0 && Object.keys(selectedMethod).length != 0) {
         setIsDisabled(false)
       } else {
         setIsDisabled(true)
@@ -120,14 +120,14 @@ const[source,setSource]=useState<any>()
   }, [selectPayment])
 
   useEffect(() => {
-    if (isAuthorized === false || items.length <= 0) {
+    if (isAuthorized === false || items?.length <= 0) {
       setIsDisabled(true)
     } else {
       setIsDisabled(false)
     }
   }, [items])
   useEffect(() => {
-    if (Object.keys(selectedMethod).length != 0) {
+    if (Object.keys(selectedMethod)?.length != 0) {
       setSelectPayment({})
     }
 
@@ -149,7 +149,7 @@ const[source,setSource]=useState<any>()
     // {discount ? subTotal=total-discount: subTotal=total}
 
     if (subTotal) {
-      if (Object.keys(selectPayment).length != 0 && Object.keys(selectedMethod).length != 0) {
+      if (Object.keys(selectPayment)?.length != 0 && Object.keys(selectedMethod)?.length != 0) {
         // setIsDisabled(false)
         if (shipping === "Free") {
           setFinalTotal(subTotal)
@@ -273,7 +273,7 @@ const[source,setSource]=useState<any>()
 
 
   useEffect(() => {
-    if (Object.keys(domainData).length != 0) {
+    if (Object.keys(domainData)?.length != 0) {
       axios({
         method: "get",
         url: production_payment_url + `/app/api/payment_gateway/${domainData?.currency?.code}`,

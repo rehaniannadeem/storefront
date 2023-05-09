@@ -44,7 +44,7 @@ export const BrandFilter = () => {
         });
       setIsLoading(false);
     };
-    {Object.keys(domain).length!=0 &&  getBrand();}
+    {Object.keys(domain)?.length!=0 &&  getBrand();}
    // getBrand();
   }, [domain]);
   //if (isLoading) return <p>Loading...</p>;

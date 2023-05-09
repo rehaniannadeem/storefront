@@ -79,7 +79,7 @@ const BrandBlock: React.FC<BrandProps> = ({
       // setIsLoading(false);
     };
 
-    {Object.keys(domain).length!=0 &&  getBrand();}
+    {Object.keys(domain)?.length!=0 &&  getBrand();}
    
   }, [domain]);
   // const brands = data?.brands;
@@ -102,7 +102,7 @@ const BrandBlock: React.FC<BrandProps> = ({
 (<>
 <SectionHeader sectionHeading={sectionHeading} />
       <Carousel breakpoints={breakpoints} buttonClassName="-mt-8 md:-mt-12">
-        {items.length == 0 && isLoading
+        {items?.length == 0 && isLoading
           ? Array.from({ length: 10 }).map((_, idx) => (
               <SwiperSlide key={idx}>
                 <CardRoundedLoader uniqueKey={`category-${idx}`} />

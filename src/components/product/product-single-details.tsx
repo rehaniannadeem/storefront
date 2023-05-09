@@ -109,7 +109,7 @@ const [Loading,setIsLoading]=useState(false)
           // console.log(response.data, "this is response");
           setProduct(response.data[0]);
 
-          if (response.data[0].gallery.length === 0) {
+          if (response?.data[0]?.gallery?.length === 0) {
             setIsGalleryImg(false);
           } else {
             setIsGalleryImg(true);
@@ -131,7 +131,7 @@ const [Loading,setIsLoading]=useState(false)
     if (product?.enable_stock == 1) {
 
       if (
-        Object.keys(attributes).length != 0) {
+        Object.keys(attributes)?.length != 0) {
 
         if (quantity <= Math.round(attributes?.variation_details[0]?.qty_available)) {
           setIsDisable(false);
@@ -501,7 +501,7 @@ const [Loading,setIsLoading]=useState(false)
           <div className="flex items-center mt-5">
             <div className="text-heading font-bold text-base md:text-xl lg:text-2xl 2xl:text-4xl pe-2 md:pe-0 lg:pe-2 2xl:pe-0">
               {getSymbolFromCurrency(domainCurrencyCode)}{" "}
-              {Object.keys(attributes).length == 0
+              {Object.keys(attributes)?.length == 0
                 ? Number(product.price).toFixed(2)
                 : Number(attributes.sell_price_inc_tax).toFixed(2)}
               {/*  {price} */}
