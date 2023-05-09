@@ -26,7 +26,7 @@ const ProductCard: FC<ProductProps> = ({
   imgWidth = 340,
   imgHeight = 440,
   imgLoading,
-}) => {
+}:any) => {
   // const { t } = useTranslation("common");
   const { openModal, setModalView, setModalData } = useUI();
   // const placeholderImage = `/assets/placeholder/products/product-${variant}.svg`;
@@ -55,6 +55,10 @@ const {locale}=useRouter()
     setModalView("PRODUCT_VIEW");
     return openModal();
   }
+
+
+
+
   //  console.log(product);
   return (
     <div
@@ -88,7 +92,9 @@ const {locale}=useRouter()
         )}
       >
         <Image
-          src={product?.image?.thumbnail ?? '/icons/ignite-default.png'}
+          src={(product?.image?.thumbnail.includes('default.png') || product?.image?.thumbnail===null)?(
+            product?.gallery[0]?.thumbnail ?? '/icons/ignite-default.png'
+          ):(product?.image?.thumbnail) }
           width={imgWidth}
           height={imgHeight}
           loading={imgLoading}

@@ -23,6 +23,7 @@ import getSymbolFromCurrency from "currency-symbol-map";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { useUI } from "@contexts/ui.context";
+import Loader from "@components/ui/loaders/loader/loader";
 
 const productGalleryCarouselResponsive = {
   "768": {
@@ -49,7 +50,7 @@ const ProductSingleDetails: React.FC = () => {
   //  const productName = slug;
   //console.log();
   const { width } = useWindowSize();
-  const { data, isLoading } = useProductQuery(slug as string);
+  const { data } = useProductQuery(slug as string);
   const { addItemToCart } = useCart();
   const [attributes, setAttributes] = useState<{ [key: string]: string | any }>(
     {}
@@ -68,7 +69,7 @@ const ProductSingleDetails: React.FC = () => {
   let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   const [userData, setUserData] = useState<any>({});
   const[cartId,setCartId]=useState<any>()
-
+const [Loading,setIsLoading]=useState(false)
   // console.log(cartId,'idaiffsiadsfdc');
  
   useEffect(() => {
@@ -89,6 +90,7 @@ const ProductSingleDetails: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    setIsLoading(true)
     const fetchData = () => {
       axios({
         method: "get",
@@ -112,9 +114,11 @@ const ProductSingleDetails: React.FC = () => {
           } else {
             setIsGalleryImg(true);
           }
+          setIsLoading(false)
         })
         .catch((err) => {
           console.log(err);
+          setIsLoading(false)
         });
     };
     if(token){
@@ -254,7 +258,7 @@ const ProductSingleDetails: React.FC = () => {
       currencyCode: domainCurrencyCode,
     }
   ); */
-  if (isLoading) return <p>Loading...</p>;
+  // if (isLoading) return <Loader/>;
   const variations = getVariations(product?.variations);
 
   /*  const isSelected = !isEmpty(variations)
@@ -392,6 +396,11 @@ const ProductSingleDetails: React.FC = () => {
    console.log(product.enable_stock, "stock"); */
   // console.log(product, "product");
   //console.log("attributes", attributes);
+
+
+  if(Loading){
+    return <Loader/>
+  }
 
   return (
     //block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start

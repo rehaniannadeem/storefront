@@ -89,7 +89,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
     //   { scroll: false }
     // );
   }
-  //console.log(selectedItem);
+  console.log(productData,'product List');
 
   const loadMore = () => {
     setIndex(index + 12);
@@ -128,7 +128,12 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
       name: "All",
 
     }
-    setSubCatArray([all, ...arr])
+    if(arr.length!=0){
+      setSubCatArray([all, ...arr])
+    }else{
+      setSubCatArray(arr)
+    }
+   
 
 setSelectedSubCategory({
   id: 1,
@@ -166,7 +171,7 @@ setSelectedSubCategory({
     // { Object.keys(domain).length != 0 && getCategory(); }
 
   }, [categoryArray]);
-  console.log(subCatArray, 'new ');
+  // console.log(subCatArray, 'new ');
   useEffect(() => {
     // setIsLoading(true)
 
