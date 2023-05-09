@@ -94,6 +94,7 @@ export default function ProductPopup() {
   }, [data]);
   const variations = getVariations(data.variations);
   const { image, name, description } = data;
+console.log(data,'data');
 
   //let urlName = name.replace(/\s+/g, "-");
 
@@ -359,8 +360,11 @@ export default function ProductPopup() {
         <div className="flex-shrink-0 flex items-center justify-center w-full lg:w-430px max-h-430px lg:max-h-full overflow-hidden ">
           <img
             src={
-              image?.original ??
-              "/icons/ignite-default.png"
+              (image?.thumbnail.includes('default.png') || image?.thumbnail===null)?(
+                data?.gallery[0]?.thumbnail ?? '/icons/ignite-default.png'
+              ):(image?.thumbnail)
+              // image?.original ??
+              // "/icons/ignite-default.png"
             }
             alt={name}
             className="lg:object-contain md:object-contain sm:object-contain lg:w-full lg:h-full"
