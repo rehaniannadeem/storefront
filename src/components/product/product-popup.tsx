@@ -61,7 +61,7 @@ export default function ProductPopup() {
     if (data?.enable_stock == 1) {
      
       if (
-        Object.keys(attributes).length != 0) {
+        Object.keys(attributes)?.length != 0) {
         
         if (quantity<=Math.round(attributes?.variation_details[0]?.qty_available) ) {
           setIsDisable(false);
@@ -73,11 +73,11 @@ export default function ProductPopup() {
   }, [quantity]);
   useEffect(() => {
     {
-      Object.keys(attributes).length != 0
+      Object.keys(attributes)?.length != 0
         ? setIsSelected(true)
         : setIsSelected(false);
     }
-    if (Object.keys(attributes).length != 0 && data.enable_stock == 1) {
+    if (Object.keys(attributes)?.length != 0 && data.enable_stock == 1) {
       if (attributes?.variation_details[0]?.qty_available <= 0) {
         setQuantity(0);
         // setIsDisable(true);
@@ -86,8 +86,8 @@ export default function ProductPopup() {
     }
   }, [attributes]);
   useEffect(() => {
-    if (Object.keys(data).length != 0) {
-      if (data.variations.length == 1) {
+    if (Object.keys(data)?.length != 0) {
+      if (data.variations?.length == 1) {
         setAttributes(data?.variations[0]);
       }
     }
@@ -268,7 +268,7 @@ console.log(data,'data');
       });
     } */
     const item = generateCartItem(data!, attributes);
-    if (Object.keys(attributes).length != 0 && data.enable_stock == 1) {
+    if (Object.keys(attributes)?.length != 0 && data.enable_stock == 1) {
       if(quantity<=Math.round(attributes?.variation_details[0]?.qty_available)){
         // {isAuthorized &&  addItemToServer(item) }
         
@@ -392,7 +392,7 @@ console.log(data,'data');
             <div className="flex items-center mt-3">
               <div className="text-heading font-semibold text-base md:text-xl lg:text-2xl">
                 {getSymbolFromCurrency(domainCurrencyCode)}{" "}
-                {Object.keys(attributes).length == 0
+                {Object.keys(attributes)?.length == 0
                   ? Number(data?.price).toFixed(2)
                   : Number(attributes?.sell_price_inc_tax).toFixed(2)}
               </div>
@@ -434,7 +434,7 @@ console.log(data,'data');
                   setQuantity((prev) => (prev !== 1 ? prev - 1 : 1));
                   if (data.enable_stock == 1) {
                     if (
-                      Object.keys(attributes).length != 0 &&
+                      Object.keys(attributes)?.length != 0 &&
                       quantity <
                         Math.round(
                           attributes.variation_details[0].qty_available

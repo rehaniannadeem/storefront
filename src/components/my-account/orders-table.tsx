@@ -96,7 +96,7 @@ let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
           console.log(err);
         });
     };
-    if (Object.keys(metaData).length != 0) {
+    if (Object.keys(metaData)?.length != 0) {
       fetchData();
     }
   }, [metaData]);
@@ -126,7 +126,7 @@ let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
         className={`w-full flex flex-col`}
       >
         {width >= 1025 ? (
-          paginatePosts.length != 0 ? (
+          paginatePosts?.length != 0 ? (
             <table>
               <thead className="text-sm lg:text-base">
                 <tr>
@@ -204,7 +204,7 @@ let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
               </div>
             </div>
           )
-        ) : paginatePosts.length != 0 ? (
+        ) : paginatePosts?.length != 0 ? (
           <div className="w-full space-y-4">
             {paginatePosts?.map((order: any, index) => (
               <ul className="text-sm font-semibold text-heading border border-gray-300 rounded-md flex flex-col px-4 pt-5 pb-6 space-y-5">
@@ -276,7 +276,7 @@ let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
         <div className=" mt-1">
           {
             <Pagination
-              items={orders.length}
+              items={orders?.length}
               pageSize={pageSize}
               currentPage={currentPage}
               onPageChange={handlePageChange}

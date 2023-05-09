@@ -33,7 +33,7 @@ export const BreadcrumbItems = (props: any) => {
     <BreadcrumbItem key={`breadcrumb_item${index}`}>{child}</BreadcrumbItem>
   ));
 
-  const lastIndex = children.length - 1;
+  const lastIndex = children?.length - 1;
 
   children = children.reduce((acc: any, child: string, index: number) => {
     const notLast = index < lastIndex;

@@ -86,7 +86,7 @@ const HeroBlock: React.FC = () => {
           clickable: true,
         }}
       >
-        {placeholder.length == 0
+        {placeholder?.length == 0
           ? Array.from({ length: 8 }).map((_, idx) => (
               <SwiperSlide key={`category-list-${idx}`}>
                 <CategoryListCardLoader uniqueKey={`category-list-${idx}`} />

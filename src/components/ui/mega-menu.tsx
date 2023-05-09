@@ -21,7 +21,7 @@ const MegaMenu = ({ columns }: any) => {
   const { t } = useTranslation("menu");
   const newArray = [];
 
-for (let i = 0; i < columns.length; i += 3) {
+for (let i = 0; i < columns?.length; i += 3) {
   const chunk = columns.slice(i, i + 3);
   newArray.push(chunk);
 }

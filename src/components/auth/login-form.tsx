@@ -123,7 +123,7 @@ const LoginForm: React.FC = () => {
       .then((response) => {
         //handle success
         // console.log(response.data.data);
-        if (response.data.data.length == 0) {
+        if (response?.data?.data?.length == 0) {
           console.log("data not  found");
           setVisibleRegister(true);
           setOtp("");
