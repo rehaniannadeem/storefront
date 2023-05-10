@@ -17,26 +17,37 @@ import { ROUTES } from "@utils/routes";
 // };
 
 
-const MegaMenu = ({ columns }: any) => {
+const MegaMenu = ({ columns, label }: any) => {
   const { t } = useTranslation("menu");
-  const newArray = [];
+  const newProductArray = [];
 
 for (let i = 0; i < columns?.length; i += 3) {
   const chunk = columns.slice(i, i + 3);
-  newArray.push(chunk);
+  newProductArray.push(chunk);
 }
 
-const finalArray = newArray.map((chunk) => ({ items: chunk }));
+const finalProductArray = newProductArray.map((chunk) => ({ items: chunk }));
+
+ const newCategoryArray = [];
+for (let i = 0; i < columns?.length; i += 8) {
+  const chunk = columns.slice(i, i + 8);
+  newCategoryArray.push(chunk);
+}
+
+const finalCategoryArray = newCategoryArray.map((chunk) => ({ items: chunk }));
 
   return (
 
 
     <div className="megaMenu shadow-header bg-gray-200 absolute -start-20 xl:start-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible">
-    <div className={`${
-      finalArray?.length>=5?"grid grid-cols-5":`grid grid-cols-${finalArray?.length}`
+
+{label==='menu-categories' && 
+<div className={`${
+
+finalCategoryArray?.length>=4?"grid grid-cols-4":`grid grid-cols-${finalCategoryArray?.length} `
 
     }`}>
-      {finalArray?.map((column:any) => (
+      {finalCategoryArray?.map((column:any) => (
         <ul
           className="even:bg-gray-150 pb-7 2xl:pb-8 pt-6 2xl:pt-7"
           key={column.id}
@@ -77,6 +88,55 @@ const finalArray = newArray.map((chunk) => ({ items: chunk }));
         </ul>
       ))}
     </div>
+}
+
+{ label==='menu-products'  &&
+    <div className={`${
+      finalProductArray?.length>=5?"grid grid-cols-5":`grid grid-cols-${finalProductArray?.length} `
+
+    }`}>
+      {finalProductArray?.map((column:any) => (
+        <ul
+          className="even:bg-gray-150 pb-7 2xl:pb-8 pt-6 2xl:pt-7"
+          key={column.id}
+        >
+          {column?.items?.map((columnItem:any) => (
+            <React.Fragment key={columnItem.id}>
+              <li className="mb-1.5">
+                {columnItem?.name &&
+                <Link
+                 href={{ pathname: ROUTES.SEARCH, query: { category: columnItem?.name} }}
+                  className="block text-sm py-1.5 text-heading font-semibold px-5 xl:px-8 2xl:px-10 hover:text-heading hover:bg-gray-300"
+                >
+                  {t(columnItem?.name)}
+                </Link>
+}
+              </li>
+              {columnItem?.sub_categories?.map((item: any,ind:any) => (
+                <li
+                  key={item.id}
+                  className={
+                    columnItem?.sub_categories?.length === ind+1
+                      ? "border-b border-gray-300 pb-3.5 mb-3"
+                      : ""
+                  }
+                >
+                 {item?.name &&
+                  <Link
+                   href={{ pathname: ROUTES.SEARCH, query: { category: columnItem?.name } }}
+                    className="text-body text-sm block py-1.5 px-5 xl:px-8 2xl:px-10 hover:text-heading hover:bg-gray-300 "
+                  >
+                    {t(item?.name)}
+                  </Link>
+}
+                </li>
+              ))}
+            </React.Fragment>
+          ))}
+        </ul>
+      ))}
+    </div>
+}
   </div>
   );
 };
