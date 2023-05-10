@@ -89,7 +89,7 @@ const Header: React.FC = () => {
               <SearchIcon />{" "}
               <span className="text-sm xl:text-base text-heading font-semibold">
                 {" "}
-                Search
+                {t('breadcrumb-search')}
               </span>
             </button>
             <div className="-mt-0.5 flex-shrink-0">
