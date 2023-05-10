@@ -52,5 +52,8 @@
   "delivery-address":"عنوان التسليم",
   "payment-method":"طريقة الدفع او السداد",
   "label-country":"دولة",
-  "button-apply":"Apply"
+  "button-apply":"Apply",
+  "input-label-cash-pickup":"الدفع عند الإستلام",
+  "input-label-cash-delivery":"الدفع عند الاستلام"
+
 }

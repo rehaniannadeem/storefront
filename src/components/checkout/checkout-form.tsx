@@ -65,7 +65,7 @@ const CheckoutForm: React.FC = () => {
   const [_orderResponse, setOrderResponse] = useState<any>();
   const [productsName, _setProductsName] = useState<any>([]);
   const [shippingFee, setShippingFee] = useState<any>()
-  const [couponCode, setCouponCode] = useState<any>()
+  const [couponCode, setCouponCode] = useState<any>("")
   const [discount, setDiscount] = useState<any>()
   // const[city,setCity]=useState<any>("")
   // const[country,setCountry]=useState<any>("")
@@ -437,6 +437,7 @@ const[source,setSource]=useState<any>()
             order_source:source ? source:"storefront" ,
             total_before_tax: newTotal,
             products: placeOrder,
+            service_custom_field_2:couponCode
           },
         ],
       },
@@ -459,6 +460,7 @@ const[source,setSource]=useState<any>()
               get_url(response.data[0]);
             }
           }
+          
           
           deleteItem()
           localStorage.removeItem("cart_id");
@@ -523,6 +525,7 @@ const[source,setSource]=useState<any>()
           setAddToCartLoader(false);
         } else {
           toast.error(response?.data?.msg)
+          setCouponCode("")
           setAddToCartLoader(false);
         }
 
@@ -926,7 +929,7 @@ const[source,setSource]=useState<any>()
                       checked={selectPayment?.name?.toLowerCase() === "cash on pickup"}
                     />
 
-                    <label className="p-2">Cash On Pickup</label>
+                    <label className="p-2">{t('forms:input-label-cash-pickup')}</label>
                   </div>
                   {   domainData?.store_payment_methods?.ignitepay === true && paymentGateway?.map((type: any, index: any) => (
                     
@@ -1032,7 +1035,7 @@ const[source,setSource]=useState<any>()
                         checked={"Cash On Delivery" == selectPayment.name}
                       />
 
-                      <label className="p-2">Cash On Delivery</label>
+                      <label className="p-2">{t('forms:input-label-cash-delivery')}</label>
                     </div>}
                     { domainData?.store_payment_methods?.ignitepay === true &&   paymentGateway?.map((type: any, index: any) => (
                       <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
