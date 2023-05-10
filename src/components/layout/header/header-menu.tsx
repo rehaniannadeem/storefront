@@ -14,10 +14,10 @@ interface MenuProps {
 
 const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
   const { t } = useTranslation("menu");
-  let brands: any = [];
+  // let brands: any = [];
   let categories: any = [];
   if (typeof window !== "undefined") {
-    brands = JSON.parse(localStorage.getItem("brands")!);
+    // brands = JSON.parse(localStorage.getItem("brands")!);
     categories = JSON.parse(localStorage.getItem("categories")!);
   }
 // console.log(categories,'categories');
