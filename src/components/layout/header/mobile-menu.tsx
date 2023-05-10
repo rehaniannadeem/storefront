@@ -149,7 +149,7 @@ export default function MobileMenu() {
       parentCategory,
       className = "",
     }: any) =>  (
-      console.log(parentCategory),
+      // console.log(parentCategory),
       
         <li className={`mb-0.5 ${className}`}>
           <div
@@ -224,7 +224,7 @@ export default function MobileMenu() {
     const menuName: string = `sidebar-sub-menu-${dept}-${data.id}`;
 
 
-console.log(subActiveMenus,'submenu');
+// console.log(subActiveMenus,'submenu');
 
     return (
       <>
@@ -385,14 +385,30 @@ console.log(subActiveMenus,'submenu');
                   const menuName: string = `sidebar-menu-${dept}-${index}`;
 
                   return (
-                    <ListMenu
+                    <>
+                     {(menu.label === 'menu-products' ||  menu.label === 'menu-categories') ?
+                      <ListMenu
                       dept={dept}
                       data={menu}
-                      hasSubMenu={menu.subMenu}
+                      hasSubMenu={true}
                       menuName={menuName}
                       key={menuName}
                       menuIndex={index}
                     />
+                    :
+                    <ListMenu
+                    dept={dept}
+                    data={menu}
+                    // hasSubMenu={menu.columns}
+                    menuName={menuName}
+                    key={menuName}
+                    menuIndex={index}
+                  />
+                     
+                     }
+                    </>
+                   
+                   
                   );
                 })
                 : site_header.mobileMenu.map((menu, index) => {

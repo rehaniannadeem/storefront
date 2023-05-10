@@ -3,8 +3,8 @@ import { FaChevronDown } from "react-icons/fa";
 import MegaMenu from "@components/ui/mega-menu";
 import classNames from "classnames";
 //import ListMenu from "@components/ui/list-menu";
-import ListCategory from "@components/ui/list-categries";
-import ListBrand from "@components/ui/list-brand";
+// import ListCategory from "@components/ui/list-categries";
+// import ListBrand from "@components/ui/list-brand";
 import { useTranslation } from "next-i18next";
 import { ROUTES } from "@utils/routes";
 interface MenuProps {
@@ -49,15 +49,19 @@ const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
               </span>
             )}
           </Link>
-          {item.label==='menu-products' &&  categories?.length!=0 &&
-          <MegaMenu columns={categories} />
+          {(item?.label==='menu-products' || item?.label==='menu-categories')  &&
+          <MegaMenu columns={categories} label={item?.label}/>
           }
+            {/* {item?.label==='menu-categories' &&
+          <MegaMenu columns={categories} label={item?.label} />
+          } */}
+
 
           {/* {item?.columns && Array.isArray(item.columns) && (
             <MegaMenu columns={item.columns} />
           )} */}
 
-          {item?.subMenu && Array.isArray(item.subMenu) && (
+          {/* {item?.subMenu && Array.isArray(item.subMenu) && (
             <div className="subMenu shadow-header bg-gray-200 absolute start-0 opacity-0 group-hover:opacity-100">
               {item.label === "menu-categories" && (
                 <ul className="text-body text-sm py-5"
@@ -102,9 +106,9 @@ const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
                       menuIndex={index}
                     />
                   );
-                })} */}
+                })}
             </div>
-          )}
+          )} */}
         </div>
       ))}
     </nav>

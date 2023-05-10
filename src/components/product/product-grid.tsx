@@ -14,6 +14,7 @@ import { useUI } from "@contexts/ui.context";
 import { Drawer } from "@components/common/drawer/drawer";
 import { getDirection } from "@utils/get-direction";
 import FilterSidebar from "@components/shop/filter-sidebar";
+import DataNotFound from '../404/data-not-found'
 // import axios from "axios";
 // import Category from './../../pages/category/[slug]';
 interface ProductGridProps {
@@ -89,7 +90,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
     //   { scroll: false }
     // );
   }
-  console.log(productData,'product List');
+  // console.log(productData,'product List');
 
   const loadMore = () => {
     setIndex(index + 12);
@@ -443,13 +444,20 @@ setSelectedSubCategory({
             <FilterSidebar />
           </Drawer>
         </div>
+        {!productData?.length && 
+        <div>
+        <DataNotFound/>
+        </div>
+}
         <div
           className={`grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 lg:gap-x-5 xl:gap-x-7 gap-y-3 xl:gap-y-5 2xl:gap-y-8 ${className}`}
         >
 
-          {!productData?.length ? (
-            <ProductFeedLoader limit={20} uniqueKey="search-product" />
-          ) : (
+          {/* {!productData?.length ? (
+            // <ProductFeedLoader limit={20} uniqueKey="search-product" />
+          
+          ) : ( */}
+          { productData?.length!=0 &&
             productData
               .filter((item: any) => {
                 if (Object.keys(query)?.length === 0) {
@@ -566,7 +574,7 @@ setSelectedSubCategory({
                 );
               }
               )
-          )}
+          }
         </div>
       </div>
       <div className="text-center pt-8 xl:pt-14">
