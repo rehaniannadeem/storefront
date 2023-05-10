@@ -3,7 +3,7 @@ import Button from "@components/ui/button";
 import { FC, useContext, useEffect, useState, Fragment } from "react";
 //import { useProductsQuery } from "@framework/product/get-all-products";
 import { useRouter } from "next/router";
-import ProductFeedLoader from "@components/ui/loaders/product-feed-loader";
+// import ProductFeedLoader from "@components/ui/loaders/product-feed-loader";
 import { useTranslation } from "next-i18next";
 //import { slice } from "lodash";
 import { Context } from "src/pages/_app";
