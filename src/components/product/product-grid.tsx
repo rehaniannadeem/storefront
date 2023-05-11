@@ -15,6 +15,7 @@ import { Drawer } from "@components/common/drawer/drawer";
 import { getDirection } from "@utils/get-direction";
 import FilterSidebar from "@components/shop/filter-sidebar";
 import DataNotFound from '../404/data-not-found'
+import ProductFeedLoader from "@components/ui/loaders/product-feed-loader";
 // import axios from "axios";
 // import Category from './../../pages/category/[slug]';
 interface ProductGridProps {
@@ -326,6 +327,12 @@ setSelectedSubCategory({
 
   return (
     <>
+    {Object.keys(products).length==0 ? 
+    <div  className={`grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 lg:gap-x-5 xl:gap-x-7 gap-y-3 xl:gap-y-5 2xl:gap-y-8 ${className}`}>
+<ProductFeedLoader limit={20} uniqueKey="search-product" />
+</div> 
+    :
+    <>
       <div className="flex flex-col">
       <div className="grid grid-cols-12 my-2">
   <div className="col-span-9">
@@ -589,6 +596,8 @@ setSelectedSubCategory({
           </Button>
         ) : null}
       </div>
+      </>
+}
     </>
   );
 };

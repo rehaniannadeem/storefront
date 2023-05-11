@@ -1,22 +1,23 @@
 import Image from "next/image";
 // import { IoHomeSharp } from "react-icons/io5";
-import Text from "@components/ui/text";
+// import Text from "@components/ui/text";
 // import Link from "@components/ui/link";
 import { useTranslation } from "next-i18next";
-
+import dataNotFound from '../../../public/no_data_found.png'
 const ErrorInformation: React.FC = () => {
 	const { t } = useTranslation("common");
 	return (
 		<div className="border-t border-b border-gray-300 text-center px-16 py-16 sm:py-20 lg:py-24 xl:py-32 flex items-center justify-center">
 			<div>
 				<Image
-					src="/assets/images/404.svg"
+					src={dataNotFound}
 					alt={t("error-heading")}
 					width={822}
 					height={492}
+					className="object-contain"
 				/>
 
-				<Text variant="mediumHeading">{t("domain-error")}</Text>
+				{/* <Text variant="mediumHeading">{t("domain-error")}</Text> */}
 				{/* <p className="text-sm md:text-base leading-7 pt-2 md:pt-3.5 pb-7 md:pb-9">
 					{t("error-sub-heading")}
 				</p>
