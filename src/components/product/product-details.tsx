@@ -23,7 +23,8 @@ import getSymbolFromCurrency from "currency-symbol-map";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import Loader from "@components/ui/loaders/loader/loader";
-
+// import { toast } from "react-toastify";
+import DataNotFound from '../404/not-found'
 const productGalleryCarouselResponsive = {
   "768": {
     slidesPerView: 2,
@@ -94,6 +95,7 @@ const ProductSingleDetails: React.FC = () => {
       })
         .then((response) => {
           // console.log(response.data, "this is response");
+         
           setProduct(response.data[0]);
 
           if (response?.data[0]?.gallery?.length === 0) {
@@ -147,16 +149,19 @@ const ProductSingleDetails: React.FC = () => {
   }, [attributes]);
   useEffect(() => {
     setIsLoading(true)
-    if (Object.keys(product)?.length != 0) {
-      if (product.variations?.length == 1) {
-        setAttributes(product.variations[0]);
+    if(product){
+      if (Object.keys(product)?.length != 0) {
+        if (product.variations?.length == 1) {
+          setAttributes(product.variations[0]);
+        }
       }
     }
+
     setIsLoading(false)
   }, [product]);
 
 //   if (isLoading) return <p>Loading...</p>;
-  const variations = getVariations(product?.variations);
+  const variations:any = getVariations(product?.variations);
 
 
 //   function addToCart() {
@@ -193,8 +198,12 @@ const ProductSingleDetails: React.FC = () => {
     return <Loader/>
   }
 
+  console.log( product,'product');
+  
+
   return (
-    //block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start
+    <>
+     {product ?
     <div className="block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start">
       {width < 1025 ? (
         isGalleryImg == true ? (
@@ -241,7 +250,7 @@ const ProductSingleDetails: React.FC = () => {
           </Carousel>
         )
       ) : isGalleryImg == true ? (
-        product.gallery && (
+        product?.gallery && (
           <div className="col-span-4">
             <ImageGallery
               items={product.gallery}
@@ -284,22 +293,32 @@ const ProductSingleDetails: React.FC = () => {
           </div>
         </div>
         {product && product.type === "variable" ? (
-          <div className=" pb-3 border-b border-gray-300 flex ml-11">
-            {Object.keys(variations).map((variation) => {
-                
-              return (
-                <ProductVariation
-                  key={variation}
-                  title={variation}
-                  attributes={variations[variation]}
-                  active={attributes.value}
-                  onClick={handleAttribute}
-                  quantity={quantity}
-                  enable_stock={product.enable_stock}
-                />
-              );
-            })}
-          </div>
+          product?.variations[0]?.variation_details?.map((_item:any)=>{
+           
+            
+            return(
+
+              <div className=" pb-3 border-b border-gray-300 flex ml-11">
+              {Object.keys(variations).map((variation) => {
+                return (
+                  <ProductVariation
+                    key={variation}
+                    title={variation}
+                    attributes={variations[variation]}
+                    active={attributes.value}
+                    onClick={handleAttribute}
+                    quantity={quantity}
+                    enable_stock={product.enable_stock}
+                  />
+                );
+              })}
+            </div>
+            )
+
+           
+
+})
+        
         ) : null}
         {/* <div className="flex items-center space-s-4 md:pe-32 lg:pe-12 2xl:pe-32 3xl:pe-48 border-b border-gray-300 py-8">
           <Counter
@@ -367,7 +386,17 @@ const ProductSingleDetails: React.FC = () => {
 
         {/* <ProductMetaReview data={data} /> */}
       </div>
+    </div>:
+    <div className="flex justify-center">
+      <DataNotFound/>
     </div>
+}
+    
+    </>
+    //block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start
+
+
+   
   );
 };
 
