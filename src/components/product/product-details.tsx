@@ -293,12 +293,14 @@ const ProductSingleDetails: React.FC = () => {
           </div>
         </div>
         {product && product.type === "variable" ? (
-          product?.variations[0]?.variation_details?.map((_item:any)=>{
+          product?.product_locations?.map((item:any)=>{
            
-            
             return(
-
-              <div className=" pb-3 border-b border-gray-300 flex ml-11">
+              <>
+              <div>
+<span>{item?.name}</span>
+              </div>
+                <div className=" pb-3 border-b border-gray-300 flex ml-11">
               {Object.keys(variations).map((variation) => {
                 return (
                   <ProductVariation
@@ -313,6 +315,10 @@ const ProductSingleDetails: React.FC = () => {
                 );
               })}
             </div>
+              
+              </>
+
+            
             )
 
            

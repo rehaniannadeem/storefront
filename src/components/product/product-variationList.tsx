@@ -20,9 +20,9 @@ export const ProductVariation: React.FC<Props> = ({
    // title,
     attributes,
     active,
-    onClick,
-    quantity,
-    enable_stock,
+    // onClick,
+    // quantity,
+    // enable_stock,
 }) => {
 const domainData:any=JSON.parse(localStorage.getItem("domainData")!)
 const currencyCode=domainData?.currency?.code
@@ -47,15 +47,15 @@ const currencyCode=domainData?.currency?.code
                                 "border-black": attribute.value === active ,
                             }
                         )}
-                        onClick={() => {
-                            {
-                                enable_stock == 1 &&
-                                    attribute.variation_details[0].qty_available < quantity
-                                    ? null
-                                    : onClick(attribute);
-                            }
-                            onClick(attribute);
-                        }}
+                        // onClick={() => {
+                        //     {
+                        //         enable_stock == 1 &&
+                        //             attribute.variation_details[0].qty_available < quantity
+                        //             ? null
+                        //             : onClick(attribute);
+                        //     }
+                        //     onClick(attribute);
+                        // }}
                         // style={
                         //     {
                         //         textDecoration:
