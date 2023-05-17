@@ -19,14 +19,48 @@ import { ROUTES } from "@utils/routes";
 
 const MegaMenu = ({ columns, label }: any) => {
   const { t } = useTranslation("menu");
-  const newProductArray = [];
+  // const newProductArray = [];
 
-for (let i = 0; i < columns?.length; i += 3) {
-  const chunk = columns.slice(i, i + 3);
-  newProductArray.push(chunk);
+// for (let i = 0; i < columns?.length; i += 3) {
+//   const chunk = columns.slice(i, i + 3);
+//   newProductArray.push(chunk);
+// }
+
+
+let newProductArray = [];
+let i = 0;
+while (i < columns?.length) {
+  let chunk = columns.slice(i, i + 3);
+  // console.log(chunk);
+  
+  let hasSubCategories = chunk.some((item:any) => item.sub_categories.length!=0);
+ 
+  if (hasSubCategories) {
+    newProductArray.push(chunk);
+    i += 3;
+  } else {
+    chunk = columns.slice(i, i + 6);
+    let hasSubCategories = chunk.some((item:any) => item.sub_categories.length!=0);
+    if (hasSubCategories) {
+      newProductArray.push(chunk);
+      i += 6;
+    }else{
+      chunk = columns.slice(i, i + 9);
+      let hasSubCategories = chunk.some((item:any) => item.sub_categories);
+      if (hasSubCategories) {
+        newProductArray.push(chunk);
+        i += 9;
+      }
+
+    }
+   
+  }
 }
 
+
 const finalProductArray = newProductArray.map((chunk) => ({ items: chunk }));
+console.log(newProductArray,'final product');
+
 
  const newCategoryArray = [];
 for (let i = 0; i < columns?.length; i += 8) {
