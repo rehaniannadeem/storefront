@@ -115,7 +115,7 @@ for (let i = 0; i < columns?.length; i += 1) {
 
 
 const finalProductArray = newProductArray.map((chunk) => ({ items: chunk }));
-console.log(newProductArray,'final product');
+// console.log(newProductArray,'final product');
 
 
  const newCategoryArray = [];
