@@ -402,6 +402,7 @@ const [Loading,setIsLoading]=useState(false)
     return <Loader/>
   }
 
+  
   return (
     //block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start
     <div className="block lg:grid grid-cols-9 gap-x-10 xl:gap-x-14 pt-7 pb-10 lg:pb-14 2xl:pb-20 items-start">
@@ -443,7 +444,11 @@ const [Loading,setIsLoading]=useState(false)
             <SwiperSlide key={`product-gallery-key`}>
               <div className="col-span-5 ">
                 <div className="col-span-1 transition duration-150 ease-in hover:opacity-90">
-                  <img src={"/icons/ignite-default.png"} alt="product Image" className="object-cover"/>
+                
+          <img src={(product?.image?.thumbnail.includes('default.png') || product?.image?.thumbnail===null)?(
+            product?.gallery[0]?.thumbnail ?? '/icons/ignite-default.png'
+          ):(product?.image?.thumbnail) } alt="product Image" className="object-contain"/>
+                  {/* <img src={"/icons/ignite-default.png"} alt="product Image" className="object-cover"/> */}
                 </div>
               </div>
             </SwiperSlide>
@@ -481,7 +486,10 @@ const [Loading,setIsLoading]=useState(false)
         </div> */
         <div className="col-span-5 ">
           <div className="col-span-1 transition duration-150 ease-in hover:opacity-90">
-            <img src={"/icons/ignite-default.png"} className="w-full object-cover" style={{ height: '400px' }} alt="product Image" />
+            {/* <img src={"/icons/ignite-default.png"} className="w-full object-cover" style={{ height: '400px' }} alt="product Image" /> */}
+            <img src={(product?.image?.thumbnail.includes('default.png') || product?.image?.thumbnail===null)?(
+            product?.gallery[0]?.thumbnail ?? '/icons/ignite-default.png'
+          ):(product?.image?.thumbnail) } className="w-full object-contain" style={{ height: '400px' }} alt="product Image" />
           </div>
         </div>
       )}
