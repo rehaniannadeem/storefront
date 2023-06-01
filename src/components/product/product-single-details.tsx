@@ -38,7 +38,7 @@ const ProductSingleDetails: React.FC = () => {
   const { t } = useTranslation("common");
   const { items,total} = useCart();
   // console.log(items,'this is Item');
-  
+
   const {
     query: { slug },
     locale
@@ -114,6 +114,8 @@ const [Loading,setIsLoading]=useState(false)
           } else {
             setIsGalleryImg(true);
           }
+          setAttributes({})
+     
           setIsLoading(false)
         })
         .catch((err) => {
@@ -152,6 +154,19 @@ const [Loading,setIsLoading]=useState(false)
         setQuantity(0);
         //setIsDisable(true);
         setIsSelected(false);
+      }
+    }
+
+    if (product?.enable_stock == 1) {
+
+      if (
+        Object.keys(attributes)?.length != 0) {
+
+        if (quantity <= Math.round(attributes?.variation_details[0]?.qty_available)) {
+          setIsDisable(false);
+        } else {
+          setIsDisable(true);
+        }
       }
     }
   }, [attributes]);
@@ -397,7 +412,6 @@ const [Loading,setIsLoading]=useState(false)
   // console.log(product, "product");
   //console.log("attributes", attributes);
 
-
   if(Loading){
     return <Loader/>
   }
@@ -543,11 +557,11 @@ const [Loading,setIsLoading]=useState(false)
             quantity={quantity}
             onIncrement={() => {
               // console.log(quantity, "dslfkjalfskjaslkfjj");
-              if (quantity == 0) {
-                alert("out of stock");
-              } else {
+              // if (quantity == 0) {
+              //   // alert("out of stock");
+              // } else {
                 setQuantity((prev) => prev + 1);
-              }
+              // }
             }}
             onDecrement={() => {
               setQuantity((prev) => (prev !== 1 ? prev - 1 : 1));
