@@ -74,7 +74,7 @@ const CheckoutForm: React.FC = () => {
     country: "",
     latlng:{}
   })
-  console.log(location,'location');
+  // console.log(location,'location');
   
   const { isAuthorized, openModal, setModalView } = useUI();
   const [shipping, setShipping] = useState<any>("Free")
@@ -403,6 +403,8 @@ const[source,setSource]=useState<any>()
 
     }
     setAddToCartLoader(true);
+   
+    
     axios({
       method: "post",
       url: connector_base_url + "/sell",
@@ -426,6 +428,7 @@ const[source,setSource]=useState<any>()
             discount_amount:discount,
             shipping_longitude:location?.latlng?.lng, 
             shipping_latitude:location?.latlng?.lat,
+            shipping_city:location?.city,
             payments: null,
             /*   payments: [
               {
