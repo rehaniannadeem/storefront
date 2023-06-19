@@ -77,16 +77,16 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     setIsLoading(true)
     let host = window.location.host;
-    // if (host.includes('myignite.site')) {
-    //   let parts = host.split(".");
-    //   setBusiness(parts[0]);
-    // } else {
-    //   setBusiness(host);
-    // }
+    if (host.includes('myignite.site')) {
+      let parts = host.split(".");
+      setBusiness(parts[0]);
+    } else {
+      setBusiness(host);
+    }
    
     
-    let parts = host.split(".");
-    setBusiness(parts[0]);
+    // let parts = host.split(".");
+    // setBusiness(parts[0]);
    
       // window.Trengo = window.Trengo || {};
       // window.Trengo.key = 'ByGdzSo2L0OI2OKu';
