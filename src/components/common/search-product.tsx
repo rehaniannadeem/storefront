@@ -12,6 +12,7 @@ type SearchProductProps = {
 const SearchProduct: React.FC<SearchProductProps> = ({ item }) => {
   const [_domainData, setDomainData] = useState({});
  // let urlName = item.name.replace(/\s+/g, "-");
+  // let urlName = item.name.replace('/', ' ');
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
 // console.log(item,'tiem');
 const {locale}=useRouter()
@@ -27,6 +28,7 @@ const {locale}=useRouter()
     }
     setDomainCurrencyCode(domainData.currency.code);
   }, []);
+  
 
   return (
     <Link

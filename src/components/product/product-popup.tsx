@@ -97,7 +97,7 @@ export default function ProductPopup() {
 console.log(data,'data');
 
   //let urlName = name.replace(/\s+/g, "-");
-
+  // let urlName = name.replace('/', ' ');
   //const isSelected = Object.keys(attributes).length == 0 ? false : true;
   /*   const isSelected = !isEmpty(variations)
     ? !isEmpty(attributes.value) &&

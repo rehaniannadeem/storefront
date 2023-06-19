@@ -314,6 +314,8 @@ const[source,setSource]=useState<any>()
       })
     }
   }, [checked])
+ 
+  
   const get_url = (response: any) => {
     // console.log(response,'treu response');
 
@@ -330,6 +332,7 @@ const[source,setSource]=useState<any>()
         item_name: productsName.toString(),
         amount: newTotal,
         email: userData.email,
+        mobile:userData.mobile,
         currency: domainData?.currency?.code,
         method_id: selectPayment.id,
         invoice_id: response.id,
@@ -384,6 +387,8 @@ const[source,setSource]=useState<any>()
   
         });
     }
+    console.log(address,'lication');
+    
   async function onSubmit(input: CheckoutInputType) {
 
 
