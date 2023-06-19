@@ -700,7 +700,7 @@ const ProductSingleDetails: React.FC = () => {
             )} */}
           </ul>
         </div>
-        {/* <div id="tabby"></div> */}
+        <div id="tabby"></div>
 
         {/* <ProductMetaReview data={data} /> */}
       </div>
