@@ -306,8 +306,8 @@ const ProductSingleDetails: React.FC = () => {
           installmentsCount: 4,
           lang: "en",
           source: "product",
-          publicKey: "pk_test_f4a652a3-1280-4281-92d4-8be37589cfa9",
-          merchantCode: "UNR",
+          publicKey: domainData?.tabby?.public_key,
+          merchantCode: domainData?.tabby?.merchant_cod,
         });
       };
     }
@@ -700,7 +700,10 @@ const ProductSingleDetails: React.FC = () => {
             )} */}
           </ul>
         </div>
-        <div id="tabby"></div>
+        {domainData?.tabby?.merchant_code && domainData?.tabby?.public_key &&
+         <div id="tabby"></div>
+        }
+       
 
         {/* <ProductMetaReview data={data} /> */}
       </div>
