@@ -70,8 +70,8 @@ const fav_icon:string=domain?.fav_icon;
         }}
       >
         {children}
-        {domain?.whatsapp_no!=null?
-        (<div className="bottom-0 left-0 fixed w-12 ml-8 mb-10  z-10">
+        {domain?.whatsapp_no &&
+        <div className="bottom-0 left-0 fixed w-12 ml-8 mb-10  z-10">
           <a href={`https://wa.me/${domain.whatsapp_no}`} target="_blank">
             <img
               src="/assets/images/whatsapp.png"
@@ -79,7 +79,7 @@ const fav_icon:string=domain?.fav_icon;
               className="rounded-full drop-shadow-2xl"
             />
           </a>
-        </div>):(null)}
+        </div>}
       </main>
       {/* {domain?.name!=="urbannecessity"? <Footer /> : null} */}
 

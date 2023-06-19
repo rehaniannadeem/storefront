@@ -27,8 +27,8 @@ export default function LanguageSwitcher() {
   
   
   useEffect(() => {
-    const userLang = navigator.language;
-    console.log(userLang, "userLang");
+    // const userLang = navigator.language;
+    // console.log(userLang, "userLang");
 
     async function getUserLocation() {
       try {

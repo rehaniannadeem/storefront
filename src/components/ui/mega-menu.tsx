@@ -118,20 +118,20 @@ const finalProductArray = newProductArray.map((chunk) => ({ items: chunk }));
 // console.log(newProductArray,'final product');
 
 
- const newCategoryArray = [];
-for (let i = 0; i < columns?.length; i += 8) {
-  const chunk = columns.slice(i, i + 8);
-  newCategoryArray.push(chunk);
-}
+//  const newCategoryArray = [];
+// for (let i = 0; i < columns?.length; i += 8) {
+//   const chunk = columns.slice(i, i + 8);
+//   newCategoryArray.push(chunk);
+// }
 
-const finalCategoryArray = newCategoryArray.map((chunk) => ({ items: chunk }));
+// const finalCategoryArray = newCategoryArray.map((chunk) => ({ items: chunk }));
 
   return (
 
 
     <div className="megaMenu shadow-header bg-gray-200 absolute -start-20 xl:start-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible">
 
-{label==='menu-categories' && 
+{/* {label==='menu-categories' && 
 <div className={`${
 
 finalCategoryArray?.length>=4?"grid grid-cols-4":`grid grid-cols-${finalCategoryArray?.length} `
@@ -178,9 +178,9 @@ finalCategoryArray?.length>=4?"grid grid-cols-4":`grid grid-cols-${finalCategory
         </ul>
       ))}
     </div>
-}
+} */}
 
-{ label==='menu-products'  &&
+{ label==='menu-categories'  &&
     <div className={`${
       finalProductArray?.length>=5?"grid grid-cols-5":`grid grid-cols-${finalProductArray?.length} `
 

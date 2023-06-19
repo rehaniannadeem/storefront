@@ -42,7 +42,7 @@ const BannerCard: FC<BannerProps> = ({
         <Image
           src={selectedImage.url}
           width={selectedImage.width}
-          height={selectedImage.height}
+          height={width < 1500 ?600:selectedImage.height}
           alt={title}
           quality={100}
           className={cn("bg-gray-300 object-cover w-full", {
