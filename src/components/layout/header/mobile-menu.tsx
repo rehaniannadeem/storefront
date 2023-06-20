@@ -379,7 +379,8 @@ export default function MobileMenu() {
         <Scrollbar className="menu-scrollbar flex-grow mb-auto">
           <div className="flex flex-col py-7 px-0 lg:px-2 text-heading">
             <ul className="mobileMenu">
-              {domain?.name === "un"
+             
+              {domain?.domain === "un"
                 ? site_header?.urbannecessity_mobile_menu?.map((menu, index) => {
                   const dept: number = 1;
                   const menuName: string = `sidebar-menu-${dept}-${index}`;
@@ -416,7 +417,7 @@ export default function MobileMenu() {
                   const menuName: string = `sidebar-menu-${dept}-${index}`;
                   return (
                     <>
-                      {menu.label === 'menu-products' ?
+                      {menu.label === 'menu-categories' ?
                         <ListMenu
                           dept={dept}
                           data={menu}
