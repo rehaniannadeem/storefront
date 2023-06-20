@@ -47,7 +47,7 @@ export const ProductAttributes: React.FC<Props> = ({
             onClick={() => {
               {
                 enable_stock == 1 &&
-                attribute.variation_details[0].qty_available < quantity || attribute.variation_details[0].qty_available==0
+                attribute?.variation_details[0]?.qty_available < quantity || attribute?.variation_details[0]?.qty_available==0
                   ? null
                   : onClick(attribute);
               }

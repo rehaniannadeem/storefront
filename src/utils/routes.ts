@@ -5,6 +5,7 @@ export const ROUTES = {
   CHECKOUT: "/checkout",
   CONTACT: "/contact-us",
   TERMS: "/terms",
+  REFUND: "/refundPolicy",
   POLICY: "/privacy",
   FAQ: "/faq",
   FORGET_PASSWORD: "/forget-password",

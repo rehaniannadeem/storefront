@@ -960,7 +960,7 @@ const CheckoutForm: React.FC = () => {
                           onChange={() => setSelectPayment(type)}
                           checked={type.name === selectPayment.name}
                         />
-                        {console.log('>>>>>>>>>>>', type.name)}
+
                         <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col"><span>{t('common:tabby-payment')} </span> <span>({type?.name})</span></div> : <div className="flex flex-col"><span>{t('common:online-payment')}</span><span>({type?.name})</span></div>}</label>
                         {/* <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label> */}
                       </div>
@@ -989,7 +989,7 @@ const CheckoutForm: React.FC = () => {
                       onClick={() => setSelectPayment(type)}
                       key={index}
                     >
-                      <div className="col-span-5 flex justify-start">
+                      <div className="col-span-6 flex justify-start">
                         <input
                           style={{
                             accentColor: domainData.theme_color,
@@ -1004,10 +1004,10 @@ const CheckoutForm: React.FC = () => {
                           checked={(type.name === selectPayment.name)}
                         />
 
-                        {/* <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label> */}
-                        <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label>
+                        <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col"><span>{t('common:tabby-payment')} </span> <span>({type?.name})</span></div> : <div className="flex flex-col"><span>{t('common:online-payment')}</span><span>({type?.name})</span></div>}</label>
+                        {/* <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label> */}
                       </div>
-                      <div className="inline-flex col-span-7 w-full  justify-end">
+                      <div className="inline-flex col-span-6 w-full  justify-end">
 
                         <img
                           className="flex h-14 w-fit self-center"
@@ -1050,7 +1050,7 @@ const CheckoutForm: React.FC = () => {
                         onClick={() => setSelectPayment(type)}
                         key={index}
                       >
-                        <div className="col-span-5 flex justify-start">
+                        <div className="col-span-6 flex justify-start">
                           <input
                             style={{
                               accentColor: domainData.theme_color,
@@ -1065,10 +1065,10 @@ const CheckoutForm: React.FC = () => {
                             checked={(type.name === selectPayment.name)}
                           />
 
-                          {/* <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label> */}
-                          <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label>
+                          <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col"><span>{t('common:tabby-payment')} </span> <span>({type?.name})</span></div> : <div className="flex flex-col"><span>{t('common:online-payment')}</span><span>({type?.name})</span></div>}</label>
+                          {/* <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label> */}
                         </div>
-                        <div className="inline-flex col-span-7 w-full  justify-end">
+                        <div className="inline-flex col-span-6 w-full  justify-end">
 
                           <img
                             className="flex h-14 w-fit self-center"
