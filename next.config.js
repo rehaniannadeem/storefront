@@ -4,7 +4,7 @@ const runtimeCaching = require("next-pwa/cache");
 module.exports = withPWA({
   images: {
     //domains: ["pos-dev.myignite.online", "ignitepos.test"],
-    domains: ["console.ignitehq.io", "ignitepos.test","ignitestorage.blob.core.windows.net"],
+    domains: ["console.ignitehq.io", "ignitepos.test","ignitestorage.blob.core.windows.net","api.ignite.tech"],
   },
   pwa: {
     disable: process.env.NODE_ENV !== "production",

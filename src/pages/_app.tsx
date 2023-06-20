@@ -77,12 +77,19 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     setIsLoading(true)
     let host = window.location.host;
-    if (host.includes('myignite.site')) {
-      let parts = host.split(".");
-      setBusiness(parts[0]);
-    } else {
-      setBusiness(host);
+    if(host.includes('localhost')){
+       let parts = host.split(".");
+    setBusiness(parts[0]);
+    }else{
+      if (host.includes('myignite.site')) {
+        let parts = host.split(".");
+        setBusiness(parts[0]);
+      } else {
+        setBusiness(host);
+      }
+
     }
+  
    
     
     // let parts = host.split(".");
