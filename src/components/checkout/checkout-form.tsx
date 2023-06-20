@@ -72,10 +72,10 @@ const CheckoutForm: React.FC = () => {
   const [location, setLocation] = useState<any>({
     city: "",
     country: "",
-    latlng:{}
+    latlng: {}
   })
   // console.log(location,'location');
-  
+
   const { isAuthorized, openModal, setModalView } = useUI();
   const [shipping, setShipping] = useState<any>("Free")
   // const [isCity,setIsCity]=useState(false)
@@ -86,15 +86,15 @@ const CheckoutForm: React.FC = () => {
   const { clearCart } = useCart();
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let production_payment_url = process.env.NEXT_PUBLIC_IGNITE_PRODUCTION_PAYMENT_URL
-const[source,setSource]=useState<any>()
-// console.log(source,'source');
+  const [source, setSource] = useState<any>()
+  // console.log(source,'source');
 
   function handleLogin() {
     setModalView("LOGIN_VIEW");
     return openModal();
   }
 
-// console.log(shipping,'shipping');
+  // console.log(shipping,'shipping');
 
   // let host = window.location.host;
   // console.log(">>>>>>>>>>>", `https://${host}/my-account/orders/244582`);
@@ -156,9 +156,9 @@ const[source,setSource]=useState<any>()
         } else {
           // console.log('>>>>>>>>>>>', selectedMethod)
           if (selectPayment.name == "Cash On Delivery") {
-            let newTotal = subTotal + Number(selectedMethod?.cod_rate)+Number(selectedMethod?.base_shipping_fee)
+            let newTotal = subTotal + Number(selectedMethod?.cod_rate) + Number(selectedMethod?.base_shipping_fee)
             setFinalTotal(newTotal)
-            let totalFee=Number(selectedMethod?.base_shipping_fee)+Number(selectedMethod?.cod_rate)
+            let totalFee = Number(selectedMethod?.base_shipping_fee) + Number(selectedMethod?.cod_rate)
             setShippingFee(totalFee)
           } else if (selectPayment.name) {
             let newTotal = subTotal + Number(selectedMethod?.base_shipping_fee)
@@ -175,20 +175,20 @@ const[source,setSource]=useState<any>()
 
     {
       discount && finalTotal ?
-      setNewTotal(finalTotal - discount) :
-      setNewTotal(finalTotal)
+        setNewTotal(finalTotal - discount) :
+        setNewTotal(finalTotal)
     }
 
 
   }, [discount, finalTotal])
-  
+
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
       setDomainData(domainData);
     }
     setDomainCurrencyCode(domainData?.currency?.code);
-    let source=sessionStorage.getItem('source')
+    let source = sessionStorage.getItem('source')
     setSource(source)
   }, []);
 
@@ -252,7 +252,7 @@ const[source,setSource]=useState<any>()
         },
       })
         .then((response) => {
-           console.log(response,'this is shipping method');
+          console.log(response, 'this is shipping method');
           setShipping(response?.data?.data)
           if (response?.data.success === false) {
             setIsDelivery(false)
@@ -314,8 +314,8 @@ const[source,setSource]=useState<any>()
       })
     }
   }, [checked])
- 
-  
+
+
   const get_url = (response: any) => {
     // console.log(response,'treu response');
 
@@ -332,7 +332,7 @@ const[source,setSource]=useState<any>()
         item_name: productsName.toString(),
         amount: newTotal,
         email: userData.email,
-        mobile:userData.mobile,
+        mobile: userData.mobile,
         currency: domainData?.currency?.code,
         method_id: selectPayment.id,
         invoice_id: response.id,
@@ -345,7 +345,7 @@ const[source,setSource]=useState<any>()
         // console.log(response, "Payment ");
         if (response.status == 200) {
           // console.log("get_url");
-          
+
           //  setIsDisabled(false);
           clearCart();
           window.open(response.data.Url, "_self");
@@ -361,34 +361,34 @@ const[source,setSource]=useState<any>()
   const deleteItem = () => {
     let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
-    let token=domainData.token
-    let cartId=localStorage.getItem("cart_id")
-      axios({
-        method: "get",
-        url: connector_base_url + "/abandonedcart/delete/"+cartId,
-        headers: {
-          Accept: "Application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        // data: {
-        //   contact_id: userData.id,
-        //    shipping_status: "pending", 
-        //    final_amount: item?.attributes.sell_price_inc_tax,
-        //    cart_detail:[item]
-        // },
-  
+    let token = domainData.token
+    let cartId = localStorage.getItem("cart_id")
+    axios({
+      method: "get",
+      url: connector_base_url + "/abandonedcart/delete/" + cartId,
+      headers: {
+        Accept: "Application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      // data: {
+      //   contact_id: userData.id,
+      //    shipping_status: "pending", 
+      //    final_amount: item?.attributes.sell_price_inc_tax,
+      //    cart_detail:[item]
+      // },
+
+    })
+      .then((response) => {
+        console.log(response, 'deletes response ');
+
       })
-        .then((response) => {
-          console.log(response, 'deletes response ');
-         
-        })
-        .catch((err) => {
-          console.log(err, "Response Error");
-  
-        });
-    }
-    console.log(address,'lication');
-    
+      .catch((err) => {
+        console.log(err, "Response Error");
+
+      });
+  }
+  console.log(address, 'lication');
+
   async function onSubmit(input: CheckoutInputType) {
 
 
@@ -399,7 +399,7 @@ const[source,setSource]=useState<any>()
       shippingMethod = ""
     } else {
       if (selectPayment.name == "Cash On Delivery") {
-        shippingCharges = Number(selectedMethod?.cod_rate)+Number(selectedMethod?.base_shipping_fee)
+        shippingCharges = Number(selectedMethod?.cod_rate) + Number(selectedMethod?.base_shipping_fee)
         shippingMethod = selectedMethod?.name
       } else {
         shippingCharges = Number(selectedMethod?.base_shipping_fee)
@@ -408,8 +408,8 @@ const[source,setSource]=useState<any>()
 
     }
     setAddToCartLoader(true);
-   
-    
+
+
     axios({
       method: "post",
       url: connector_base_url + "/sell",
@@ -430,10 +430,10 @@ const[source,setSource]=useState<any>()
             delivered_to: firstName + " " + lastName,
             shipping_charges: shippingCharges,
             shipping_custom_field_4: shippingMethod,
-            discount_amount:discount,
-            shipping_longitude:location?.latlng?.lng, 
-            shipping_latitude:location?.latlng?.lat,
-            shipping_city:location?.city,
+            discount_amount: discount,
+            shipping_longitude: location?.latlng?.lng,
+            shipping_latitude: location?.latlng?.lat,
+            shipping_city: location?.city,
             payments: null,
             /*   payments: [
               {
@@ -442,10 +442,10 @@ const[source,setSource]=useState<any>()
                 card_type: "",
               },
             ], */
-            order_source:source ? source:"storefront" ,
+            order_source: source ? source : "storefront",
             total_before_tax: newTotal,
             products: placeOrder,
-            service_custom_field_2:couponCode
+            service_custom_field_2: couponCode
           },
         ],
       },
@@ -468,8 +468,8 @@ const[source,setSource]=useState<any>()
               get_url(response.data[0]);
             }
           }
-          
-          
+
+
           deleteItem()
           localStorage.removeItem("cart_id");
         }
@@ -545,7 +545,7 @@ const[source,setSource]=useState<any>()
       });
 
   }
-// console.log(selectPayment,'discount');
+  // console.log(selectPayment,'discount');
 
   // const handleCity=()=>{
   //   setIsCity(true)
@@ -760,17 +760,17 @@ const[source,setSource]=useState<any>()
                     <DeliveryAddress setAddress={setAddress} setLocation={setLocation} />
                   </div>
                 </div>
-              ) : 
-              <TextArea
-              labelKey="forms:label-order-notes"
-              {...register("note")}
-              placeholderKey="forms:placeholder-order-notes"
-              className="relative pt-3 xl:pt-6"
-              value={additionalNote}
-              onChange={(e) => {
-                setAdditionalNote(e.target.value);
-              }}
-            />
+              ) :
+                <TextArea
+                  labelKey="forms:label-order-notes"
+                  {...register("note")}
+                  placeholderKey="forms:placeholder-order-notes"
+                  className="relative pt-3 xl:pt-6"
+                  value={additionalNote}
+                  onChange={(e) => {
+                    setAdditionalNote(e.target.value);
+                  }}
+                />
               }
 
               {/* <div className="flex mt-2 w-full border-2 border-solid p-1 rounded">
@@ -878,7 +878,7 @@ const[source,setSource]=useState<any>()
                       </label></div>
 
                     <div className="flex flex-col  justify-center col-span-5">
-                    {domainData?.store_payment_methods?.cod === true && <span className="self-center"> <span> COD Fee: {Number(method?.cod_rate).toFixed(2)}</span></span>}
+                      {domainData?.store_payment_methods?.cod === true && <span className="self-center"> <span> COD Fee: {Number(method?.cod_rate).toFixed(2)}</span></span>}
                       <span className="self-center align-item-center">Delivery Fee: {Number(method.base_shipping_fee).toFixed(2)} </span>
 
                     </div>
@@ -894,9 +894,9 @@ const[source,setSource]=useState<any>()
 
           {paymentGateway && (
             <div className=" my-3 p-2 ">
-            {domainData?.store_payment_methods?.cod === true ||  domainData?.store_payment_methods?.ignitepay === true &&
-            <h2 className="font-semibold p-1">{t("forms:payment-method")}</h2>
-            }  
+              {domainData?.store_payment_methods?.cod === true || domainData?.store_payment_methods?.ignitepay === true &&
+                <h2 className="font-semibold p-1">{t("forms:payment-method")}</h2>
+              }
               {/* <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
                 <input
                   style={{
@@ -917,11 +917,11 @@ const[source,setSource]=useState<any>()
               </div> */}
               {checked === "Pickup" ? (
                 <div>
-                  
+
                   <div onClick={() =>
-                        setSelectPayment({ id: 1, name: "Cash On Pickup" })
-                      } 
-                      className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
+                    setSelectPayment({ id: 1, name: "Cash On Pickup" })
+                  }
+                    className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
                     <input
                       style={{
                         accentColor: domainData.theme_color,
@@ -939,14 +939,14 @@ const[source,setSource]=useState<any>()
 
                     <label className="p-2">{t('forms:input-label-cash-pickup')}</label>
                   </div>
-                  {   domainData?.store_payment_methods?.ignitepay === true && paymentGateway?.map((type: any, index: any) => (
-                    
-                    <div  className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
-                    onClick={() => setSelectPayment(type)}
-                    key={index}
+                  {domainData?.store_payment_methods?.ignitepay === true && paymentGateway?.map((type: any, index: any) => (
+
+                    <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
+                      onClick={() => setSelectPayment(type)}
+                      key={index}
                     >
-                      
-                      <div className="col-span-5 flex justify-start">
+
+                      <div className="col-span-6 flex justify-start">
                         <input
                           style={{
                             accentColor: domainData.theme_color,
@@ -958,13 +958,13 @@ const[source,setSource]=useState<any>()
                           name="payment-option"
                           className="m-2 "
                           onChange={() => setSelectPayment(type)}
-                        checked={type.name === selectPayment.name}
+                          checked={type.name === selectPayment.name}
                         />
-
-                        {/* <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label> */}
-                        <label className="p-2 flex self-center">{ t('common:online-payment')+` (${type?.name})`}</label>
+                        {console.log('>>>>>>>>>>>', type.name)}
+                        <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col"><span>{t('common:tabby-payment')} </span> <span>({type?.name})</span></div> : <div className="flex flex-col"><span>{t('common:online-payment')}</span><span>({type?.name})</span></div>}</label>
+                        {/* <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label> */}
                       </div>
-                      <div className="inline-flex col-span-7 w-full  justify-end">
+                      <div className="inline-flex col-span-6 w-full  justify-end">
 
                         <img
                           className="flex h-14 w-fit self-center"
@@ -986,8 +986,8 @@ const[source,setSource]=useState<any>()
                 selectedMethod && selectedMethod.is_cod === 0 ?
                   paymentGateway?.map((type: any, index: any) => (
                     <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
-                    onClick={() => setSelectPayment(type)}
-                    key={index}
+                      onClick={() => setSelectPayment(type)}
+                      key={index}
                     >
                       <div className="col-span-5 flex justify-start">
                         <input
@@ -1005,7 +1005,7 @@ const[source,setSource]=useState<any>()
                         />
 
                         {/* <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label> */}
-                        <label className="p-2 flex self-center">{ t('common:online-payment')+` (${type?.name})`}</label>
+                        <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label>
                       </div>
                       <div className="inline-flex col-span-7 w-full  justify-end">
 
@@ -1024,31 +1024,31 @@ const[source,setSource]=useState<any>()
                     </div>
                   )) :
                   <div>
-                     {domainData?.store_payment_methods?.cod === true && 
-                    <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 "
-                     onClick={() =>  setSelectPayment({ id: 1, name: "Cash On Delivery" })}
-                     >
-                      <input
-                        style={{
-                          accentColor: domainData.theme_color,
-                          cursor: "pointer",
-                        }}
-                        type="radio"
-                        value="Cash On Delivery"
-                        name="payment-option"
-                        className="m-2 "
-                        onChange={() =>
-                          setSelectPayment({ id: 1, name: "Cash On Delivery" })
-                        }
-                        checked={"Cash On Delivery" == selectPayment.name}
-                      />
+                    {domainData?.store_payment_methods?.cod === true &&
+                      <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 "
+                        onClick={() => setSelectPayment({ id: 1, name: "Cash On Delivery" })}
+                      >
+                        <input
+                          style={{
+                            accentColor: domainData.theme_color,
+                            cursor: "pointer",
+                          }}
+                          type="radio"
+                          value="Cash On Delivery"
+                          name="payment-option"
+                          className="m-2 "
+                          onChange={() =>
+                            setSelectPayment({ id: 1, name: "Cash On Delivery" })
+                          }
+                          checked={"Cash On Delivery" == selectPayment.name}
+                        />
 
-                      <label className="p-2">{t('forms:input-label-cash-delivery')}</label>
-                    </div>}
-                    { domainData?.store_payment_methods?.ignitepay === true &&   paymentGateway?.map((type: any, index: any) => (
+                        <label className="p-2">{t('forms:input-label-cash-delivery')}</label>
+                      </div>}
+                    {domainData?.store_payment_methods?.ignitepay === true && paymentGateway?.map((type: any, index: any) => (
                       <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
-                      onClick={() => setSelectPayment(type)}
-                      key={index}
+                        onClick={() => setSelectPayment(type)}
+                        key={index}
                       >
                         <div className="col-span-5 flex justify-start">
                           <input
@@ -1066,7 +1066,7 @@ const[source,setSource]=useState<any>()
                           />
 
                           {/* <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label> */}
-                          <label className="p-2 flex self-center">{ t('common:online-payment')+` (${type?.name})`}</label>
+                          <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label>
                         </div>
                         <div className="inline-flex col-span-7 w-full  justify-end">
 
