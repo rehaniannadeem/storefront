@@ -7,12 +7,12 @@ import { useRouter } from "next/router";
 //import { useUI } from "@contexts/ui.context";
 import "@fontsource/tajawal";
 import axios from "axios";
-interface GeolocationPosition {
-  coords: {
-    latitude: number;
-    longitude: number;
-  };
-}
+// interface GeolocationPosition {
+//   coords: {
+//     latitude: number;
+//     longitude: number;
+//   };
+// }
 export default function LanguageSwitcher() {
   const { site_header } = siteSettings;
   const { t } = useTranslation("common");
