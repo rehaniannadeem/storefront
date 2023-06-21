@@ -45,12 +45,13 @@ export default function LanguageSwitcher() {
       })
         .then((response) => {
           //handle success
-          // console.log(response.data,'location response');
+          console.log(response.data,'location response');
           const lang =response.data.location.language.code;
-          
+          sessionStorage.setItem("countryCode", response.data.location.country.code);
           if(lang==='ar'){
             setSelectedItem(lang);
           sessionStorage.setItem("language", lang);
+        
             router.push(asPath, undefined, {
               locale: lang,
             });
