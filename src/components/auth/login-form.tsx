@@ -59,6 +59,7 @@ const LoginForm: React.FC = () => {
   const [domainData, setDomainData] = useState<any>({});
   const [domainToken, setDomainToken] = useState("");
   const [userData, setUserData] = useState({});
+  const [countryCode,setCountryCode]=useState<any>('')
   //const [authenticatedUser, setAuthenticatedUser] = useState({});
   let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   //const { setUser } = useContext(Context);
@@ -71,6 +72,9 @@ const LoginForm: React.FC = () => {
       setDomainData(domainData);
     }
     setDomainToken(domainData.token);
+
+    setCountryCode(sessionStorage.getItem('countryCode'));
+    
   }, []);
 
   const {
@@ -308,7 +312,7 @@ const LoginForm: React.FC = () => {
         </label>
         <PhoneInput
           international
-          defaultCountry={locale=="ar"?"SA":"PK"}
+          defaultCountry={countryCode}
           className="p-2"
           value={phone}
           onKeyDown={(e: any) => {
