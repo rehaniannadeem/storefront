@@ -18,7 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 import useWindowSize from "react-use/lib/useWindowSize";
 // import { m } from "framer-motion";
 import "react-phone-number-input/style.css";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 const LoginForm: React.FC = () => {
   const { width } = useWindowSize();
   const successNotify = (text: string) =>
@@ -63,8 +63,8 @@ const LoginForm: React.FC = () => {
   //const [authenticatedUser, setAuthenticatedUser] = useState({});
   let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   //const { setUser } = useContext(Context);
-  const router = useRouter();
-  let {locale}=router
+  // const router = useRouter();
+  // let {locale}=router
   
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
