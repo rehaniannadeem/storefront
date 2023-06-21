@@ -3,6 +3,8 @@ import Text from "@components/ui/text";
 import cn from "classnames";
 import Link from "@components/ui/link";
 import { useTranslation } from "next-i18next";
+import { useContext } from "react";
+import { Context } from "src/pages/_app";
 const data = {
 	title: "app-heading",
 	subTitle: "app-sub-heading",
@@ -32,8 +34,14 @@ interface Props {
 }
 
 const DownloadApps: React.FC<Props> = ({ className }) => {
-	const { appButtons, title, subTitle, appImage } = data;
+	const { appButtons, /* title,subTitle,appImage */   } = data;
 	const { t } = useTranslation("common");
+	const { domain }: any = useContext(Context);
+
+
+	const title:string=domain?.meta_title;
+	const subTitle:string=domain?.meta_description;
+	const appImage=domain?.fav_icon
 	return (
 		<div
 			className={cn(

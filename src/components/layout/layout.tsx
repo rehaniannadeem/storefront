@@ -18,9 +18,9 @@ const Layout: React.FC = ({ children }) => {
   // const [domainData, setDomainData] = useState<any>({});
 //console.log(domain);
 
-const meta_title:string=domain?.meta_title;
-const meta_description:string=domain?.meta_description;
-const fav_icon:string=domain?.fav_icon;
+const meta_title:string=domain?.meta_title ?domain?.meta_title : '';
+const meta_description:string=domain?.meta_description?domain?.meta_description:'';
+const fav_icon:string=domain?.fav_icon?domain?.fav_icon:'';
 
   //  useEffect(() => {
   //   var domainData = localStorage.getItem("user_token");
@@ -37,8 +37,8 @@ const fav_icon:string=domain?.fav_icon;
             content: "width=device-width, initial-scale=1.0",
           },
         ]}
-        title={domain?.meta_title}
-      description={domain?.meta_description}
+        title={domain?.meta_title ?domain?.meta_title :''}
+      description={domain?.meta_description ? domain?.meta_description :''}
         canonical=""
         openGraph={{
           url: "",
