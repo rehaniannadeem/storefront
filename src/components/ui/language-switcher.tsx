@@ -6,6 +6,7 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 //import { useUI } from "@contexts/ui.context";
 import "@fontsource/tajawal";
+import axios from "axios";
 interface GeolocationPosition {
   coords: {
     latitude: number;
@@ -28,45 +29,70 @@ export default function LanguageSwitcher() {
   useEffect(() => {
     // const userLanguage = navigator.language;
     // console.log(userLanguage, "userLang");
-    async function getUserLocation() {
-      try {
-        const { coords } = await new Promise<GeolocationPosition>(
-          (resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
-          }
-        );
-        const isMiddleEast =
-          coords.latitude >= 12.0 &&
-          coords.latitude <= 42.0 &&
-          coords.longitude >= 26.0 &&
-          coords.longitude <= 56.0;
+    axios({
+    
+      method: "get",
+      url:'https://api.ipregistry.co/?key=7qsumd6hmu9lk9ns',
+      // data: bodyFormData,
+      headers: {
+        "Content-Type": "Application/json",
+        
+      },
+    })
+      .then((response) => {
+        //handle success
+        // console.log(response.data,'location response');
+        const lang =response.data.location.language.code;
+        localStorage.setItem("language", lang);
+        if(lang==='ar'){
+          router.push(asPath, undefined, {
+            locale: lang,
+          });
+        }
+       
+        }
+      )
+      
+    // async function getUserLocation() {
+    //   try {
+    //     const { coords } = await new Promise<GeolocationPosition>(
+    //       (resolve, reject) => {
+    //         navigator.geolocation.getCurrentPosition(resolve, reject);
+    //       }
+    //     );
+    //     const isMiddleEast =
+    //       coords.latitude >= 12.0 &&
+    //       coords.latitude <= 42.0 &&
+    //       coords.longitude >= 26.0 &&
+    //       coords.longitude <= 56.0;
          
           
-        const lang = isMiddleEast ? "ar" : "en";
-        // console.log(isMiddleEast,'isMiddle');
-        setSelectedItem(options.find((o) => o.value === lang)!);
-        router.push(asPath, undefined, {
-          locale: lang,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    //     const lang = isMiddleEast ? "ar" : "en";
+    //     console.log(isMiddleEast,'isMiddle');
+    //     setSelectedItem(options.find((o) => o.value === lang)!);
+    //     sessionStorage.setItem("language", lang);
+    //     router.push(asPath, undefined, {
+    //       locale: lang,
+    //     });
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // }
 
-    if (!sessionStorage.getItem("language")) {
-      getUserLocation();
-    } else {
-      const lang = sessionStorage.getItem("language")!;
-      setSelectedItem(options.find((o) => o.value === lang)!);
-      router.push(asPath, undefined, {
-        locale: lang,
-      });
-    }
+    // if (!sessionStorage.getItem("language")) {
+    //   getUserLocation();
+    // } else {
+    //   const lang = sessionStorage.getItem("language")!;
+    //   setSelectedItem(options.find((o) => o.value === lang)!);
+    //   router.push(asPath, undefined, {
+    //     locale: lang,
+    //   });
+    // }
   }, []);
 
   function handleItemClick(values: any) {
     setSelectedItem(values);
-    sessionStorage.setItem("language", values.value);
+    localStorage.setItem("language", values.value);
     router.push(asPath, undefined, {
       locale: values.value,
     });
