@@ -24,6 +24,7 @@ export default function LanguageSwitcher() {
     ? options.find((o) => o.value === locale)!
     : options[2];
   const [selectedItem, setSelectedItem] = useState(currentSelectedItem);
+// console.log(currentSelectedItem,'sdlfjslfsj');
 
 
   useEffect(() => {
@@ -46,12 +47,16 @@ export default function LanguageSwitcher() {
           //handle success
           // console.log(response.data,'location response');
           const lang =response.data.location.language.code;
-          setSelectedItem(lang);
-          localStorage.setItem("language", lang);
+          
           if(lang==='ar'){
+            setSelectedItem(lang);
+          sessionStorage.setItem("language", lang);
             router.push(asPath, undefined, {
               locale: lang,
             });
+          }else{
+            setSelectedItem(currentSelectedItem);
+            sessionStorage.setItem("language", 'en');
           }
          
           }
@@ -81,10 +86,10 @@ export default function LanguageSwitcher() {
       // }
     }
 
-    if (!localStorage.getItem("language")) {
+    if (!sessionStorage.getItem("language")) {
       getUserLocation();
     } else {
-      const lang = localStorage.getItem("language")!;
+      const lang = sessionStorage.getItem("language")!;
       // setSelectedItem(options.find((o) => o.value === lang)!);
       router.push(asPath, undefined, {
         locale: lang,
@@ -94,7 +99,7 @@ export default function LanguageSwitcher() {
 
   function handleItemClick(values: any) {
     setSelectedItem(values);
-    localStorage.setItem("language", values.value);
+    sessionStorage.setItem("language", values.value);
     router.push(asPath, undefined, {
       locale: values.value,
     });
