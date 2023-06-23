@@ -8,6 +8,8 @@ import { useUI } from "@contexts/ui.context";
 //import { ImGoogle2, ImFacebook2 } from "react-icons/im";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+// import PhoneInput from 'react-phone-input-2'
+// import 'react-phone-input-2/lib/style.css'
 import axios from "axios";
 import { useTranslation } from "next-i18next";
 import { useState, useEffect } from "react";
@@ -18,7 +20,8 @@ import "react-toastify/dist/ReactToastify.css";
 import useWindowSize from "react-use/lib/useWindowSize";
 // import { m } from "framer-motion";
 import "react-phone-number-input/style.css";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
+import { getDirection } from "@utils/get-direction";
 const LoginForm: React.FC = () => {
   const { width } = useWindowSize();
   const successNotify = (text: string) =>
@@ -63,7 +66,10 @@ const LoginForm: React.FC = () => {
   //const [authenticatedUser, setAuthenticatedUser] = useState({});
   let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   //const { setUser } = useContext(Context);
-  // const router = useRouter();
+  const router = useRouter();
+ 
+  const dir = getDirection(router.locale);
+ 
   // let {locale}=router
   
   useEffect(() => {
@@ -269,7 +275,7 @@ const LoginForm: React.FC = () => {
   }, [userData]);
   //console.log(firstName, lastName, email);
   return (
-    <div className="overflow-hidden bg-white mx-auto rounded-lg w-full sm:w-96 md:w-450px border border-gray-300 py-5 px-5 sm:px-8">
+    <div className="overflow-hidden bg-white mx-auto rounded-lg w-full sm:w-96 md:w-450px border border-gray-300 py-5 px-5 sm:px-8" dir="ltr">
       <div className="text-center mb-6 pt-2.5">
         <div onClick={closeModal}>
           <h1 className="font-bold text-2xl">{t("forms:login")}</h1>
@@ -307,22 +313,21 @@ const LoginForm: React.FC = () => {
         <label
           htmlFor="Phone No"
           className="flex-shrink-0 text-sm text-heading ps-3 cursor-pointer"
+          dir={dir=='ltr'?'ltr':'rtl'}
         >
           {t("common:phone-number")}
         </label>
         <PhoneInput
           international
           defaultCountry={countryCode}
-          className="p-2"
+          className="p-2 ltr"
           value={phone}
           onKeyDown={(e: any) => {
             if (e.keyCode === 13) {
               handleOtp(e);
             }
           }}
-          containerStyle={{
-            padding: "1rem",
-          }}
+        
           onChange={(e) => {
             setPhone(e);
             setVisibleOtp(false);
@@ -334,12 +339,13 @@ const LoginForm: React.FC = () => {
 
         {visibleOtp ? (
           <div className="">
-            <div className="">
+            <div   dir={dir}>
               <label
                 htmlFor="OTP"
                 className="flex-shrink-0 text-sm text-heading ps-3 cursor-pointer m-0"
+               
               >
-                {t("forms:OTP")}
+                {t("forms:input-otp")}
               </label>
             </div>
             <div className="">
@@ -356,6 +362,7 @@ const LoginForm: React.FC = () => {
                     width: "3rem",
                     height: "3rem",
                     borderRadius: "5px",
+                  
                   }}
                 />
               ) : (
@@ -369,7 +376,6 @@ const LoginForm: React.FC = () => {
                   //separator={<span>-</span>}
                   inputStyle={{
                     border: "1px solid black",
-
                     width: "3rem",
                     height: "3rem",
                     borderRadius: "5px",
@@ -381,9 +387,19 @@ const LoginForm: React.FC = () => {
         ) : null}
         {visibleRegister ? (
           <form id="registerForm" onSubmit={registerUser}>
-            <div>
+            <div >
+              <div>
+                <div   dir={dir}>
+                <label
+                htmlFor="firstName"
+                className="flex-shrink-0 text-sm text-heading ps-3 cursor-pointer m-0"
+              >
+               {t("common:first-name")}
+              </label>
+                </div>
+            
               <Input
-                labelKey={t("common:first-name")}
+                // labelKey={t("common:first-name")}
                 type="text"
                 name="firstName"
                 variant="solid"
@@ -400,10 +416,21 @@ const LoginForm: React.FC = () => {
                 })} */
                 onChange={(e) => setFirstName(e.target.value)}
                 errorKey={errors.email?.message}
+               
               />
-              <Input
+              </div>
+              <div>
+                <div   dir={dir}>
+                <label
+                htmlFor="lastName"
+                className="flex-shrink-0   text-sm text-heading ps-3 cursor-pointer m-0"
+              >
+              {t("common:last-name")}
+              </label>
+                </div>
+                <Input
                 name="lastName"
-                labelKey={t("common:last-name")}
+                // labelKey={t("common:last-name")}
                 type="text"
                 variant="solid"
                 className="p-4"
@@ -419,9 +446,20 @@ const LoginForm: React.FC = () => {
                 onChange={(e) => setLastName(e.target.value)}
                 errorKey={errors.email?.message}
               />
-              <Input
+              </div>
+              <div>
+                <div   dir={dir}>
+                <label
+                htmlFor="email"
+                className="flex-shrink-0 text-sm text-heading ps-3 cursor-pointer m-0"
+              >
+               {t("common:email")}
+              </label>
+                </div>
+            
+                <Input
                 name="email"
-                labelKey={t("common:email")}
+                // labelKey={t("common:email")}
                 type="email"
                 variant="solid"
                 className="p-4"
@@ -437,6 +475,9 @@ const LoginForm: React.FC = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 errorKey={errors.email?.message}
               />
+              </div>
+          
+            
             </div>
             {/*  <div className="relative">
                 <Button
