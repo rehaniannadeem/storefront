@@ -54,6 +54,7 @@
   "label-country":"دولة",
   "button-apply":"يتقدم",
   "input-label-cash-pickup":"الدفع عند الإستلام",
-  "input-label-cash-delivery":"الدفع عند الاستلام"
+  "input-label-cash-delivery":"الدفع عند الاستلام",
+  "input-otp":"OTP"
 
 }

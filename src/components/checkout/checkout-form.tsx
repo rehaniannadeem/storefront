@@ -16,7 +16,8 @@ import CheckoutCard from "./checkout-card";
 import Container from "@components/ui/container";
 import { useUI } from "@contexts/ui.context";
 import { toast } from "react-toastify";
-
+import cardImg from '../assets/cardImg.jpg';
+import Image from "next/image";
 interface CheckoutInputType {
   firstName: string;
   lastName: string;
@@ -937,7 +938,7 @@ const CheckoutForm: React.FC = () => {
                       checked={selectPayment?.name?.toLowerCase() === "cash on pickup"}
                     />
 
-                    <label className="p-2">{t('forms:input-label-cash-pickup')}</label>
+                    <label className="p-2 flex  ml-3 items-center">{t('forms:input-label-cash-pickup')}</label>
                   </div>
                   {domainData?.store_payment_methods?.ignitepay === true && paymentGateway?.map((type: any, index: any) => (
 
@@ -960,8 +961,40 @@ const CheckoutForm: React.FC = () => {
                           onChange={() => setSelectPayment(type)}
                           checked={type.name === selectPayment.name}
                         />
-
-                        <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col"><span>{t('common:tabby-payment')} </span> <span>({type?.name})</span></div> : <div className="flex flex-col"><span>{t('common:online-payment')}</span><span>({type?.name})</span></div>}</label>
+                        {domainCurrencyCode == "SAR" ? <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col "><span className="flex justify-center">{t('common:tabby-payment')} </span>
+                       <div>
+                       <Image
+                              src={cardImg}
+                              alt={t("error-heading")}
+                              width={800}
+                              height={0}
+                              className="object-contain"
+                            />
+                       </div>
+                       
+                        </div> :
+                          <div className="flex flex-col"><span className="flex justify-center">{t('common:online-payment')}</span>
+                          <div>
+                            <Image
+                              src={cardImg}
+                              alt={t("error-heading")}
+                              width={800}
+                              height={0}
+                              className="object-contain"
+                            />
+                       </div>
+                          
+                           </div>}</label>
+                          : <label className="p-2 flex self-center">{type.name === 'Paymob' ? <div className="flex flex-col"><span className="flex justify-center">{t('common:tabby-payment')} </span>  <div>
+                          <Image
+                            src={cardImg}
+                            alt={t("error-heading")}
+                            width={800}
+                            height={0}
+                            className="object-contain"
+                          />
+                     </div></div> : <div className="flex flex-col"><span className="flex justify-center">{t('common:online-payment')}</span><span className="flex justify-center">({type?.name})</span></div>}</label>
+                        }
                         {/* <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label> */}
                       </div>
                       <div className="inline-flex col-span-6 w-full  justify-end">
@@ -1004,7 +1037,40 @@ const CheckoutForm: React.FC = () => {
                           checked={(type.name === selectPayment.name)}
                         />
 
-                        <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col"><span>{t('common:tabby-payment')} </span> <span>({type?.name})</span></div> : <div className="flex flex-col"><span>{t('common:online-payment')}</span><span>({type?.name})</span></div>}</label>
+{domainCurrencyCode == "SAR" ? <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col "><span className="flex justify-center">{t('common:tabby-payment')} </span>
+                       <div>
+                       <Image
+                              src={cardImg}
+                              alt={t("error-heading")}
+                              width={800}
+                              height={0}
+                              className="object-contain"
+                            />
+                       </div>
+                       
+                        </div> :
+                          <div className="flex flex-col"><span className="flex justify-center">{t('common:online-payment')}</span>
+                          <div>
+                            <Image
+                              src={cardImg}
+                              alt={t("error-heading")}
+                              width={800}
+                              height={0}
+                              className="object-contain"
+                            />
+                       </div>
+                          
+                           </div>}</label>
+                          : <label className="p-2 flex self-center">{type.name === 'Paymob' ? <div className="flex flex-col"><span className="flex justify-center">{t('common:tabby-payment')} </span>  <div>
+                          <Image
+                            src={cardImg}
+                            alt={t("error-heading")}
+                            width={800}
+                            height={0}
+                            className="object-contain"
+                          />
+                     </div></div> : <div className="flex flex-col"><span className="flex justify-center">{t('common:online-payment')}</span><span className="flex justify-center">({type?.name})</span></div>}</label>
+                        }
                         {/* <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label> */}
                       </div>
                       <div className="inline-flex col-span-6 w-full  justify-end">
@@ -1043,7 +1109,7 @@ const CheckoutForm: React.FC = () => {
                           checked={"Cash On Delivery" == selectPayment.name}
                         />
 
-                        <label className="p-2">{t('forms:input-label-cash-delivery')}</label>
+                        <label className="p-2 flex ml-3 items-center">{t('forms:input-label-cash-delivery')}</label>
                       </div>}
                     {domainData?.store_payment_methods?.ignitepay === true && paymentGateway?.map((type: any, index: any) => (
                       <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
@@ -1065,7 +1131,40 @@ const CheckoutForm: React.FC = () => {
                             checked={(type.name === selectPayment.name)}
                           />
 
-                          <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col"><span>{t('common:tabby-payment')} </span> <span>({type?.name})</span></div> : <div className="flex flex-col"><span>{t('common:online-payment')}</span><span>({type?.name})</span></div>}</label>
+{domainCurrencyCode == "SAR" ? <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col "><span className="flex justify-center">{t('common:tabby-payment')} </span>
+                       <div>
+                       <Image
+                              src={cardImg}
+                              alt={t("error-heading")}
+                              width={800}
+                              height={0}
+                              className="object-contain"
+                            />
+                       </div>
+                       
+                        </div> :
+                          <div className="flex flex-col"><span className="flex justify-center">{t('common:online-payment')}</span>
+                          <div>
+                            <Image
+                              src={cardImg}
+                              alt={t("error-heading")}
+                              width={800}
+                              height={0}
+                              className="object-contain"
+                            />
+                       </div>
+                          
+                           </div>}</label>
+                          : <label className="p-2 flex self-center">{type.name === 'Paymob' ? <div className="flex flex-col"><span className="flex justify-center">{t('common:tabby-payment')} </span>  <div>
+                          <Image
+                            src={cardImg}
+                            alt={t("error-heading")}
+                            width={800}
+                            height={0}
+                            className="object-contain"
+                          />
+                     </div></div> : <div className="flex flex-col"><span className="flex justify-center">{t('common:online-payment')}</span><span className="flex justify-center">({type?.name})</span></div>}</label>
+                        }
                           {/* <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label> */}
                         </div>
                         <div className="inline-flex col-span-6 w-full  justify-end">
