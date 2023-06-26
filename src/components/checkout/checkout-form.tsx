@@ -985,7 +985,7 @@ const CheckoutForm: React.FC = () => {
                             </div>
 
                           </div>}</label>
-                          : <label className="p-2 flex self-center">{type.name === 'Paymob' ? <div className="flex flex-col"><span className="flex justify-center">{type?.name} </span>  <div>
+                          : <label className="p-2 flex self-center">{type.name === 'Paymob' ? <div className="flex flex-col"><span className="flex ml-3">{t('common:online-payment')}</span>  <div>
                             <Image
                               src={cardImg}
                               alt={t("error-heading")}
@@ -1061,7 +1061,7 @@ const CheckoutForm: React.FC = () => {
                             </div>
 
                           </div>}</label>
-                          : <label className="p-2 flex self-center">{type.name === 'Paymob' ? <div className="flex flex-col"><span className="flex justify-center">{type?.name} </span>  <div>
+                          : <label className="p-2 flex self-center">{type.name === 'Paymob' ? <div className="flex flex-col"><span className="flex ml-3">{t('common:online-payment')}</span>  <div>
                             <Image
                               src={cardImg}
                               alt={t("error-heading")}
@@ -1156,7 +1156,7 @@ const CheckoutForm: React.FC = () => {
                               </div>
 
                             </div>}</label>
-                            : <label className="p-2 flex self-center">{type.name === 'Paymob' ? <div className="flex flex-col"><span className="flex justify-center">{type?.name} </span>  <div>
+                            : <label className="p-2 flex self-center">{type.name === 'Paymob' ? <div className="flex flex-col ml-3"><span className="flex">{t('common:online-payment')}</span>  <div className="flex">
                               <Image
                                 src={cardImg}
                                 alt={t("error-heading")}
