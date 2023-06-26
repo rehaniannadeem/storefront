@@ -998,7 +998,7 @@ const CheckoutForm: React.FC = () => {
                         {/* <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label> */}
                       </div>
                       <div className="inline-flex col-span-6 w-full  justify-end">
-                      {type?.name != 'Top' &&
+                      {type?.name != 'Tap' &&
                           <img
                             className="flex h-14 w-fit self-center"
                             // style={{
@@ -1074,7 +1074,7 @@ const CheckoutForm: React.FC = () => {
                         {/* <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label> */}
                       </div>
                       <div className="inline-flex col-span-6 w-full  justify-end">
-                        {type?.name != 'Top' &&
+                        {type?.name != 'Tap' &&
                           <img
                             className="flex h-14 w-fit self-center"
                             // style={{
@@ -1170,7 +1170,7 @@ const CheckoutForm: React.FC = () => {
                         </div>
                         <div className="inline-flex col-span-6 w-full  justify-end">
 
-                        {type?.name != 'Top' &&
+                        {type?.name != 'Tap' &&
                           <img
                             className="flex h-14 w-fit self-center"
                             // style={{
