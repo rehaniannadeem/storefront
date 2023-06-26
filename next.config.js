@@ -3,7 +3,7 @@ const withPWA = require("next-pwa");
 const runtimeCaching = require("next-pwa/cache");
 module.exports = withPWA({
   images: {
-    domains: ["pos-dev.myignite.online", "ignitepos.test"],
+    domains: ["pos-dev.myignite.online", "ignitepos.test","ignitestorage.blob.core.windows.net"],
     // domains: ["console.ignitehq.io", "ignitepos.test"],
   },
   pwa: {

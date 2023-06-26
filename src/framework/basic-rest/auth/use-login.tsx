@@ -19,7 +19,7 @@ export const useLoginMutation = () => {
   const { authorize, closeModal } = useUI();
   return useMutation((input: LoginInputType) => login(input), {
     onSuccess: (data) => {
-      Cookies.set("auth_token", data.token);
+      Cookies.set("auth_token", data.token, { expires: 7 });
       authorize();
       closeModal();
     },

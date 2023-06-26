@@ -61,7 +61,7 @@ export default function ProductPopup() {
     if (data?.enable_stock == 1) {
      
       if (
-        Object.keys(attributes).length != 0) {
+        Object.keys(attributes)?.length != 0) {
         
         if (quantity<=Math.round(attributes?.variation_details[0]?.qty_available) ) {
           setIsDisable(false);
@@ -73,11 +73,11 @@ export default function ProductPopup() {
   }, [quantity]);
   useEffect(() => {
     {
-      Object.keys(attributes).length != 0
+      Object.keys(attributes)?.length != 0
         ? setIsSelected(true)
         : setIsSelected(false);
     }
-    if (Object.keys(attributes).length != 0 && data.enable_stock == 1) {
+    if (Object.keys(attributes)?.length != 0 && data.enable_stock == 1) {
       if (attributes?.variation_details[0]?.qty_available <= 0) {
         setQuantity(0);
         // setIsDisable(true);
@@ -86,17 +86,18 @@ export default function ProductPopup() {
     }
   }, [attributes]);
   useEffect(() => {
-    if (Object.keys(data).length != 0) {
-      if (data.variations.length == 1) {
+    if (Object.keys(data)?.length != 0) {
+      if (data.variations?.length == 1) {
         setAttributes(data?.variations[0]);
       }
     }
   }, [data]);
   const variations = getVariations(data.variations);
   const { image, name, description } = data;
+console.log(data,'data');
 
   //let urlName = name.replace(/\s+/g, "-");
-
+  // let urlName = name.replace('/', ' ');
   //const isSelected = Object.keys(attributes).length == 0 ? false : true;
   /*   const isSelected = !isEmpty(variations)
     ? !isEmpty(attributes.value) &&
@@ -267,7 +268,7 @@ export default function ProductPopup() {
       });
     } */
     const item = generateCartItem(data!, attributes);
-    if (Object.keys(attributes).length != 0 && data.enable_stock == 1) {
+    if (Object.keys(attributes)?.length != 0 && data.enable_stock == 1) {
       if(quantity<=Math.round(attributes?.variation_details[0]?.qty_available)){
         // {isAuthorized &&  addItemToServer(item) }
         
@@ -359,8 +360,11 @@ export default function ProductPopup() {
         <div className="flex-shrink-0 flex items-center justify-center w-full lg:w-430px max-h-430px lg:max-h-full overflow-hidden ">
           <img
             src={
-              image?.original ??
-              "/icons/ignite-default.png"
+              (image?.thumbnail.includes('default.png') || image?.thumbnail===null)?(
+                data?.gallery[0]?.thumbnail ?? '/icons/ignite-default.png'
+              ):(image?.thumbnail)
+              // image?.original ??
+              // "/icons/ignite-default.png"
             }
             alt={name}
             className="lg:object-contain md:object-contain sm:object-contain lg:w-full lg:h-full"
@@ -388,7 +392,7 @@ export default function ProductPopup() {
             <div className="flex items-center mt-3">
               <div className="text-heading font-semibold text-base md:text-xl lg:text-2xl">
                 {getSymbolFromCurrency(domainCurrencyCode)}{" "}
-                {Object.keys(attributes).length == 0
+                {Object.keys(attributes)?.length == 0
                   ? Number(data?.price).toFixed(2)
                   : Number(attributes?.sell_price_inc_tax).toFixed(2)}
               </div>
@@ -430,7 +434,7 @@ export default function ProductPopup() {
                   setQuantity((prev) => (prev !== 1 ? prev - 1 : 1));
                   if (data.enable_stock == 1) {
                     if (
-                      Object.keys(attributes).length != 0 &&
+                      Object.keys(attributes)?.length != 0 &&
                       quantity <
                         Math.round(
                           attributes.variation_details[0].qty_available
@@ -443,6 +447,7 @@ export default function ProductPopup() {
                 disableDecrement={quantity === 0}
                // disableIncrement={isDisable}
               />
+              {domainData?.is_open==="true"?
               <Button
                 onClick={addToCart}
                 variant="flat"
@@ -458,7 +463,11 @@ export default function ProductPopup() {
                 loading={addToCartLoader}
               >
                 {t("text-add-to-cart")}
-              </Button>
+              </Button>:
+              <p className="font-semibold text-red-600">
+               { t('common:close-message')}
+              </p>
+}
             </div>
 
             {viewCartBtn && (

@@ -6,29 +6,108 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 //import { useUI } from "@contexts/ui.context";
 import "@fontsource/tajawal";
+import axios from "axios";
+// interface GeolocationPosition {
+//   coords: {
+//     latitude: number;
+//     longitude: number;
+//   };
+// }
 export default function LanguageSwitcher() {
-  //const { isAuthorized } = useUI();
   const { site_header } = siteSettings;
   const { t } = useTranslation("common");
   const options = site_header.languageMenu;
   const router = useRouter();
-  const { asPath, locale } = router;
+  const { asPath } = router;
+  let {locale}=router
   const currentSelectedItem = locale
     ? options.find((o) => o.value === locale)!
     : options[2];
   const [selectedItem, setSelectedItem] = useState(currentSelectedItem);
+// console.log(currentSelectedItem,'sdlfjslfsj');
+
+
+  useEffect(() => {
+    // const userLanguage = navigator.language;
+    // console.log(userLanguage, "userLang");
+   
+      
+    async function getUserLocation() {
+      axios({
+    
+        method: "get",
+        url:'https://api.ipregistry.co/?key=7qsumd6hmu9lk9ns',
+        // data: bodyFormData,
+        headers: {
+          "Content-Type": "Application/json",
+          
+        },
+      })
+        .then((response) => {
+          //handle success
+          console.log(response.data,'location response');
+          const lang =response.data.location.language.code;
+          sessionStorage.setItem("countryCode", response.data.location.country.code);
+          if(lang==='ar'){
+            setSelectedItem(lang);
+          sessionStorage.setItem("language", lang);
+        
+            router.push(asPath, undefined, {
+              locale: lang,
+            });
+          }else{
+            setSelectedItem(currentSelectedItem);
+            sessionStorage.setItem("language", 'en');
+          }
+         
+          }
+        )
+      // try {
+      //   const { coords } = await new Promise<GeolocationPosition>(
+      //     (resolve, reject) => {
+      //       navigator.geolocation.getCurrentPosition(resolve, reject);
+      //     }
+      //   );
+      //   const isMiddleEast =
+      //     coords.latitude >= 12.0 &&
+      //     coords.latitude <= 42.0 &&
+      //     coords.longitude >= 26.0 &&
+      //     coords.longitude <= 56.0;
+         
+          
+      //   const lang = isMiddleEast ? "ar" : "en";
+      //   console.log(isMiddleEast,'isMiddle');
+      //   setSelectedItem(options.find((o) => o.value === lang)!);
+      //   sessionStorage.setItem("language", lang);
+      //   router.push(asPath, undefined, {
+      //     locale: lang,
+      //   });
+      // } catch (error) {
+      //   console.error(error);
+      // }
+    }
+
+    if (!sessionStorage.getItem("language")) {
+      getUserLocation();
+    } else {
+      const lang = sessionStorage.getItem("language")!;
+      // setSelectedItem(options.find((o) => o.value === lang)!);
+      router.push(asPath, undefined, {
+        locale: lang,
+      });
+    }
+  }, []);
 
   function handleItemClick(values: any) {
     setSelectedItem(values);
+    sessionStorage.setItem("language", values.value);
     router.push(asPath, undefined, {
       locale: values.value,
     });
-    //window.location.reload();
   }
+
   useEffect(() => {
-    // localStorage.setItem("language", JSON.stringify(locale));
-    if (locale === "ar") {
-      // document.body.style.font = "Tajawal";
+    if (locale === "ar" || selectedItem.value === "ar") {
       document.body.style.fontFamily = "Tajawal";
     } else {
       document.body.style.fontFamily = "'Open Sans', sans-serif";

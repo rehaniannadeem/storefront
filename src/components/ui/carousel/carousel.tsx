@@ -56,7 +56,7 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
       }`}
     >
       <Swiper
-        loop={true}
+        // loop={true}
         autoplay={autoplay}
         breakpoints={breakpoints}
         dir={dir}

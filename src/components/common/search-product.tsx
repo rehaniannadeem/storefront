@@ -12,6 +12,7 @@ type SearchProductProps = {
 const SearchProduct: React.FC<SearchProductProps> = ({ item }) => {
   const [_domainData, setDomainData] = useState({});
  // let urlName = item.name.replace(/\s+/g, "-");
+  // let urlName = item.name.replace('/', ' ');
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
 // console.log(item,'tiem');
 const {locale}=useRouter()
@@ -27,6 +28,7 @@ const {locale}=useRouter()
     }
     setDomainCurrencyCode(domainData.currency.code);
   }, []);
+  
 
   return (
     <Link
@@ -35,9 +37,12 @@ const {locale}=useRouter()
     >
       <div className="relative flex w-24 h-24 rounded-md overflow-hidden bg-gray-200 flex-shrink-0 cursor-pointer me-4">
         <Image
-          src={
-            item?.image?.original ?? "/assets/placeholder/search-product.svg"
-          }
+        src={(item?.image?.thumbnail.includes('default.png') || item?.image?.thumbnail===null)?(
+          item?.gallery[0]?.thumbnail ?? '/icons/ignite-default.png'
+        ):(item?.image?.thumbnail) }
+          // src={
+          //   item?.image?.original ?? "/assets/placeholder/search-product.svg"
+          // }
           width={96}
           height={96}
           loading="eager"

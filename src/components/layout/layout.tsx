@@ -15,19 +15,19 @@ const Layout: React.FC = ({ children }) => {
   // const { acceptedCookies, onAcceptCookies } = useAcceptCookies();
   //const { t } = useTranslation("common");
   const { domain }: any = useContext(Context);
-  //const [domainData, setDomainData] = useState<any>({});
+  // const [domainData, setDomainData] = useState<any>({});
 //console.log(domain);
 
-const meta_title:string=domain?.meta_title;
-const meta_description:string=domain?.meta_description;
-const fav_icon:string=domain?.fav_icon;
+const meta_title:string=domain?.meta_title ?domain?.meta_title : '';
+const meta_description:string=domain?.meta_description?domain?.meta_description:'';
+const fav_icon:string=domain?.fav_icon?domain?.fav_icon:'';
 
-  /*  useEffect(() => {
-    var domainData = JSON.parse(localStorage.getItem("domainData")!);
+  //  useEffect(() => {
+  //   var domainData = localStorage.getItem("user_token");
 
-    setDomainData(domainData);
-  }, []); */
-  //console.log(domainData, "data");
+  //   setDomainData(domainData);
+  // }, []);
+  // console.log(domain, "data");
   return (
     <div className="flex flex-col min-h-screen">
       <NextSeo
@@ -37,8 +37,8 @@ const fav_icon:string=domain?.fav_icon;
             content: "width=device-width, initial-scale=1.0",
           },
         ]}
-        title={domain?.meta_title}
-      description={domain?.meta_description}
+        title={domain?.meta_title ?domain?.meta_title :''}
+      description={domain?.meta_description ? domain?.meta_description :''}
         canonical=""
         openGraph={{
           url: "",
@@ -70,8 +70,8 @@ const fav_icon:string=domain?.fav_icon;
         }}
       >
         {children}
-        {domain?.whatsapp_no!=null?
-        (<div className="bottom-0 left-0 fixed w-12 ml-8 mb-20 z-10">
+        {domain?.whatsapp_no &&
+        <div className="bottom-0 left-0 fixed w-12 ml-8 mb-10  z-10">
           <a href={`https://wa.me/${domain.whatsapp_no}`} target="_blank">
             <img
               src="/assets/images/whatsapp.png"
@@ -79,13 +79,13 @@ const fav_icon:string=domain?.fav_icon;
               className="rounded-full drop-shadow-2xl"
             />
           </a>
-        </div>):(null)}
+        </div>}
       </main>
       {/* {domain?.name!=="urbannecessity"? <Footer /> : null} */}
 
       <Footer />
       <MobileNavigation />
-      <Search />
+      <Search token={domain.token} />
       {/* <CookieBar
         title={t("text-cookies-title")}
         hide={acceptedCookies}

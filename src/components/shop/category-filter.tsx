@@ -51,7 +51,7 @@ export const CategoryFilter = () => {
         });
     };
     
-    {Object.keys(domain).length!=0 &&  getCategory();}
+    {Object.keys(domain)?.length!=0 &&  getCategory();}
    // getCategory();
     setIsLoading(false);
   }, [domain]);

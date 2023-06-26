@@ -3,7 +3,7 @@ import Button from "@components/ui/button";
 import { FC, useContext, useEffect, useState, Fragment } from "react";
 //import { useProductsQuery } from "@framework/product/get-all-products";
 import { useRouter } from "next/router";
-import ProductFeedLoader from "@components/ui/loaders/product-feed-loader";
+// import ProductFeedLoader from "@components/ui/loaders/product-feed-loader";
 import { useTranslation } from "next-i18next";
 //import { slice } from "lodash";
 import { Context } from "src/pages/_app";
@@ -14,6 +14,10 @@ import { useUI } from "@contexts/ui.context";
 import { Drawer } from "@components/common/drawer/drawer";
 import { getDirection } from "@utils/get-direction";
 import FilterSidebar from "@components/shop/filter-sidebar";
+import DataNotFound from '../404/data-not-found'
+import ProductFeedLoader from "@components/ui/loaders/product-feed-loader";
+// import axios from "axios";
+// import Category from './../../pages/category/[slug]';
 interface ProductGridProps {
   className?: string;
 }
@@ -43,12 +47,22 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
   const [priceArray, setPriceArray] = useState<any>([]);
   const [variationArray, setVariationArray] = useState<any>([]);
   const [productLength, setProductLength] = useState<any>();
+  const [subCatArray, setSubCatArray] = useState<any>([
+
+  ])
+  const [allCategories, setAllCategories] = useState<any>([])
+  const[selectedSubCategory,setSelectedSubCategory]=useState<any>({
+    id:1,
+    name:"All"
+  })
   //const [sortedFilter, setSortedFilter] = useState<any>('low-high')
   //const [isLoading, setIsLoading] = useState(false)
   const { openFilter, displayFilter, closeFilter } = useUI();
   const { locale } = useRouter();
   const dir = getDirection(locale);
+  const { domain }: any = useContext(Context);
   const contentWrapperCSS = dir === "ltr" ? { left: 0 } : { right: 0 };
+  // let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
   //console.log('>>>>>>>>>>>', productData)
   const options = [
     { name: "text-sorting-options", value: "options" },
@@ -77,7 +91,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
     //   { scroll: false }
     // );
   }
-  //console.log(selectedItem);
+  // console.log(productData,'product List');
 
   const loadMore = () => {
     setIndex(index + 12);
@@ -90,8 +104,76 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
     }
   };
   useEffect(() => {
+    var cat = JSON.parse(localStorage.getItem("categories")!)
+    setAllCategories(cat)
+  }, [])
+  useEffect(() => {
     Array.isArray(products) ? setProductData(products) : null;
   }, [products]);
+  // console.log(categoryArray, 'query');
+
+
+  useEffect(() => { 
+    let arr: any = []
+    categoryArray.map((category: any) => {
+      allCategories.map((cat: any) => {
+        if (cat?.name.toLowerCase() === category.toLowerCase()) {
+          cat?.sub_categories?.map((sub: any) => {
+            // setSubCatArray((current:any) => [...current, sub]);
+            arr = [...arr, sub]
+          })
+        }
+      })
+    })
+    var all = {
+      id: 1,
+      name: "All",
+
+    }
+    if(arr?.length!=0){
+      setSubCatArray([all, ...arr])
+    }else{
+      setSubCatArray(arr)
+    }
+   
+
+setSelectedSubCategory({
+  id: 1,
+  name: "All",
+})
+    // const getCategory = () => {
+    //   // setIsLoading(true);
+    //   axios({
+    //     method: "get",
+    //     url: storefront_base_url + "/categories",
+    //     // data: bodyFormData,
+    //     headers: {
+    //       "Content-Type": "Application/json",
+    //       Authorization: `Bearer ${domain.token}`,
+    //     },
+    //   })
+    //     .then((response: any) => {
+    //       var selected_category:any=[]
+    //       console.log(response.data.data, "this is category detail");
+    //       categoryArray.map((cat:any)=>{
+    //         const select=[response?.data.data.find((category:any)=>category.name.toLowerCase()===cat)]
+    //         // selected_category=[...select]
+    //         console.log(select,'selected');
+
+    //     })
+
+
+    //     })
+    //     .catch(function (err: any) {
+    //       //handle error
+    //       console.log(err);
+    //     });
+    // };
+
+    // { Object.keys(domain).length != 0 && getCategory(); }
+
+  }, [categoryArray]);
+  // console.log(subCatArray, 'new ');
   useEffect(() => {
     // setIsLoading(true)
 
@@ -123,11 +205,11 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
     }
     // setIsLoading(false)
   }, [router]);
-  //console.log(sortedFilter,'filter');
+  // console.log(query.name,'filter');
 
   useEffect(() => {
     let length = productData?.filter((item: any) => {
-      if (Object.keys(query).length === 0) {
+      if (Object.keys(query)?.length === 0) {
         return item;
       } else {
         // if (item.price >= priceArray[0] && item.price <= priceArray[1]) {
@@ -184,6 +266,29 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
         return item
       }
 
+    }).filter((item: any) => {
+      if (query.name?.length) {
+        if (
+          item?.name
+            .toLocaleLowerCase()
+            .includes(query.name.toString().toLocaleLowerCase())
+        ) {
+          return item;
+        }
+      } else {
+        return item
+      }
+
+    }).filter((item: any) => {
+      if (query.category?.length != undefined && selectedSubCategory.id != 1) {
+          console.log(item); 
+          if (selectedSubCategory.id===item.sub_category?.id) {
+            return item;
+          }
+       
+      } else {
+        return item
+      }
     }).sort((firstItem: any, secondItem: any) => {
       if (selectedItem?.value === 'high-low') {
         return secondItem?.price - firstItem?.price;
@@ -214,22 +319,69 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
       setIsCompleted(false);
     }
   }, [index, productLength]);
-// console.log(productData, 'product');
+  // console.log(productData, 'product');
+  const handleSelectSubCategory=(e:any)=>{
+   setSelectedSubCategory(e)
+    
+  }
 
   return (
     <>
+    {Object.keys(products).length==0 ? 
+    <div  className={`grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 lg:gap-x-5 xl:gap-x-7 gap-y-3 xl:gap-y-5 2xl:gap-y-8 ${className}`}>
+<ProductFeedLoader limit={20} uniqueKey="search-product" />
+</div> 
+    :
+    <>
       <div className="flex flex-col">
+      <div className="grid grid-cols-12 my-2">
+  <div className="col-span-9">
+    {query.category &&
+    <div className="flex flex-wrap">
+      {subCatArray.map((sub: any,index:any) => (
+        <ul>
+          <li id={index} className={`flex text-center flex-row justify-start p-2  border m-2 rounded-full cursor-pointer 
+         
+          `}
+          onClick={()=>{handleSelectSubCategory(sub)}}
+          style={selectedSubCategory.id===sub.id? {
+            borderColor:domain.theme_color,
+            color:"white",
+            backgroundColor:domain.theme_color
+                
+          }:{
+            borderColor:domain.theme_color,
+                
+          }}>
+          {sub.name}
+          </li>
+        </ul>
+      ))}
+    </div>}
+  </div>
+  <div className="col-span-3">
+    <span className="flex justify-end p-2">{productLength} Items</span>
+  </div>
+</div>
+<style jsx>{`
+      @media screen and (max-width: 768px) {
+        .flex {
+          flex-wrap: wrap;
+        }
+      `}</style>
 
-      <span className="flex justify-end">{productLength} Items</span>
+
+
+
         <div className="flex justify-between   p-2">
-        
+
           <button
-        className="lg:hidden text-heading text-sm px-4 py-2 font-semibold border border-gray-300 rounded-md flex items-center transition duration-200 ease-in-out focus:outline-none hover:bg-gray-200"
-        onClick={openFilter}
-      >
-        <FilterIcon />
-        <span className="ps-2.5">{t("text-filters")}</span>
-      </button>
+            className="lg:hidden text-heading text-sm px-4 py-2 font-semibold border border-gray-300 rounded-md flex items-center transition duration-200 ease-in-out focus:outline-none hover:bg-gray-200"
+            onClick={openFilter}
+          >
+            <FilterIcon />
+            <span className="ps-2.5">{t("text-filters")}</span>
+          </button>
           <span ><Listbox value={selectedItem} onChange={handleItemClick}>
             {({ open }) => (
               <div className="relative ms-2 lg:ms-0 z-10 min-w-[180px]">
@@ -288,27 +440,34 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
             )}
           </Listbox></span>
           <Drawer
-        placement={dir === "rtl" ? "right" : "left"}
-        open={displayFilter}
-        onClose={closeFilter}
-        handler={false}
-        showMask={true}
-        level={null}
-        contentWrapperStyle={contentWrapperCSS}
-      >
-        <FilterSidebar />
-      </Drawer>
+            placement={dir === "rtl" ? "right" : "left"}
+            open={displayFilter}
+            onClose={closeFilter}
+            handler={false}
+            showMask={true}
+            level={null}
+            contentWrapperStyle={contentWrapperCSS}
+          >
+            <FilterSidebar />
+          </Drawer>
         </div>
+        {!productData?.length && 
+        <div>
+        <DataNotFound/>
+        </div>
+}
         <div
           className={`grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 lg:gap-x-5 xl:gap-x-7 gap-y-3 xl:gap-y-5 2xl:gap-y-8 ${className}`}
         >
 
-          {!productData?.length ? (
-            <ProductFeedLoader limit={20} uniqueKey="search-product" />
-          ) : (
+          {/* {!productData?.length ? (
+            // <ProductFeedLoader limit={20} uniqueKey="search-product" />
+          
+          ) : ( */}
+          { productData?.length!=0 &&
             productData
               .filter((item: any) => {
-                if (Object.keys(query).length === 0) {
+                if (Object.keys(query)?.length === 0) {
                   return item;
                 } else {
 
@@ -367,6 +526,29 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
 
                   return item
                 }
+              }).filter((item: any) => {
+                if (query.name?.length) {
+                  if (
+                    item?.name
+                      .toLocaleLowerCase()
+                      .includes(query.name.toString().toLocaleLowerCase())
+                  ) {
+                    return item;
+                  }
+                } else {
+                  return item
+                }
+
+              }).filter((item: any) => {
+                if (query.category?.length != undefined && selectedSubCategory.id != 1) {
+                    console.log(item); 
+                    if (selectedSubCategory.id===item.sub_category?.id) {
+                      return item;
+                    }
+                 
+                } else {
+                  return item
+                }
               }).sort((firstItem: any, secondItem: any) => {
                 if (selectedItem?.value === 'high-low') {
                   return secondItem?.price - firstItem?.price;
@@ -399,7 +581,7 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
                 );
               }
               )
-          )}
+          }
         </div>
       </div>
       <div className="text-center pt-8 xl:pt-14">
@@ -414,6 +596,8 @@ export const ProductGrid: FC<ProductGridProps> = ({ className = "" }) => {
           </Button>
         ) : null}
       </div>
+      </>
+}
     </>
   );
 };

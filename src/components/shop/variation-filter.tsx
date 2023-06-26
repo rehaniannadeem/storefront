@@ -58,7 +58,7 @@ export const VariationFilter = () => {
         });
     };
 
-    { Object.keys(domain).length != 0 && getVariations(); }
+    { Object.keys(domain)?.length != 0 && getVariations(); }
     // getCategory();
     setIsLoading(false);
   }, [domain]);

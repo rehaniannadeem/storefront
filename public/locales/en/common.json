@@ -189,7 +189,17 @@
   "text-shipping-method":"Shipping Method",
   "online-payment":"Online Payment",
   "label-discount":"Discount",
-  "discount-code":"Discount Code"
+  "discount-code":"Discount Code",
+  "domain-error":"No business found against this domain",
+  "customer-name":"Customer Name",
+  "shipping-address":"Shipping Address",
+  "shipping-fee":"Shipping Fee",
+  "currently-close":" is currently closed",
+  "close-message":"This store is close right now. you can take a look at the store to plan for your next order.",
+  "tracking-info":"Tracking Info",
+  "tabby-payment":"Split in 4, interest-free",
+  "button-pay":"Pay",
+  "text-page-refund-policy":"Returns & Refunds Policy"
   
   
 }

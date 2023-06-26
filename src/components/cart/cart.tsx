@@ -96,7 +96,7 @@ export default function Cart() {
     })
       .then((response) => {
         console.log(response.data, 'update response ');
-        if(response?.data?.data.cart_detail.length==0){
+        if(response?.data?.data.cart_detail?.length==0){
          
           console.log('cart is empty', response?.data?.data.cart_detail);
           

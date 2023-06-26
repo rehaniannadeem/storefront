@@ -74,7 +74,7 @@ const CategoryBlockIcon: React.FC<CategoriesProps> = ({
     // setCategoryLoading(false);
   };
   useEffect(() => {
-    {Object.keys(domain).length!=0 &&   getCategory();}
+    {Object.keys(domain)?.length!=0 &&   getCategory();}
   
   }, [domain]);
 

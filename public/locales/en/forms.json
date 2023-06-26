@@ -52,5 +52,9 @@
   "delivery-address":"Delivery Address",
   "payment-method":"Payment Method",
   "label-country":"Country",
-  "button-apply":"Apply"
+  "button-apply":"Apply",
+  "input-label-cash-pickup":"Cash on Pickup",
+  "input-label-cash-delivery":"Cash on Delivery",
+  "input-otp":"OTP"
+
 }

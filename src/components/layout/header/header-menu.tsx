@@ -3,8 +3,8 @@ import { FaChevronDown } from "react-icons/fa";
 import MegaMenu from "@components/ui/mega-menu";
 import classNames from "classnames";
 //import ListMenu from "@components/ui/list-menu";
-import ListCategory from "@components/ui/list-categries";
-import ListBrand from "@components/ui/list-brand";
+// import ListCategory from "@components/ui/list-categries";
+// import ListBrand from "@components/ui/list-brand";
 import { useTranslation } from "next-i18next";
 import { ROUTES } from "@utils/routes";
 interface MenuProps {
@@ -14,12 +14,13 @@ interface MenuProps {
 
 const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
   const { t } = useTranslation("menu");
-  let brands: any = [];
+  // let brands: any = [];
   let categories: any = [];
   if (typeof window !== "undefined") {
-    brands = JSON.parse(localStorage.getItem("brands")!);
+    // brands = JSON.parse(localStorage.getItem("brands")!);
     categories = JSON.parse(localStorage.getItem("categories")!);
   }
+// console.log(categories,'categories');
 
   return (
     <nav className={classNames(`headerMenu flex w-full relative`, className)}>
@@ -48,12 +49,19 @@ const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
               </span>
             )}
           </Link>
+          {(item?.label==='menu-products' || item?.label==='menu-categories')  &&
+          <MegaMenu columns={categories} label={item?.label}/>
+          }
+            {/* {item?.label==='menu-categories' &&
+          <MegaMenu columns={categories} label={item?.label} />
+          } */}
 
-          {item?.columns && Array.isArray(item.columns) && (
+
+          {/* {item?.columns && Array.isArray(item.columns) && (
             <MegaMenu columns={item.columns} />
-          )}
+          )} */}
 
-          {item?.subMenu && Array.isArray(item.subMenu) && (
+          {/* {item?.subMenu && Array.isArray(item.subMenu) && (
             <div className="subMenu shadow-header bg-gray-200 absolute start-0 opacity-0 group-hover:opacity-100">
               {item.label === "menu-categories" && (
                 <ul className="text-body text-sm py-5"
@@ -98,9 +106,9 @@ const HeaderMenu: React.FC<MenuProps> = ({ data, className }) => {
                       menuIndex={index}
                     />
                   );
-                })} */}
+                })}
             </div>
-          )}
+          )} */}
         </div>
       ))}
     </nav>

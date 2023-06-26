@@ -38,7 +38,9 @@ function MyComponent({ setAddress,setLocation }: any) {
   const [value, setValue] = useState(null);
   const[city,setCity]=useState<any>({
     city:"",
-    country:""
+    country:"",
+    latlng:{}
+
   })
 
   setLocation(city)
@@ -57,7 +59,8 @@ function Map({ setValue,setCity }: any) {
   const [address, setAddress] = useState(null);
 const[location,setLocation]=useState<any>({
   city:"",
-  country:""
+  country:"",
+  latlng:{}
 })
 
 //  console.log(address,'dfslkjflsdf');
@@ -131,7 +134,8 @@ const PlaceAutocomplete = ({ setSelected, setAddress,setLocation }: any) => {
   // console.log(value,'value');
   const[newLocation,setNewLocation]=useState<any>({
     city:"",
-    country:""
+    country:"",
+    latlng:{}
   })
 
 
@@ -176,7 +180,8 @@ const PlaceAutocomplete = ({ setSelected, setAddress,setLocation }: any) => {
         if (cityObj &&  countryObj) {
           setNewLocation({
             city:cityObj.long_name,
-            country:countryObj.long_name
+            country:countryObj.long_name,
+            latlng:latlng
           })
           // console.log(cityObj.long_name);
         }
@@ -241,7 +246,8 @@ const PlaceAutocomplete = ({ setSelected, setAddress,setLocation }: any) => {
         if (cityObj &&  countryObj) {
           setNewLocation({
             city:cityObj.long_name,
-            country:countryObj.long_name
+            country:countryObj.long_name,
+            latlng:latlng
           })
           
         }

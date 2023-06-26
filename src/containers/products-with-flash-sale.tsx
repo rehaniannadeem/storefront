@@ -72,7 +72,7 @@ const ProductsWithFlashSale: React.FC<Props> = () => {
           </div>
         </div>
       ):(
-        productData.length==0 ?(<div></div>):(
+        productData?.length==0 ?(<div></div>):(
           <div className="xl:col-span-5 2xl:col-span-7 border border-gray-300 rounded-lg pt-6 md:pt-7 lg:pt-9 xl:pt-7 2xl:pt-9 px-4 md:px-5 lg:px-7 pb-5 lg:pb-7">
           <SectionHeader
             sectionHeading="text-top-products"

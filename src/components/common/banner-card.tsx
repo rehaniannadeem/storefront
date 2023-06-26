@@ -30,6 +30,7 @@ const BannerCard: FC<BannerProps> = ({
   const { title, image } = banner;
   const selectedImage = getImage(width, image);
 
+
   return (
     <div className={cn("mx-auto", className)}>
       <Link
@@ -42,10 +43,10 @@ const BannerCard: FC<BannerProps> = ({
         <Image
           src={selectedImage.url}
           width={selectedImage.width}
-          height={selectedImage.height}
+          height={width < 1500 && width > 480 ?600:selectedImage.height}
           alt={title}
           quality={100}
-          className={cn("bg-gray-300 object-cover w-full", {
+          className={cn("bg-gray-300 object-fit w-full", {
             "rounded-md": variant === "rounded",
           })}
         />

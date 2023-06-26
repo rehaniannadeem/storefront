@@ -16,7 +16,8 @@ import CheckoutCard from "./checkout-card";
 import Container from "@components/ui/container";
 import { useUI } from "@contexts/ui.context";
 import { toast } from "react-toastify";
-
+import cardImg from '../assets/cardImg.jpg';
+import Image from "next/image";
 interface CheckoutInputType {
   firstName: string;
   lastName: string;
@@ -65,14 +66,17 @@ const CheckoutForm: React.FC = () => {
   const [_orderResponse, setOrderResponse] = useState<any>();
   const [productsName, _setProductsName] = useState<any>([]);
   const [shippingFee, setShippingFee] = useState<any>()
-  const [couponCode, setCouponCode] = useState<any>()
+  const [couponCode, setCouponCode] = useState<any>("")
   const [discount, setDiscount] = useState<any>()
   // const[city,setCity]=useState<any>("")
   // const[country,setCountry]=useState<any>("")
   const [location, setLocation] = useState<any>({
     city: "",
-    country: ""
+    country: "",
+    latlng: {}
   })
+  // console.log(location,'location');
+
   const { isAuthorized, openModal, setModalView } = useUI();
   const [shipping, setShipping] = useState<any>("Free")
   // const [isCity,setIsCity]=useState(false)
@@ -83,14 +87,15 @@ const CheckoutForm: React.FC = () => {
   const { clearCart } = useCart();
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let production_payment_url = process.env.NEXT_PUBLIC_IGNITE_PRODUCTION_PAYMENT_URL
-const[source,setSource]=useState<any>()
-// console.log(source,'source');
+  const [source, setSource] = useState<any>()
+  // console.log(source,'source');
 
   function handleLogin() {
     setModalView("LOGIN_VIEW");
     return openModal();
   }
 
+  // console.log(shipping,'shipping');
 
   // let host = window.location.host;
   // console.log(">>>>>>>>>>>", `https://${host}/my-account/orders/244582`);
@@ -106,7 +111,7 @@ const[source,setSource]=useState<any>()
 
   useEffect(() => {
     if (checked === "Delivery") {
-      if (Object.keys(selectPayment).length != 0 && Object.keys(selectedMethod).length != 0) {
+      if (Object.keys(selectPayment)?.length != 0 && Object.keys(selectedMethod).length != 0) {
         setIsDisabled(false)
       } else {
         setIsDisabled(true)
@@ -116,14 +121,14 @@ const[source,setSource]=useState<any>()
   }, [selectPayment])
 
   useEffect(() => {
-    if (isAuthorized === false || items.length <= 0) {
+    if (isAuthorized === false || items?.length <= 0) {
       setIsDisabled(true)
     } else {
       setIsDisabled(false)
     }
   }, [items])
   useEffect(() => {
-    if (Object.keys(selectedMethod).length != 0) {
+    if (Object.keys(selectedMethod)?.length != 0) {
       setSelectPayment({})
     }
 
@@ -145,16 +150,16 @@ const[source,setSource]=useState<any>()
     // {discount ? subTotal=total-discount: subTotal=total}
 
     if (subTotal) {
-      if (Object.keys(selectPayment).length != 0 && Object.keys(selectedMethod).length != 0) {
+      if (Object.keys(selectPayment)?.length != 0 && Object.keys(selectedMethod)?.length != 0) {
         // setIsDisabled(false)
         if (shipping === "Free") {
           setFinalTotal(subTotal)
         } else {
           // console.log('>>>>>>>>>>>', selectedMethod)
           if (selectPayment.name == "Cash On Delivery") {
-            let newTotal = subTotal + Number(selectedMethod?.cod_rate)+Number(selectedMethod?.base_shipping_fee)
+            let newTotal = subTotal + Number(selectedMethod?.cod_rate) + Number(selectedMethod?.base_shipping_fee)
             setFinalTotal(newTotal)
-            let totalFee=Number(selectedMethod?.base_shipping_fee)+Number(selectedMethod?.cod_rate)
+            let totalFee = Number(selectedMethod?.base_shipping_fee) + Number(selectedMethod?.cod_rate)
             setShippingFee(totalFee)
           } else if (selectPayment.name) {
             let newTotal = subTotal + Number(selectedMethod?.base_shipping_fee)
@@ -171,20 +176,20 @@ const[source,setSource]=useState<any>()
 
     {
       discount && finalTotal ?
-      setNewTotal(finalTotal - discount) :
-      setNewTotal(finalTotal)
+        setNewTotal(finalTotal - discount) :
+        setNewTotal(finalTotal)
     }
 
 
   }, [discount, finalTotal])
-  
+
   useEffect(() => {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
       setDomainData(domainData);
     }
     setDomainCurrencyCode(domainData?.currency?.code);
-    let source=sessionStorage.getItem('source')
+    let source = sessionStorage.getItem('source')
     setSource(source)
   }, []);
 
@@ -248,7 +253,7 @@ const[source,setSource]=useState<any>()
         },
       })
         .then((response) => {
-          //  console.log(response,'this is response');
+          console.log(response, 'this is shipping method');
           setShipping(response?.data?.data)
           if (response?.data.success === false) {
             setIsDelivery(false)
@@ -269,7 +274,7 @@ const[source,setSource]=useState<any>()
 
 
   useEffect(() => {
-    if (Object.keys(domainData).length != 0) {
+    if (Object.keys(domainData)?.length != 0) {
       axios({
         method: "get",
         url: production_payment_url + `/app/api/payment_gateway/${domainData?.currency?.code}`,
@@ -310,6 +315,8 @@ const[source,setSource]=useState<any>()
       })
     }
   }, [checked])
+
+
   const get_url = (response: any) => {
     // console.log(response,'treu response');
 
@@ -326,6 +333,7 @@ const[source,setSource]=useState<any>()
         item_name: productsName.toString(),
         amount: newTotal,
         email: userData.email,
+        mobile: userData.mobile,
         currency: domainData?.currency?.code,
         method_id: selectPayment.id,
         invoice_id: response.id,
@@ -338,7 +346,7 @@ const[source,setSource]=useState<any>()
         // console.log(response, "Payment ");
         if (response.status == 200) {
           // console.log("get_url");
-          
+
           //  setIsDisabled(false);
           clearCart();
           window.open(response.data.Url, "_self");
@@ -354,32 +362,34 @@ const[source,setSource]=useState<any>()
   const deleteItem = () => {
     let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
-    let token=domainData.token
-    let cartId=localStorage.getItem("cart_id")
-      axios({
-        method: "get",
-        url: connector_base_url + "/abandonedcart/delete/"+cartId,
-        headers: {
-          Accept: "Application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        // data: {
-        //   contact_id: userData.id,
-        //    shipping_status: "pending", 
-        //    final_amount: item?.attributes.sell_price_inc_tax,
-        //    cart_detail:[item]
-        // },
-  
+    let token = domainData.token
+    let cartId = localStorage.getItem("cart_id")
+    axios({
+      method: "get",
+      url: connector_base_url + "/abandonedcart/delete/" + cartId,
+      headers: {
+        Accept: "Application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      // data: {
+      //   contact_id: userData.id,
+      //    shipping_status: "pending", 
+      //    final_amount: item?.attributes.sell_price_inc_tax,
+      //    cart_detail:[item]
+      // },
+
+    })
+      .then((response) => {
+        console.log(response, 'deletes response ');
+
       })
-        .then((response) => {
-          console.log(response, 'deletes response ');
-         
-        })
-        .catch((err) => {
-          console.log(err, "Response Error");
-  
-        });
-    }
+      .catch((err) => {
+        console.log(err, "Response Error");
+
+      });
+  }
+  console.log(address, 'lication');
+
   async function onSubmit(input: CheckoutInputType) {
 
 
@@ -390,7 +400,7 @@ const[source,setSource]=useState<any>()
       shippingMethod = ""
     } else {
       if (selectPayment.name == "Cash On Delivery") {
-        shippingCharges = Number(selectedMethod?.cod_rate)+Number(selectedMethod?.base_shipping_fee)
+        shippingCharges = Number(selectedMethod?.cod_rate) + Number(selectedMethod?.base_shipping_fee)
         shippingMethod = selectedMethod?.name
       } else {
         shippingCharges = Number(selectedMethod?.base_shipping_fee)
@@ -399,6 +409,8 @@ const[source,setSource]=useState<any>()
 
     }
     setAddToCartLoader(true);
+
+
     axios({
       method: "post",
       url: connector_base_url + "/sell",
@@ -419,7 +431,10 @@ const[source,setSource]=useState<any>()
             delivered_to: firstName + " " + lastName,
             shipping_charges: shippingCharges,
             shipping_custom_field_4: shippingMethod,
-            discount_amount:discount,
+            discount_amount: discount,
+            shipping_longitude: location?.latlng?.lng,
+            shipping_latitude: location?.latlng?.lat,
+            shipping_city: location?.city,
             payments: null,
             /*   payments: [
               {
@@ -428,9 +443,10 @@ const[source,setSource]=useState<any>()
                 card_type: "",
               },
             ], */
-            order_source:source ? source:"storefront" ,
+            order_source: source ? source : "storefront",
             total_before_tax: newTotal,
             products: placeOrder,
+            service_custom_field_2: couponCode
           },
         ],
       },
@@ -453,7 +469,8 @@ const[source,setSource]=useState<any>()
               get_url(response.data[0]);
             }
           }
-          
+
+
           deleteItem()
           localStorage.removeItem("cart_id");
         }
@@ -517,6 +534,7 @@ const[source,setSource]=useState<any>()
           setAddToCartLoader(false);
         } else {
           toast.error(response?.data?.msg)
+          setCouponCode("")
           setAddToCartLoader(false);
         }
 
@@ -528,7 +546,7 @@ const[source,setSource]=useState<any>()
       });
 
   }
-// console.log(selectPayment,'discount');
+  // console.log(selectPayment,'discount');
 
   // const handleCity=()=>{
   //   setIsCity(true)
@@ -743,7 +761,18 @@ const[source,setSource]=useState<any>()
                     <DeliveryAddress setAddress={setAddress} setLocation={setLocation} />
                   </div>
                 </div>
-              ) : null}
+              ) :
+                <TextArea
+                  labelKey="forms:label-order-notes"
+                  {...register("note")}
+                  placeholderKey="forms:placeholder-order-notes"
+                  className="relative pt-3 xl:pt-6"
+                  value={additionalNote}
+                  onChange={(e) => {
+                    setAdditionalNote(e.target.value);
+                  }}
+                />
+              }
 
               {/* <div className="flex mt-2 w-full border-2 border-solid p-1 rounded">
           <input
@@ -849,9 +878,9 @@ const[source,setSource]=useState<any>()
                         <span className="self-center px-1">{method.name}</span>
                       </label></div>
 
-                    <div className="flex flex-col justify-end col-span-5">
-                      <span className="self-center"> {method?.is_cod === 1 ? <span> COD Fee: {Number(method?.cod_rate).toFixed(2)}</span> : null}</span>
-                      <span className="self-center">Delivery Fee: {Number(method.base_shipping_fee).toFixed(2)} </span>
+                    <div className="flex flex-col  justify-center col-span-5">
+                      {domainData?.store_payment_methods?.cod === true && <span className="self-center"> <span> COD Fee: {Number(method?.cod_rate).toFixed(2)}</span></span>}
+                      <span className="self-center align-item-center">Delivery Fee: {Number(method.base_shipping_fee).toFixed(2)} </span>
 
                     </div>
                   </div>
@@ -866,7 +895,9 @@ const[source,setSource]=useState<any>()
 
           {paymentGateway && (
             <div className=" my-3 p-2 ">
-              <h2 className="font-semibold p-1">{t("forms:payment-method")}</h2>
+              {domainData?.store_payment_methods?.cod === true || domainData?.store_payment_methods?.ignitepay === true &&
+                <h2 className="font-semibold p-1">{t("forms:payment-method")}</h2>
+              }
               {/* <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
                 <input
                   style={{
@@ -887,10 +918,11 @@ const[source,setSource]=useState<any>()
               </div> */}
               {checked === "Pickup" ? (
                 <div>
+
                   <div onClick={() =>
-                        setSelectPayment({ id: 1, name: "Cash On Pickup" })
-                      } 
-                      className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
+                    setSelectPayment({ id: 1, name: "Cash On Pickup" })
+                  }
+                    className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
                     <input
                       style={{
                         accentColor: domainData.theme_color,
@@ -906,16 +938,16 @@ const[source,setSource]=useState<any>()
                       checked={selectPayment?.name?.toLowerCase() === "cash on pickup"}
                     />
 
-                    <label className="p-2">Cash On Pickup</label>
+                    <label className="p-2 flex  ml-3 items-center">{t('forms:input-label-cash-pickup')}</label>
                   </div>
-                  {paymentGateway?.map((type: any, index: any) => (
-                    
-                    <div  className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
-                    onClick={() => setSelectPayment(type)}
-                    key={index}
+                  {domainData?.store_payment_methods?.ignitepay === true && paymentGateway?.map((type: any, index: any) => (
+
+                    <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
+                      onClick={() => setSelectPayment(type)}
+                      key={index}
                     >
-                      
-                      <div className="col-span-5 flex justify-start">
+
+                      <div className="col-span-6 flex justify-start">
                         <input
                           style={{
                             accentColor: domainData.theme_color,
@@ -927,24 +959,57 @@ const[source,setSource]=useState<any>()
                           name="payment-option"
                           className="m-2 "
                           onChange={() => setSelectPayment(type)}
-                        checked={type.name === selectPayment.name}
+                          checked={type.name === selectPayment.name}
                         />
+                        {domainCurrencyCode == "SAR" ? <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col "><span className="flex justify-center">{t('common:tabby-payment')} </span>
+                          {/* <div>
+                            <Image
+                              src={cardImg}
+                              alt={t("error-heading")}
+                              width={800}
+                              height={0}
+                              className="object-contain"
+                            />
+                          </div> */}
 
-                        <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label>
+                        </div> :
+                          <div className="flex flex-col"><span className="flex justify-center">{t('common:online-payment')}</span>
+                            <div>
+                              <Image
+                                src={cardImg}
+                                alt={t("error-heading")}
+                                width={800}
+                                height={0}
+                                className="object-contain"
+                              />
+                            </div>
+
+                          </div>}</label>
+                          : <label className="p-2 flex self-center">{type.name === 'Paymob' ? <div className="flex flex-col"><span className="flex ml-3">{t('common:online-payment')}</span>  <div>
+                            <Image
+                              src={cardImg}
+                              alt={t("error-heading")}
+                              width={800}
+                              height={0}
+                              className="object-contain"
+                            />
+                          </div></div> : <div className="flex flex-col"><span className="flex justify-center">{t('common:online-payment')}</span><span className="flex justify-center">({type?.name})</span></div>}</label>
+                        }
+                        {/* <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label> */}
                       </div>
-                      <div className="inline-flex col-span-7 w-full  justify-end">
+                      <div className="inline-flex col-span-6 w-full  justify-end">
+                      {type?.name != 'Tap' &&
+                          <img
+                            className="flex h-14 w-fit self-center"
+                            // style={{
+                            //   height: "3rem",
 
-                        <img
-                          className="flex h-14 w-fit self-center"
-                          // style={{
-                          //   height: "3rem",
+                            //   display: "flex",
+                            // }}
+                            src={type.logo}
+                          />
 
-                          //   display: "flex",
-                          // }}
-                          src={type.logo}
-                        />
-
-
+                        }
                       </div>
                     </div>
                   ))}
@@ -954,10 +1019,10 @@ const[source,setSource]=useState<any>()
                 selectedMethod && selectedMethod.is_cod === 0 ?
                   paymentGateway?.map((type: any, index: any) => (
                     <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
-                    onClick={() => setSelectPayment(type)}
-                    key={index}
+                      onClick={() => setSelectPayment(type)}
+                      key={index}
                     >
-                      <div className="col-span-5 flex justify-start">
+                      <div className="col-span-6 flex justify-start">
                         <input
                           style={{
                             accentColor: domainData.theme_color,
@@ -972,51 +1037,87 @@ const[source,setSource]=useState<any>()
                           checked={(type.name === selectPayment.name)}
                         />
 
-                        <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label>
+                        {domainCurrencyCode == "SAR" ? <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col "><span className="flex justify-center">{t('common:tabby-payment')} </span>
+                          {/* <div>
+                       <Image
+                              src={cardImg}
+                              alt={t("error-heading")}
+                              width={800}
+                              height={0}
+                              className="object-contain"
+                            />
+                       </div> */}
+
+                        </div> :
+                          <div className="flex flex-col"><span className="flex justify-center">{t('common:online-payment')}</span>
+                            <div>
+                              <Image
+                                src={cardImg}
+                                alt={t("error-heading")}
+                                width={800}
+                                height={0}
+                                className="object-contain"
+                              />
+                            </div>
+
+                          </div>}</label>
+                          : <label className="p-2 flex self-center">{type.name === 'Paymob' ? <div className="flex flex-col"><span className="flex ml-3">{t('common:online-payment')}</span>  <div>
+                            <Image
+                              src={cardImg}
+                              alt={t("error-heading")}
+                              width={800}
+                              height={0}
+                              className="object-contain"
+                            />
+                          </div></div> : <div className="flex flex-col"><span className="flex justify-center">{t('common:online-payment')}</span><span className="flex justify-center">({type?.name})</span></div>}</label>
+                        }
+                        {/* <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label> */}
                       </div>
-                      <div className="inline-flex col-span-7 w-full  justify-end">
+                      <div className="inline-flex col-span-6 w-full  justify-end">
+                        {type?.name != 'Tap' &&
+                          <img
+                            className="flex h-14 w-fit self-center"
+                            // style={{
+                            //   height: "3rem",
 
-                        <img
-                          className="flex h-14 w-fit self-center"
-                          // style={{
-                          //   height: "3rem",
+                            //   display: "flex",
+                            // }}
+                            src={type.logo}
+                          />
 
-                          //   display: "flex",
-                          // }}
-                          src={type.logo}
-                        />
-
+                        }
 
                       </div>
                     </div>
                   )) :
                   <div>
-                    <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 "
-                     onClick={() =>  setSelectPayment({ id: 1, name: "Cash On Delivery" })}
-                     >
-                      <input
-                        style={{
-                          accentColor: domainData.theme_color,
-                          cursor: "pointer",
-                        }}
-                        type="radio"
-                        value="Cash On Delivery"
-                        name="payment-option"
-                        className="m-2 "
-                        onChange={() =>
-                          setSelectPayment({ id: 1, name: "Cash On Delivery" })
-                        }
-                        checked={"Cash On Delivery" == selectPayment.name}
-                      />
-
-                      <label className="p-2">Cash On Delivery</label>
-                    </div>
-                    {paymentGateway?.map((type: any, index: any) => (
-                      <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
-                      onClick={() => setSelectPayment(type)}
-                      key={index}
+                    {domainData?.store_payment_methods?.cod === true &&
+                      <div className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 "
+                        onClick={() => setSelectPayment({ id: 1, name: "Cash On Delivery" })}
                       >
-                        <div className="col-span-5 flex justify-start">
+                        <input
+                          style={{
+                            accentColor: domainData.theme_color,
+                            cursor: "pointer",
+                          }}
+                          type="radio"
+                          value="Cash On Delivery"
+                          name="payment-option"
+                          className="m-2 "
+                          onChange={() =>
+                            setSelectPayment({ id: 1, name: "Cash On Delivery" })
+                          }
+                          checked={"Cash On Delivery" == selectPayment.name}
+                        />
+
+                        <label className="p-2 flex ml-3 items-center">{t('forms:input-label-cash-delivery')}</label>
+                      </div>}
+                    {domainData?.store_payment_methods?.ignitepay === true && paymentGateway?.map((type: any, index: any) => (
+                      <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
+                        onClick={() => setSelectPayment(type)}
+                        key={index}
+                      >
+                        <div className="col-span-6 flex justify-start">
                           <input
                             style={{
                               accentColor: domainData.theme_color,
@@ -1031,10 +1132,45 @@ const[source,setSource]=useState<any>()
                             checked={(type.name === selectPayment.name)}
                           />
 
-                          <label className="p-2 flex self-center">{type.name === 'Tap' ? type.name : t('common:online-payment')}</label>
-                        </div>
-                        <div className="inline-flex col-span-7 w-full  justify-end">
+                          {domainCurrencyCode == "SAR" ? <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col "><span className="flex justify-center">{t('common:tabby-payment')} </span>
+                            {/* <div>
+                              <Image
+                                src={cardImg}
+                                alt={t("error-heading")}
+                                width={800}
+                                height={0}
+                                className="object-contain"
+                              />
+                            </div> */}
 
+                          </div> :
+                            <div className="flex flex-col"><span className="flex justify-center">{t('common:online-payment')}</span>
+                              <div>
+                                <Image
+                                  src={cardImg}
+                                  alt={t("error-heading")}
+                                  width={800}
+                                  height={0}
+                                  className="object-contain"
+                                />
+                              </div>
+
+                            </div>}</label>
+                            : <label className="p-2 flex self-center">{type.name === 'Paymob' ? <div className="flex flex-col ml-3"><span className="flex">{t('common:online-payment')}</span>  <div className="flex">
+                              <Image
+                                src={cardImg}
+                                alt={t("error-heading")}
+                                width={800}
+                                height={0}
+                                className="object-contain"
+                              />
+                            </div></div> : <div className="flex flex-col"><span className="flex justify-center">{t('common:online-payment')}</span><span className="flex justify-center">({type?.name})</span></div>}</label>
+                          }
+                          {/* <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label> */}
+                        </div>
+                        <div className="inline-flex col-span-6 w-full  justify-end">
+
+                        {type?.name != 'Tap' &&
                           <img
                             className="flex h-14 w-fit self-center"
                             // style={{
@@ -1044,6 +1180,8 @@ const[source,setSource]=useState<any>()
                             // }}
                             src={type.logo}
                           />
+
+                        }
 
 
                         </div>

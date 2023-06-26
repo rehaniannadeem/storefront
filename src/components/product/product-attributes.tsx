@@ -47,7 +47,7 @@ export const ProductAttributes: React.FC<Props> = ({
             onClick={() => {
               {
                 enable_stock == 1 &&
-                attribute.variation_details[0].qty_available < quantity
+                attribute?.variation_details[0]?.qty_available < quantity || attribute?.variation_details[0]?.qty_available==0
                   ? null
                   : onClick(attribute);
               }
@@ -57,13 +57,13 @@ export const ProductAttributes: React.FC<Props> = ({
               {
                 backgroundImage:
                   enable_stock == 1 &&
-                  attribute?.variation_details[0]?.qty_available < quantity
+                  attribute?.variation_details[0]?.qty_available < quantity || attribute?.variation_details[0]?.qty_available==0
                     ? `url(${"/assets/images/soldout.png"})`
                     : "none",
                 color:"red" ,
                 backgroundPosition:  
                 enable_stock == 1 &&
-                attribute?.variation_details[0]?.qty_available < quantity
+                attribute?.variation_details[0]?.qty_available < quantity || attribute?.variation_details[0]?.qty_available==0
                   ? "center"
                   : "none",
                  

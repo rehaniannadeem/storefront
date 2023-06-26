@@ -1,5 +1,5 @@
 import { DefaultSeo as NextDefaultSeo } from "next-seo";
-import { siteSettings } from "@settings/site-settings";
+// import { siteSettings } from "@settings/site-settings";
 import { useContext } from "react";
 import { Context } from "src/pages/_app";
 
@@ -9,6 +9,7 @@ export const DefaultSeo = () => {
 
 const meta_title:string=domain?.meta_title;
 const meta_description:string=domain?.meta_description;
+const business_name=domain?.name
 //console.log('>>>>>>>>>>>',meta_description )
 //sconst fav_icon:string=domain?.fav_icon;
   return (
@@ -18,7 +19,7 @@ const meta_description:string=domain?.meta_description;
       openGraph={{
         type: "website",
         locale: "en_IE",
-        site_name: siteSettings.name,
+        site_name: business_name,
       }}
       twitter={{
         handle: "@handle",
@@ -42,7 +43,7 @@ const meta_description:string=domain?.meta_description;
       additionalLinkTags={[
         {
           rel: "apple-touch-icon",
-          href: "icons/apple-icon-180.png",
+          href: "/public/icon.png",
         },
         {
           rel: "manifest",
