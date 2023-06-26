@@ -14,7 +14,8 @@ import axios from "axios";
 import { useUI } from "@contexts/ui.context";
 import Loader from "@components/ui/loaders/loader/loader";
 import Button from "@components/ui/button";
-
+import Image from "next/image";
+import cardImg from '../../../components/assets/cardImg.jpg';
 /* const token =
   "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjcxNGVkMmQwZmZiY2U5YzQ2NGQzYmQyYzMxZWIwNGQ1OGMzZDBlOTBlZDE3MTA1MDNiZDhjNjExOWE0YzE0Y2EzNTBmMTdhODY1ZWE2YzBjIn0.eyJhdWQiOiIzMiIsImp0aSI6IjcxNGVkMmQwZmZiY2U5YzQ2NGQzYmQyYzMxZWIwNGQ1OGMzZDBlOTBlZDE3MTA1MDNiZDhjNjExOWE0YzE0Y2EzNTBmMTdhODY1ZWE2YzBjIiwiaWF0IjoxNjY4NTg1MDU4LCJuYmYiOjE2Njg1ODUwNTgsImV4cCI6MTcwMDEyMTA1OCwic3ViIjoiODc1Iiwic2NvcGVzIjpbXX0.ZvK1RxFj6d88z5BIzNgv8yD-oD0agNSORK0pWKx6RpbRiwPUuDKt77tJwxNl6W3szMfvr7m8N3UNqBvjASplPkWvk2YIFTGmHjMl4UxlbqSa-vyqTdtvWUOOBUnPdA27x6B0dkDTe8IK_RFvFSrb9mk_vdmFRQo075mBUbPmt-hBNSCsISRAGYnMm5WRRJ16ec02gFUjnqH61HnnbN3XUEZ7_o1tK4K7Dfj6krrZL6u_4AcJzWUEafQSLZV4enTb35NM1n9nwGjGS_gQYUPPM8mj6de5BD2zDbl5SrruG6Wr2O_gaW4mHSYI7Dr9HPCkUIVh27bjUQmfG84dFyaPqouuk49Hb3jToSi-OjidU2iBjCE9XXdoqZ0CXFGVDdleNB-l0Yd7EeMFjf1iB_tuVzSYITldfA81W5iAXqOzM3QBh3BEa2TMC3z5WGFIhRJy5G_EFcTCxj2u4Q-cV5aT2JUJRy7KTs-2Byaifun3FtzsLe2YX7sNxXxf_inOlXxMnswCh5atHqpsNBbwqzG6snW5JyKr96QeYB5p2Vcfi0fLJgJV94clN0skadnTeY0du3lnyRjVLNp-uckoEBJJIuMv0gLApyo880fzT4i7xFBSk-sFd6MWYMBvxYYHUJPebJyikxqE26lnYD64l3l_cwwt3T3wYVvRIFoG7U9W58c"; */
 
@@ -76,13 +77,13 @@ export default function OrderPage() {
   const [order, setOrder] = useState<any>({});
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let production_payment_url = process.env.NEXT_PUBLIC_IGNITE_PRODUCTION_PAYMENT_URL
-  const isDisable=Object.keys(selectPayment).length==0
-  const productName= Array.isArray(orderDetail) &&orderDetail?.map((product:any)=>{
+  const isDisable = Object.keys(selectPayment).length == 0
+  const productName = Array.isArray(orderDetail) && orderDetail?.map((product: any) => {
     return product.product.name
 
   })
   console.log(productName);
-  
+
   useEffect(() => {
     setIsLoading(true)
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
@@ -154,7 +155,7 @@ export default function OrderPage() {
   }, [order]);
 
   const handlePayment = () => {
-    const finalTotal=Number(order?.final_total) + Number(order?.shipping_charges)
+    const finalTotal = Number(order?.final_total) + Number(order?.shipping_charges)
     setAddToCartLoader(true);
     axios({
       method: "get",
@@ -332,70 +333,101 @@ export default function OrderPage() {
 
           </div>
           {order?.payment_status == "due" &&
-           <div className="flex justify-end">
-           <div className="flex">
-             <div>
- 
-               {domainData?.store_payment_methods?.ignitepay === true && paymentGateway?.map((type: any, index: any) => (
- 
-                 <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
-                   onClick={() => setSelectPayment(type)}
-                   key={index}
-                 >
- 
-                   <div className="col-span-6 flex justify-start">
-                     <input
-                       style={{
-                         accentColor: domainData.theme_color,
-                         cursor: "pointer",
-                       }}
-                       type="radio"
-                       id={index}
-                       value={type}
-                       name="payment-option"
-                       className="m-2 "
-                       onChange={() => setSelectPayment(type)}
-                       checked={type.name === selectPayment.name}
-                     />
- 
-                     <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col"><span>{t('common:tabby-payment')} </span> <span>({type?.name})</span></div> : <div className="flex flex-col"><span>{t('common:online-payment')}</span><span>({type?.name})</span></div>}</label>
-                     {/* <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label> */}
-                   </div>
-                   <div className="inline-flex col-span-6 w-full  justify-end">
- 
-                     <img
-                       className="flex h-14 w-fit self-center"
-                       // style={{
-                       //   height: "3rem",
- 
-                       //   display: "flex",
-                       // }}
-                       src={type.logo}
-                     />
- 
- 
-                   </div>
-                 </div>
-               ))}
-               <Button
-                 className="w-full "
-                 loading={addToCartLoader}
-                 disabled={isDisable}
-                 style={{
-                   backgroundColor: domainData.theme_color,
-                   color: "white",
-                 }}
-                 onClick={handlePayment}
-               >
-                 {t("common:button-pay")}
-               </Button>
-             </div>
-           </div>
-           </div>
-          }
-         
+            <div className="flex justify-end">
+              <div className="flex justify-end">
+                <div className="flex flex-col w-3/6 ">
 
-        
+                  {domainData?.store_payment_methods?.ignitepay === true && paymentGateway?.map((type: any, index: any) => (
+                    <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
+                      onClick={() => setSelectPayment(type)}
+                      key={index}
+                    >
+
+                      <div className="col-span-6 flex justify-start">
+                        <input
+                          style={{
+                            accentColor: domainData.theme_color,
+                            cursor: "pointer",
+                          }}
+                          type="radio"
+                          id={index}
+                          value={type}
+                          name="payment-option"
+                          className="m-2 "
+                          onChange={() => setSelectPayment(type)}
+                          checked={type.name === selectPayment.name}
+                        />
+
+                        {domainCurrencyCode == "SAR" ? <label className="p-2 flex self-center">{type.name === 'Tabby' ? <div className="flex flex-col "><span className="flex justify-center">{t('common:tabby-payment')} </span>
+                          {/* <div>
+                            <Image
+                              src={cardImg}
+                              alt={t("error-heading")}
+                              width={800}
+                              height={0}
+                              className="object-contain"
+                            />
+                          </div> */}
+
+                        </div> :
+                          <div className="flex flex-col"><span className="flex justify-center">{t('common:online-payment')}</span>
+                            <div>
+                              <Image
+                                src={cardImg}
+                                alt={t("error-heading")}
+                                width={800}
+                                height={0}
+                                className="object-contain"
+                              />
+                            </div>
+
+                          </div>}</label>
+                          : <label className="p-2 flex self-center">{type.name === 'Paymob' ? <div className="flex flex-col"><span className="flex ml-3">{t('common:online-payment')}</span>  <div>
+                            <Image
+                              src={cardImg}
+                              alt={t("error-heading")}
+                              width={800}
+                              height={0}
+                              className="object-contain"
+                            />
+                          </div></div> : <div className="flex flex-col"><span className="flex justify-center">{t('common:online-payment')}</span><span className="flex justify-center">({type?.name})</span></div>}</label>
+                        }                     {/* <label className="p-2 flex self-center">{t('common:online-payment') + ` (${type?.name})`}</label> */}
+                      </div>
+                      <div className="inline-flex col-span-6 w-full  justify-end">
+                      {type?.name != 'Tap' &&
+                          <img
+                            className="flex h-14 w-fit self-center"
+                            // style={{
+                            //   height: "3rem",
+
+                            //   display: "flex",
+                            // }}
+                            src={type.logo}
+                          />
+
+                        }
+                      </div>
+                    </div>
+                  ))}
+                  <Button
+                    className="w-full "
+                    loading={addToCartLoader}
+                    disabled={isDisable}
+                    style={{
+                      backgroundColor: domainData.theme_color,
+                      color: "white",
+                    }}
+                    onClick={handlePayment}
+                  >
+                    {t("common:button-pay")}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          }
+
+
+
         </>
 
       ) : null}
