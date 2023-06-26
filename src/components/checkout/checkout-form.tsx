@@ -388,7 +388,7 @@ const CheckoutForm: React.FC = () => {
 
       });
   }
-  console.log(address, 'lication');
+  // console.log(address, 'lication');
 
   async function onSubmit(input: CheckoutInputType) {
 
