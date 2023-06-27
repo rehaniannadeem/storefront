@@ -103,16 +103,3 @@
 	border-radius: 10px;
 	width: 70%;
 }
-.custom-radio input[type="radio"] {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	width: 1.2em;
-	height: 1.2em;
-	border-radius: 50%;
-	border: 2px solid #000;
-	outline: none;
-	cursor: pointer;
-	margin-right: 0.5em;
-	vertical-align: middle;
-  }

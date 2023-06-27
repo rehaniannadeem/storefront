@@ -388,7 +388,7 @@ const CheckoutForm: React.FC = () => {
 
       });
   }
-  console.log(address, 'lication');
+  // console.log(address, 'lication');
 
   async function onSubmit(input: CheckoutInputType) {
 
@@ -949,19 +949,9 @@ const CheckoutForm: React.FC = () => {
 
                       <div className="col-span-6 flex justify-start">
                         <input
-                           style={{
+                          style={{
                             accentColor: domainData.theme_color,
                             cursor: "pointer",
-                            WebkitAppearance: "none", // Disable default iOS styling
-                            MozAppearance: "none", // Disable default Firefox styling
-                            appearance: "none", // Disable default styling
-                            width: "1.2em",
-                            height: "1.2em",
-                            borderRadius: "50%",
-                            border: "2px solid #000",
-                            outline: "none",
-                            marginRight: "0.5em",
-                            verticalAlign: "middle",
                           }}
                           type="radio"
                           id={index}
@@ -1034,19 +1024,9 @@ const CheckoutForm: React.FC = () => {
                     >
                       <div className="col-span-6 flex justify-start">
                         <input
-                           style={{
+                          style={{
                             accentColor: domainData.theme_color,
                             cursor: "pointer",
-                            WebkitAppearance: "none", // Disable default iOS styling
-                            MozAppearance: "none", // Disable default Firefox styling
-                            appearance: "none", // Disable default styling
-                            width: "1.2em",
-                            height: "1.2em",
-                            borderRadius: "50%",
-                            border: "2px solid #000",
-                            outline: "none",
-                            marginRight: "0.5em",
-                            verticalAlign: "middle",
                           }}
                           type="radio"
                           id={index}
@@ -1139,25 +1119,15 @@ const CheckoutForm: React.FC = () => {
                       >
                         <div className="col-span-6 flex justify-start">
                           <input
-                             style={{
+                            style={{
                               accentColor: domainData.theme_color,
                               cursor: "pointer",
-                              WebkitAppearance: "none", // Disable default iOS styling
-                              MozAppearance: "none", // Disable default Firefox styling
-                              appearance: "none", // Disable default styling
-                              width: "1.2em",
-                              height: "1.2em",
-                              borderRadius: "50%",
-                              border: "2px solid #000",
-                              outline: "none",
-                              marginRight: "0.5em",
-                              verticalAlign: "middle",
                             }}
                             type="radio"
                             id={index}
                             value={type}
                             name="payment-option"
-                            className="m-2"
+                            className="m-2 "
                             onChange={() => setSelectPayment(type)}
                             checked={(type.name === selectPayment.name)}
                           />
