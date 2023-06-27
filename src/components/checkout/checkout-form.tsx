@@ -388,7 +388,7 @@ const CheckoutForm: React.FC = () => {
 
       });
   }
-  // console.log(address, 'lication');
+  console.log(address, 'lication');
 
   async function onSubmit(input: CheckoutInputType) {
 
@@ -957,7 +957,7 @@ const CheckoutForm: React.FC = () => {
                           id={index}
                           value={type}
                           name="payment-option"
-                          className="m-2 "
+                          className="m-2 custom-radio"
                           onChange={() => setSelectPayment(type)}
                           checked={type.name === selectPayment.name}
                         />
@@ -1032,7 +1032,7 @@ const CheckoutForm: React.FC = () => {
                           id={index}
                           value={type}
                           name="payment-option"
-                          className="m-2 "
+                          className="m-2 custom-radios"
                           onChange={() => setSelectPayment(type)}
                           checked={(type.name === selectPayment.name)}
                         />
@@ -1127,7 +1127,7 @@ const CheckoutForm: React.FC = () => {
                             id={index}
                             value={type}
                             name="payment-option"
-                            className="m-2 "
+                            className="m-2 custom-radio"
                             onChange={() => setSelectPayment(type)}
                             checked={(type.name === selectPayment.name)}
                           />
