@@ -34,6 +34,15 @@ import Loader from "@components/ui/loaders/loader/loader";
 // import TrengoWidget from './../TrengoWidget';
 // import Intercom from './../Intercom';
 // import Drift from './../Drift';
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+  }
+}
+const gtag = (...args: any[]) => {
+  window.dataLayer.push(...args);
+};
 
 
 
@@ -73,8 +82,27 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   const [isLoading,setIsLoading]=useState(false)
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
+//  console.log(domain,'dddddd');
+useEffect(()=>{
+  // console.log(domain?.google_analytics_id,'domaindomain');
+  if (domain?.google_analytics_id) {
+  
+    const scriptElement = document.createElement('script');
+    scriptElement.src = `https://www.googletagmanager.com/gtag/js?id=${domain?.google_analytics_id}`;
+    scriptElement.async = true;
+
+    document.head.appendChild(scriptElement);
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function gtag(){window.dataLayer.push(arguments)};
+    window.gtag('js', new Date());
+    window.gtag('config', domain?.google_analytics_id);
+    console.log('Google Analytics script appended.');
+  }
+},[domain])
  
   useEffect(() => {
+  
     setIsLoading(true)
     let host = window.location.host;
     if(host.includes('localhost')){
@@ -202,7 +230,17 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
       >
         <Head>
           <title>{title}</title>
-
+          {/* <script async src='https://www.googletagmanager.com/gtag/js?id=G-7WYQMCYF3R'></script>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-7WYQMCYF3R');
+              `,
+            }}
+          /> */}
           <link rel="icon" href={fav_icon} />
           <meta
             http-equiv="Content-Security-Policy"
