@@ -4739,6 +4739,11 @@
   "resolved" "https://registry.npmjs.org/react-floating-whatsapp/-/react-floating-whatsapp-5.0.6.tgz"
   "version" "5.0.6"
 
+"react-ga4@^2.1.0":
+  "integrity" "sha512-ZKS7PGNFqqMd3PJ6+C2Jtz/o1iU9ggiy8Y8nUeksgVuvNISbmrQtJiZNvC/TjDsqD0QlU5Wkgs7i+w9+OjHhhQ=="
+  "resolved" "https://registry.npmjs.org/react-ga4/-/react-ga4-2.1.0.tgz"
+  "version" "2.1.0"
+
 "react-geocode@^0.2.3":
   "integrity" "sha512-sIpbgmn1IUzAxO4haOZ6jeeFnMD8ya9PC38yiNrmJ9vPWbvAO2D/2yfCBzZjGZVUm4PRzKAc0KghXfaEnug0TQ=="
   "resolved" "https://registry.npmjs.org/react-geocode/-/react-geocode-0.2.3.tgz"

@@ -30,6 +30,8 @@ import React from "react";
 import axios from "axios";
 import { ROUTES } from "@utils/routes";
 import Loader from "@components/ui/loaders/loader/loader";
+// import ReactGA from "react-ga4";
+
 // import Drift from "react-driftjs";
 // import TrengoWidget from './../TrengoWidget';
 // import Intercom from './../Intercom';
@@ -40,9 +42,9 @@ declare global {
     gtag: (...args: any[]) => void;
   }
 }
-const gtag = (...args: any[]) => {
-  window.dataLayer.push(...args);
-};
+// const gtag = (...args: any[]) => {
+//   window.dataLayer.push(...args);
+// };
 
 
 
@@ -82,24 +84,32 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   const [isLoading,setIsLoading]=useState(false)
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
-//  console.log(domain,'dddddd');
-useEffect(()=>{
-  // console.log(domain?.google_analytics_id,'domaindomain');
-  if (domain?.google_analytics_id) {
   
-    const scriptElement = document.createElement('script');
-    scriptElement.src = `https://www.googletagmanager.com/gtag/js?id=${domain?.google_analytics_id}`;
-    scriptElement.async = true;
+//  console.log(domain,'dddddd');
+// useEffect(()=>{
+//   console.log(domain?.google_analytics_id,'domaindomain');
+//   if (domain?.google_analytics_id) {
+//     ReactGA.initialize(domain?.google_analytics_id);
+//   }
+ 
+// })
+// useEffect(() => {
+//   ReactGA.initialize('G-7WYQMCYF3R');
+//   const handleRouteChange = (url: string) => {
+//     ReactGA.gtag('event', 'page_view', {
+//       page_location: url,
+//     });
+//   };
 
-    document.head.appendChild(scriptElement);
+//   router.events.on('routeChangeComplete', handleRouteChange);
 
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function gtag(){window.dataLayer.push(arguments)};
-    window.gtag('js', new Date());
-    window.gtag('config', domain?.google_analytics_id);
-    console.log('Google Analytics script appended.');
-  }
-},[domain])
+//   // Track initial page view
+//   handleRouteChange(window.location.pathname);
+
+//   return () => {
+//     router.events.off('routeChangeComplete', handleRouteChange);
+//   };
+// }, []);
  
   useEffect(() => {
   
@@ -228,16 +238,17 @@ useEffect(()=>{
           setProducts,
         }}
       >
+      
         <Head>
           <title>{title}</title>
-          {/* <script async src='https://www.googletagmanager.com/gtag/js?id=G-7WYQMCYF3R'></script>
-          <script
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${domain?.google_analytics_id}`}></script>
+          {/* <script
             dangerouslySetInnerHTML={{
               __html: `
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', 'G-7WYQMCYF3R');
+                gtag('config', ${domain?.google_analytics_id});
               `,
             }}
           /> */}
@@ -247,8 +258,8 @@ useEffect(()=>{
             content="upgrade-insecure-requests"
           ></meta>
         </Head>
-
         <AnimatePresence exitBeforeEnter onExitComplete={handleExitComplete}>
+       
           <QueryClientProvider client={queryClientRef.current}>
             <Hydrate state={pageProps.dehydratedState}>
               <ManagedUIContext>
@@ -268,6 +279,7 @@ useEffect(()=>{
             {/* <ReactQueryDevtools /> */}
           </QueryClientProvider>
         </AnimatePresence>
+   
       </Context.Provider>
     </>
   );
