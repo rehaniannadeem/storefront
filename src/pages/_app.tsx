@@ -1,7 +1,7 @@
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { AnimatePresence } from "framer-motion";
-import { ManagedUIContext} from "@contexts/ui.context";
+import { ManagedUIContext } from "@contexts/ui.context";
 import ManagedModal from "@components/common/modal/managed-modal";
 import ManagedDrawer from "@components/common/drawer/managed-drawer";
 import { useEffect, useRef, useState } from "react";
@@ -49,6 +49,8 @@ declare global {
 
 
 
+
+
 export const Context = React.createContext({
   user: {},
   setUser: (_p: object) => { },
@@ -81,44 +83,44 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   const [domain, setDomain] = useState<any>({});
   const [products, setProducts] = useState<any>({});
   const [business, setBusiness] = useState<any>();
-  const [isLoading,setIsLoading]=useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
-  
-//  console.log(domain,'dddddd');
-// useEffect(()=>{
-//   console.log(domain?.google_analytics_id,'domaindomain');
-//   if (domain?.google_analytics_id) {
-//     ReactGA.initialize(domain?.google_analytics_id);
-//   }
- 
-// })
-// useEffect(() => {
-//   ReactGA.initialize('G-7WYQMCYF3R');
-//   const handleRouteChange = (url: string) => {
-//     ReactGA.gtag('event', 'page_view', {
-//       page_location: url,
-//     });
-//   };
 
-//   router.events.on('routeChangeComplete', handleRouteChange);
+  //  console.log(domain,'dddddd');
+  // useEffect(()=>{
+  //   console.log(domain?.google_analytics_id,'domaindomain');
+  //   if (domain?.google_analytics_id) {
+  //     ReactGA.initialize(domain?.google_analytics_id);
+  //   }
 
-//   // Track initial page view
-//   handleRouteChange(window.location.pathname);
+  // })
+  // useEffect(() => {
+  //   ReactGA.initialize('G-7WYQMCYF3R');
+  //   const handleRouteChange = (url: string) => {
+  //     ReactGA.gtag('event', 'page_view', {
+  //       page_location: url,
+  //     });
+  //   };
 
-//   return () => {
-//     router.events.off('routeChangeComplete', handleRouteChange);
-//   };
-// }, []);
- 
+  //   router.events.on('routeChangeComplete', handleRouteChange);
+
+  //   // Track initial page view
+  //   handleRouteChange(window.location.pathname);
+
+  //   return () => {
+  //     router.events.off('routeChangeComplete', handleRouteChange);
+  //   };
+  // }, []);
+
   useEffect(() => {
-  
+
     setIsLoading(true)
     let host = window.location.host;
-    if(host.includes('localhost')){
-       let parts = host.split(".");
-    setBusiness(parts[0]);
-    }else{
+    if (host.includes('localhost')) {
+      let parts = host.split(".");
+      setBusiness(parts[0]);
+    } else {
       if (host.includes('myignite.site')) {
         let parts = host.split(".");
         setBusiness(parts[0]);
@@ -127,26 +129,26 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
       }
 
     }
-  
-   
-    
+
+
+
     // let parts = host.split(".");
     // setBusiness(parts[0]);
-   
-      // window.Trengo = window.Trengo || {};
-      // window.Trengo.key = 'ByGdzSo2L0OI2OKu';
-      // const script = document.createElement('script');
-      // script.type = 'text/javascript';
-      // script.async = true;
-      // script.src = 'https://static.widget.trengo.eu/embed.js';
-      // document.getElementsByTagName('head')[0].appendChild(script);
- 
-      setIsLoading(false)
+
+    // window.Trengo = window.Trengo || {};
+    // window.Trengo.key = 'ByGdzSo2L0OI2OKu';
+    // const script = document.createElement('script');
+    // script.type = 'text/javascript';
+    // script.async = true;
+    // script.src = 'https://static.widget.trengo.eu/embed.js';
+    // document.getElementsByTagName('head')[0].appendChild(script);
+
+    setIsLoading(false)
   }, []);
   // console.log(business,'domainName');
 
   useEffect(() => {
-   
+
     const fetchData = async () => {
       setIsLoading(true)
       await fetch(
@@ -160,7 +162,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
         })
         .then((data) => {
           // console.log(data,'this isdata');
-          if(data.status===false){
+          if (data.status === false) {
             router.push(`${ROUTES.NOTFOUND}`, undefined, {
               locale: router.locale,
             })
@@ -175,11 +177,11 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
         .catch((_error) => {
           // console.log(error,'errror tesgt');
         });
-        setIsLoading(false)
+      setIsLoading(false)
     };
     { business != undefined && fetchData(); }
 
-   
+
     /*    const localData = JSON.parse(localStorage.getItem("domainData")!);
 
     setDomain((prev) => ({ ...prev, ...localData })); */
@@ -220,8 +222,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   //console.log(order, "orders");
   //console.log(user, "user Data");
   const Layout = (Component as any).Layout || Noop;
-  if(isLoading){
-    return <Loader/>
+  if (isLoading) {
+    return <Loader />
   }
 
   return (
@@ -238,10 +240,22 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           setProducts,
         }}
       >
-      
+
         <Head>
           <title>{title}</title>
           <script async src={`https://www.googletagmanager.com/gtag/js?id=${domain?.google_analytics_id}`}></script>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${domain?.google_analytics_id}');
+    `,
+            }}
+          />
+
+
           {/* <script
             dangerouslySetInnerHTML={{
               __html: `
@@ -259,16 +273,16 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           ></meta>
         </Head>
         <AnimatePresence exitBeforeEnter onExitComplete={handleExitComplete}>
-       
+
           <QueryClientProvider client={queryClientRef.current}>
             <Hydrate state={pageProps.dehydratedState}>
               <ManagedUIContext>
                 <Layout pageProps={pageProps}>
                   <DefaultSeo />
                   <Component {...pageProps} key={router.route} />
-             
-                    {/* <TrengoWidget apiKey="ByGdzSo2L0OI2OKu" /> */}
-                   {/* <Intercom /> */}
+
+                  {/* <TrengoWidget apiKey="ByGdzSo2L0OI2OKu" /> */}
+                  {/* <Intercom /> */}
                   {/* <Drift /> */}
                   <ToastContainer />
                 </Layout>
@@ -279,7 +293,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
             {/* <ReactQueryDevtools /> */}
           </QueryClientProvider>
         </AnimatePresence>
-   
+
       </Context.Provider>
     </>
   );
