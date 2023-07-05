@@ -60,6 +60,7 @@ const CheckoutForm: React.FC = () => {
     id: 1,
     name: "Cash On Pickup",
   });
+  const [paymentMethod,setPaymentMethod]=useState('cash')
   const [isDelivery, setIsDelivery] = useState(true)
   const [domainCurrencyCode, setDomainCurrencyCode] = useState("");
   const [host, setHost] = useState("");
@@ -308,6 +309,7 @@ const CheckoutForm: React.FC = () => {
         id: 1,
         name: "Cash On Pickup",
       })
+      setPaymentMethod('cash')
 
     } else {
       setSelectPayment({
@@ -446,7 +448,8 @@ const CheckoutForm: React.FC = () => {
             order_source: source ? source : "storefront",
             total_before_tax: newTotal,
             products: placeOrder,
-            service_custom_field_2: couponCode
+            service_custom_field_2: couponCode,
+            payment_method:paymentMethod
           },
         ],
       },
@@ -546,7 +549,19 @@ const CheckoutForm: React.FC = () => {
       });
 
   }
-  // console.log(selectPayment,'discount');
+  const handlePayment=(method:any)=>{
+    // console.log(method,'methodmethod');
+    setSelectPayment(method)
+    if(method.name == "Cash On Delivery" || method.name == "Cash On Pickup"){
+setPaymentMethod('cash')
+    }else if(method.name=="Tamara"){
+      setPaymentMethod("tamara")
+    }else{
+      setPaymentMethod('card')
+    }
+  }
+  
+  // console.log(paymentMethod,'discount');
 
   // const handleCity=()=>{
   //   setIsCity(true)
@@ -559,7 +574,7 @@ const CheckoutForm: React.FC = () => {
 
   // console.log(selectedMethod, "check");
   // console.log(selectPayment, "country");
-  console.log(selectPayment, "paymentpaymeent");
+  // console.log(selectPayment, "paymentpaymeent");
 
   return (
     <Container>
@@ -920,7 +935,7 @@ const CheckoutForm: React.FC = () => {
                 <div>
 
                   <div onClick={() =>
-                    setSelectPayment({ id: 1, name: "Cash On Pickup" })
+                    handlePayment({ id: 1, name: "Cash On Pickup" })
                   }
                     className="flex my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 ">
 
@@ -967,7 +982,7 @@ const CheckoutForm: React.FC = () => {
                   {domainData?.store_payment_methods?.ignitepay === true && paymentGateway?.map((type: any, index: any) => (
 
                     <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
-                      onClick={() => setSelectPayment(type)}
+                      onClick={() => handlePayment(type)}
                       key={index}
                     >
 
@@ -1061,7 +1076,7 @@ const CheckoutForm: React.FC = () => {
                 selectedMethod && selectedMethod.is_cod === 0 ?
                   paymentGateway?.map((type: any, index: any) => (
                     <div className="grid grid-cols-12 my-2 border-4   rounded-md border-solid p-1 hover:bg-gray-200 "
-                      onClick={() => setSelectPayment(type)}
+                      onClick={() => handlePayment(type)}
                       key={index}
                     >
                       <div className="col-span-6 flex justify-start">
@@ -1152,7 +1167,7 @@ const CheckoutForm: React.FC = () => {
                   <div>
                     {domainData?.store_payment_methods?.cod === true &&
                       <div className="grid grid-cols-12 my-2 border-4 rounded-md border-solid p-1 h-16 hover:bg-gray-200 "
-                        onClick={() => setSelectPayment({ id: 1, name: "Cash On Delivery" })}
+                        onClick={() => handlePayment({ id: 1, name: "Cash On Delivery" })}
                       >
                         <div className="lg:col-span-6 xl:col-span-6 md:col-span-6 col-span-12 flex justify-start" >
                           <div>
@@ -1204,7 +1219,7 @@ const CheckoutForm: React.FC = () => {
                       </div>}
                     {domainData?.store_payment_methods?.ignitepay === true && paymentGateway?.map((type: any, index: any) => (
                       <div className="grid grid-cols-12 my-2 border-4 cursor-pointer rounded-md border-solid p-1 hover:bg-gray-200 "
-                        onClick={() => setSelectPayment(type)}
+                        onClick={() => handlePayment(type)}
                         key={index}
                       >
                         <div className="col-span-6 flex justify-start">
