@@ -120,7 +120,16 @@ const ProductSingleDetails: React.FC = () => {
         .then((response) => {
           if(response){
             // console.log(response.data, "this is response");
-            setProduct(response?.data[0]);
+            let finalProduct=''
+            response?.data.filter(((product:any)=> {
+              if(product.name===productName){
+                finalProduct=product
+              }
+            }
+              ))
+            // console.log(finalProduct,'final final');
+            
+            setProduct(finalProduct);
             setFinalPrice(response?.data[0]?.price)
   
             if (response?.data[0]?.gallery?.length === 0) {
