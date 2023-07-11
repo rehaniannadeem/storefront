@@ -75,7 +75,7 @@ const Breadcrumb: React.FC<{ separator?: string }> = ({ separator = "/" }) => {
         >
           <a className="capitalize" key={index}>
             {convertBreadcrumbTitle(
-              breadcrumb.breadcrumb.split("%20").join(" ")
+              breadcrumb.breadcrumb.split("_").join(" ")
             )}
           </a>
         </ActiveLink>

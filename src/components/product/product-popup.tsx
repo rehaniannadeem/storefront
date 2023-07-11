@@ -94,7 +94,7 @@ export default function ProductPopup() {
   }, [data]);
   const variations = getVariations(data.variations);
   const { image, name, description } = data;
-console.log(data,'data');
+// console.log(data,'data');
 
   //let urlName = name.replace(/\s+/g, "-");
   // let urlName = name.replace('/', ' ');
@@ -334,7 +334,7 @@ console.log(data,'data');
   function navigateToProductPage() {
     //console.log('>>>>>>>>>>>',`${ROUTES.PRODUCTS}/${name} `)
     closeModal();
-    router.push(`${ROUTES.PRODUCTS}/${name}`, undefined, {
+    router.push(`${ROUTES.PRODUCTS}/${data?.product_slug}`, undefined, {
       locale: router.locale,
     });
   }

@@ -108,7 +108,7 @@ const ProductSingleDetails: React.FC = () => {
         method: "get",
         url: storefront_base_url + "/products",
         params: {
-          name: productName,
+          product_slug: productName,
         },
 
         headers: {
@@ -120,16 +120,16 @@ const ProductSingleDetails: React.FC = () => {
         .then((response) => {
           if(response){
             // console.log(response.data, "this is response");
-            let finalProduct=''
-            response?.data.filter(((product:any)=> {
-              if(product.name===productName){
-                finalProduct=product
-              }
-            }
-              ))
+            // let finalProduct=''
+            // response?.data.filter(((product:any)=> {
+            //   if(product.name===productName){
+            //     finalProduct=product
+            //   }
+            // }
+            //   ))
             // console.log(finalProduct,'final final');
             
-            setProduct(finalProduct);
+            setProduct(response.data[0]);
             setFinalPrice(response?.data[0]?.price)
   
             if (response?.data[0]?.gallery?.length === 0) {
