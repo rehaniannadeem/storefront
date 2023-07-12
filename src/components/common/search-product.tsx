@@ -32,7 +32,7 @@ const {locale}=useRouter()
 
   return (
     <Link
-      href={`${ROUTES.PRODUCTS}/${item.name}`}
+      href={`${ROUTES.PRODUCTS}/${item.product_slug}`}
       className="group w-full h-auto flex justify-start items-center"
     >
       <div className="relative flex w-24 h-24 rounded-md overflow-hidden bg-gray-200 flex-shrink-0 cursor-pointer me-4">
