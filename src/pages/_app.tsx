@@ -87,8 +87,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   const [isLoading, setIsLoading] = useState(false)
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
-  const meta_title: string ="this is title";
-  const meta_description: string = "this is description";
+  const meta_title: string = domain?.meta_title;
+  const meta_description: string = domain?.meta_description;
 
 
   useEffect(() => {
