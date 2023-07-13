@@ -87,8 +87,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   const [isLoading, setIsLoading] = useState(false)
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
-const meta_title:string=domain?.meta_title ?domain?.meta_title : '';
-const meta_description:string=domain?.meta_description?domain?.meta_description:'';
+  const meta_title: string = domain?.meta_title ? domain?.meta_title : '';
+  const meta_description: string = domain?.meta_description ? domain?.meta_description : '';
 
   //  console.log(domain,'dddddd');
   // useEffect(()=>{
@@ -270,9 +270,9 @@ const meta_description:string=domain?.meta_description?domain?.meta_description:
             }}
           /> */}
           <link rel="icon" href={fav_icon} />
-          <meta property="og:title" content={"title"} />
-      <meta property="og:description" content={"description"} />
-      {/* <meta property="og:image" content={image} /> */}
+          <meta property="og:title" content={meta_title} />
+          <meta property="og:description" content={meta_description}/>
+          <meta property="og:image" content={fav_icon} />
           <meta
             http-equiv="Content-Security-Policy"
             content="upgrade-insecure-requests"
