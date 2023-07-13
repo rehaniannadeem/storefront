@@ -90,31 +90,6 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   const meta_title: string = domain?.meta_title ? domain?.meta_title : '';
   const meta_description: string = domain?.meta_description ? domain?.meta_description : '';
 
-  //  console.log(domain,'dddddd');
-  // useEffect(()=>{
-  //   console.log(domain?.google_analytics_id,'domaindomain');
-  //   if (domain?.google_analytics_id) {
-  //     ReactGA.initialize(domain?.google_analytics_id);
-  //   }
-
-  // })
-  // useEffect(() => {
-  //   ReactGA.initialize('G-7WYQMCYF3R');
-  //   const handleRouteChange = (url: string) => {
-  //     ReactGA.gtag('event', 'page_view', {
-  //       page_location: url,
-  //     });
-  //   };
-
-  //   router.events.on('routeChangeComplete', handleRouteChange);
-
-  //   // Track initial page view
-  //   handleRouteChange(window.location.pathname);
-
-  //   return () => {
-  //     router.events.off('routeChangeComplete', handleRouteChange);
-  //   };
-  // }, []);
 
   useEffect(() => {
 
@@ -270,8 +245,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
             }}
           /> */}
           <link rel="icon" href={fav_icon} />
-          <meta property="og:title" content={meta_title} />
-          <meta property="og:description" content={meta_description}/>
+          <meta property="og:title" content={"meta_title"} />
+          <meta property="og:description" content={"meta_description"}/>
           {/* <meta property="og:image" content={fav_icon} /> */}
           <meta
             http-equiv="Content-Security-Policy"
