@@ -3,7 +3,7 @@ import Header from "@components/layout/header/header";
 import Footer from "@components/layout/footer/footer";
 import MobileNavigation from "@components/layout/mobile-navigation/mobile-navigation";
 import Search from "@components/common/search";
-
+import OpenGraph from '../../OpenGraph'
 //import CookieBar from "@components/common/cookie-bar";
 //import { useAcceptCookies } from "@utils/use-accept-cookies";
 //import Button from "@components/ui/button";
@@ -80,6 +80,11 @@ const fav_icon:string=domain?.fav_icon?domain?.fav_icon:'';
             />
           </a>
         </div>}
+        <OpenGraph
+        title={meta_title}
+        description={meta_description}
+        image={fav_icon}
+      />
       </main>
       {/* {domain?.name!=="urbannecessity"? <Footer /> : null} */}
 
