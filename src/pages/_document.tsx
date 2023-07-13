@@ -25,9 +25,7 @@ export default class CustomDocument extends Document {
     return (
       <Html dir={getDirection(locale)}>
         <Head>
-        {/* <meta property="og:title" content={"test"} />
-      <meta property="og:description" content={'test_description'} /> */}
-      {/* <meta property="og:image" content={image} /> */}
+   
 
           {/* <script>
             {`

@@ -1,4 +1,4 @@
-import { NextSeo } from "next-seo";
+// import { NextSeo } from "next-seo";
 import Header from "@components/layout/header/header";
 import Footer from "@components/layout/footer/footer";
 import MobileNavigation from "@components/layout/mobile-navigation/mobile-navigation";
@@ -18,9 +18,9 @@ const Layout: React.FC = ({ children }) => {
   // const [domainData, setDomainData] = useState<any>({});
 //console.log(domain);
 
-const meta_title:string=domain?.meta_title ?domain?.meta_title : '';
-const meta_description:string=domain?.meta_description?domain?.meta_description:'';
-const fav_icon:string=domain?.fav_icon?domain?.fav_icon:'';
+// const meta_title:string=domain?.meta_title ?domain?.meta_title : '';
+// const meta_description:string=domain?.meta_description?domain?.meta_description:'';
+// const fav_icon:string=domain?.fav_icon?domain?.fav_icon:'';
 
   //  useEffect(() => {
   //   var domainData = localStorage.getItem("user_token");
@@ -30,7 +30,7 @@ const fav_icon:string=domain?.fav_icon?domain?.fav_icon:'';
   // console.log(domain, "data");
   return (
     <div className="flex flex-col min-h-screen">
-      <NextSeo
+      {/* <NextSeo
         additionalMetaTags={[
           {
             name: "viewport",
@@ -47,7 +47,7 @@ const fav_icon:string=domain?.fav_icon?domain?.fav_icon:'';
           images: [
             {
               url:`${fav_icon}`,
-              width: 8600,
+              width: 600,
               height: 600,
               alt: "Og Image Alt",
             },
@@ -59,7 +59,7 @@ const fav_icon:string=domain?.fav_icon?domain?.fav_icon:'';
             },
           ],
         }}
-      />
+      /> */}
       {/* {domain?.name!=="urbannecessity"?   <Header />:null} */}
       <Header />
       <main
