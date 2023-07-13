@@ -30,6 +30,7 @@ import React from "react";
 import axios from "axios";
 import { ROUTES } from "@utils/routes";
 import Loader from "@components/ui/loaders/loader/loader";
+import OpenGraph from '../OpenGraph'
 // import ReactGA from "react-ga4";
 
 // import Drift from "react-driftjs";
@@ -86,6 +87,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   const [isLoading, setIsLoading] = useState(false)
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
+const meta_title:string=domain?.meta_title ?domain?.meta_title : '';
+const meta_description:string=domain?.meta_description?domain?.meta_description:'';
 
   //  console.log(domain,'dddddd');
   // useEffect(()=>{
@@ -279,6 +282,11 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
               <ManagedUIContext>
                 <Layout pageProps={pageProps}>
                   <DefaultSeo />
+                  <OpenGraph
+                    title={meta_title}
+                    description={meta_description}
+                    image={fav_icon}
+                  />
                   <Component {...pageProps} key={router.route} />
 
                   {/* <TrengoWidget apiKey="ByGdzSo2L0OI2OKu" /> */}

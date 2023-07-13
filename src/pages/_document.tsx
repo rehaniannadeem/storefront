@@ -7,7 +7,7 @@ import Document, {
 } from "next/document";
 import { i18n } from "next-i18next";
 import { getDirection } from "@utils/get-direction";
-import OpenGraph from '../OpenGraph'
+
 
 export default class CustomDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -21,8 +21,8 @@ export default class CustomDocument extends Document {
     return (
       <Html dir={getDirection(locale)}>
         <Head>
-        <meta property="og:title" content={"test"} />
-      <meta property="og:description" content={'test_description'} />
+        {/* <meta property="og:title" content={"test"} />
+      <meta property="og:description" content={'test_description'} /> */}
       {/* <meta property="og:image" content={image} /> */}
 
           {/* <script>
@@ -110,11 +110,7 @@ s0.parentNode.insertBefore(s1,s0);
         </Head>
         <body>
           <Main />
-          <OpenGraph
-        title={"meta_title"}
-        description={"meta_description"}
-        image={"fav_icon"}
-      />
+        
           <NextScript />
           {/* <script
             dangerouslySetInnerHTML={{
