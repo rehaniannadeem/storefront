@@ -270,6 +270,9 @@ const meta_description:string=domain?.meta_description?domain?.meta_description:
             }}
           /> */}
           <link rel="icon" href={fav_icon} />
+          <meta property="og:title" content={"title"} />
+      <meta property="og:description" content={"description"} />
+      {/* <meta property="og:image" content={image} /> */}
           <meta
             http-equiv="Content-Security-Policy"
             content="upgrade-insecure-requests"
