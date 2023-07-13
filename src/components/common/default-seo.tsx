@@ -14,8 +14,8 @@ const business_name=domain?.name
 //sconst fav_icon:string=domain?.fav_icon;
   return (
     <NextDefaultSeo
-      title={meta_title===null || meta_title===undefined ? "": meta_title}
-      description={meta_description===null || meta_description===undefined ? "": meta_description}
+      // title={meta_title===null || meta_title===undefined ? "": meta_title}
+      // description={meta_description===null || meta_description===undefined ? "": meta_description}
       openGraph={{
         type: "website",
         locale: "en_IE",
