@@ -30,9 +30,9 @@ import React from "react";
 import axios from "axios";
 import { ROUTES } from "@utils/routes";
 import Loader from "@components/ui/loaders/loader/loader";
-import OpenGraph from '../OpenGraph'
+
 // import ReactGA from "react-ga4";
-import { Helmet } from 'react-helmet';
+
 // import Drift from "react-driftjs";
 // import TrengoWidget from './../TrengoWidget';
 // import Intercom from './../Intercom';
@@ -245,9 +245,9 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
             }}
           /> */}
           <link rel="icon" href={fav_icon} />
-          {/* <meta property="og:title" content={"meta_title"} />
-          <meta property="og:description" content={"meta_description"}/>
-          <meta property="og:image" content={fav_icon} /> */}
+          <meta property="og:title" content={meta_title} />
+          <meta property="og:description" content={meta_description}/>
+          <meta property="og:image" content={fav_icon} />
           <meta
             http-equiv="Content-Security-Policy"
             content="upgrade-insecure-requests"
@@ -260,17 +260,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
               <ManagedUIContext>
                 <Layout pageProps={pageProps}>
                   <DefaultSeo />
-                  <OpenGraph
-                    title={meta_title}
-                    description={meta_description}
-                    image={fav_icon}
-                  />
                   <Component {...pageProps} key={router.route} />
-                  <Helmet>
-        <meta property="og:title" content={meta_title} />
-        <meta property="og:description" content={meta_description} />
-        <meta property="og:image" content={fav_icon} />
-      </Helmet>
+
                   {/* <TrengoWidget apiKey="ByGdzSo2L0OI2OKu" /> */}
                   {/* <Intercom /> */}
                   {/* <Drift /> */}
