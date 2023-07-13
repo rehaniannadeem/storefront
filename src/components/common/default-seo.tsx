@@ -20,6 +20,9 @@ const business_name=domain?.name
         type: "website",
         locale: "en_IE",
         site_name: business_name,
+        title:meta_title,
+        description:meta_description,
+        // image:domain?.fav_icon
       }}
       twitter={{
         handle: "@handle",
