@@ -245,8 +245,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
             }}
           /> */}
           <link rel="icon" href={fav_icon} />
-          <meta property="og:title" content={"domain?.meta_title"} />
-          <meta property="og:description" content={"domain?.meta_description"}/>
+          <meta property="og:title" content={domain?.meta_title} />
+          <meta property="og:description" content={domain?.meta_description}/>
           <meta property="og:image" content={"../../public/icon.png"} />
           <meta
             http-equiv="Content-Security-Policy"
