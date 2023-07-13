@@ -139,8 +139,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           return response.json();
         })
         .then((data) => {
-          // console.log(data,'this isdata');
-          if(data?.data[0]?.theme){
+          console.log(data.data,'this isdata');
+          if(data?.data[0]?.theme && router.pathname==='/'){
             router.push('/'+data?.data[0]?.theme, undefined, {
              locale: router.locale,
            })
