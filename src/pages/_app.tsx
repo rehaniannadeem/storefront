@@ -139,28 +139,34 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           return response.json();
         })
         .then((data) => {
-          console.log(data.data,'this isdata');
-          if(data?.data[0]?.theme && router.pathname==='/'){
-            router.push('/'+data?.data[0]?.theme, undefined, {
-             locale: router.locale,
-           })
-         }
-          if (data.status === false) {
+          if(data?.data[0]?.theme.includes('minimal') && router?.pathname=="/"){
+            router.push(`${ROUTES.Home}`, undefined, {
+              locale: router.locale,
+            })
+          }else if(data?.data[0]?.theme && router?.pathname=="/"){
+            console.log(`/${data?.data[0]?.theme}`,'this isdata');
+            // router.push(`/${data?.data[0]?.theme}`)
+            // Router.push(ROUTES.ORDER);
+            Router.push(`/${data?.data[0]?.theme}`, undefined, {
+              locale: router.locale,
+            })
+          }
+          if (data?.status === false) {
             router.push(`${ROUTES.NOTFOUND}`, undefined, {
               locale: router.locale,
             })
-
           }
           setTitle(data.data[0].name);
           setFav_icon(data.data[0].fav_icon);
           setDomain(data.data[0]);
           localStorage.setItem("domainData", JSON.stringify(data.data[0]));
           localStorage.setItem("user_token", data.data[0].token);
+          setIsLoading(false)
         })
         .catch((_error) => {
           // console.log(error,'errror tesgt');
         });
-      setIsLoading(false)
+      
     };
     { business != undefined && fetchData(); }
 
@@ -169,6 +175,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
 
     setDomain((prev) => ({ ...prev, ...localData })); */
   }, [business]);
+
 
 
   useEffect(() => {
