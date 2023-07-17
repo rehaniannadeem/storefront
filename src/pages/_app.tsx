@@ -147,7 +147,7 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
             console.log(`/${data?.data[0]?.theme}`,'this isdata');
             // router.push(`/${data?.data[0]?.theme}`)
             // Router.push(ROUTES.ORDER);
-            Router.push(`/${data?.data[0]?.theme}`, undefined, {
+            router.push(`/${data?.data[0]?.theme}`, undefined, {
               locale: router.locale,
             })
           }
