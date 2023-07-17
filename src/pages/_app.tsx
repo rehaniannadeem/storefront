@@ -161,7 +161,9 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           setDomain(data.data[0]);
           localStorage.setItem("domainData", JSON.stringify(data.data[0]));
           localStorage.setItem("user_token", data.data[0].token);
-          setIsLoading(false)
+           setTimeout(() => {
+            setIsLoading(false)
+          }, 2000);
         })
         .catch((_error) => {
           // console.log(error,'errror tesgt');
