@@ -150,7 +150,7 @@ const {locale}=useRouter()
               : "sm:text-xl md:text-base lg:text-xl md:mt-2.5 2xl:mt-3"
           }`}
         >
-          <span className="inline-block">{domainCurrencyCode+" "+ product?.price.toFixed(2)}</span>
+          <span className="inline-block">{domainCurrencyCode+" "+ product?.price?.toFixed(2)}</span>
           {/* {discount && (
             <del className="sm:text-base font-normal text-gray-800">
               {basePrice}

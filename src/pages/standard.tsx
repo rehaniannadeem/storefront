@@ -9,7 +9,7 @@ import Divider from "@components/ui/divider";
 import HeroBlock from "@containers/hero-block";
 import BrandBlock from "@containers/brand-block";
 import CategoryBlock from "@containers/category-block";
-import FeatureBlock from "@containers/feature-block";
+// import FeatureBlock from "@containers/feature-block";
 import Layout from "@components/layout/layout";
 //import FlashSaleBlock from "@components/product/feeds/flash-sale-product-feed";
 import BestSellerProductFeed from "@components/product/feeds/best-seller-product-feed";
@@ -57,7 +57,7 @@ export default function Home() {
         <Divider /> */}
         <BrandBlock sectionHeading="text-top-brands" />
         {/*  <CollectionBlock /> */}
-        <FeatureBlock />
+        {/* <FeatureBlock /> */}
         <Divider />
         {/*  <DownloadApps className="bg-linen" />
         <Support />

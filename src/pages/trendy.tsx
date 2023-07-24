@@ -52,7 +52,7 @@ export default function Home() {
         /> */}
         <BrandGridBlock
           sectionHeading="text-top-brands"
-          limit={12}
+          limit={8}
           variant="6column"
         />
         <Divider />

@@ -20,7 +20,7 @@ import ProductsWithFlashSale from "@containers/products-with-flash-sale";
 import HeroWithCategory from "@containers/hero-with-category";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
-import { useRouter } from "next/router";
+import  { useRouter } from "next/router";
 import { ROUTES } from "@utils/routes";
 //import { useEffect, useState } from "react";
 //import Head from "next/head";
@@ -32,8 +32,14 @@ import Image from "next/image";
 import Text from "@components/ui/text";
 import closeStore from '../../public/store-close.svg'
 import { useTranslation } from "next-i18next";
+
+import axios from "axios";
+import Loader from "@components/ui/loaders/loader/loader";
 function PopupContent({ closePopup, business, domain }: any) {
   const { t } = useTranslation("common");
+
+
+
   return (
     <div className="border-t border-b h-1/2 border-gray-300 text-center px-4 py-2 flex flex-col items-center justify-center sm:px-8 md:px-12 lg:px-16">
       <div>
@@ -91,10 +97,55 @@ const flashSaleCarouselBreakpoint = {
 
 export default function Home() {
   const router = useRouter();
-  const [business, setBusiness] = useState('')
+  const [business, setBusiness] = useState<any>('')
   const [domain, setDomain] = useState<any>({})
+  const [isLoading,setIsLoading]=useState(false)
+  // const[lang,setLang]=useState<any>(null)
   const url = router?.asPath.split("?")
   //  console.log(router,'url');
+
+  async function getUserLocation(businessData:any) {
+    
+    
+    setIsLoading(true)
+    axios({
+
+      method: "get",
+      url: 'https://api.ipregistry.co/?key=7qsumd6hmu9lk9ns',
+      // data: bodyFormData,
+      headers: {
+        "Content-Type": "Application/json",
+
+      },
+    })
+      .then((response) => {
+        //handle success
+        // console.log(response.data,'location response');
+        const lang = response.data.location.language.code;
+        sessionStorage.setItem("countryCode", response.data.location.country.code);
+        if (lang === 'ar') {
+          sessionStorage.setItem("language", lang);
+          setIsLoading(false)
+        } else {        
+          sessionStorage.setItem("language", 'en');
+          setIsLoading(false)
+        }
+        if (businessData?.theme === ('minimal') && router?.asPath == "/") {
+          router.push(`${ROUTES.HOME}`, undefined, {
+            locale: lang,
+          })
+
+        } else if (businessData?.theme && router?.asPath == "/") {
+          router.push(`/${businessData?.theme}`, undefined, {
+            locale: lang,
+          })
+
+        }
+
+      }
+      )
+
+  }
 
   useEffect(() => {
     let host = window.location.host;
@@ -104,6 +155,45 @@ export default function Home() {
     var domainData = JSON.parse(localStorage.getItem("domainData")!);
     if (domainData) {
       setDomain(domainData);
+    }
+  }, [])
+  useEffect(() => {
+    setIsLoading(true)
+    const business = JSON.parse(localStorage.getItem('domainData')!)
+ 
+    var isLanguage: any = null
+    if (business) {
+
+      if (!sessionStorage.getItem("language")) {
+        if (business?.primary_language) {
+          isLanguage = business?.primary_language
+          sessionStorage.setItem("language", business?.primary_language)
+        } else {
+          getUserLocation(business);
+        }
+      } else {
+        var language: any = sessionStorage.getItem("language")
+        isLanguage = language
+        
+      }
+
+
+      if (business?.theme === ('minimal') && router?.asPath == "/") {
+        router.push(`${ROUTES.HOME}`, undefined, {
+          locale: isLanguage,
+        })
+        setIsLoading(false)
+        // console.log('is coming',business?.theme);
+      } else if (business?.theme && router?.asPath == "/") {
+        
+     
+        router.push(`/${business?.theme}`, undefined, {
+          locale: isLanguage,
+        })
+
+      } else {
+        setIsLoading(false)
+      }
     }
   }, [])
 
@@ -158,6 +248,11 @@ export default function Home() {
   }, []);
   siteSettings.name = title;
 */
+if (isLoading) {
+  return <Loader />
+}
+
+
   return (
     <Container>
       {domain?.is_open === "false" &&

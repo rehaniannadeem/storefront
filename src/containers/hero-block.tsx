@@ -22,9 +22,10 @@ const HeroBlock: React.FC = () => {
   const { domain }: any = useContext(Context);
   const [banners, setBanners] = useState<any>([]);
   const [placeholder, _setPlaceholder] = useState<any>([]);
+  const[isLoading,setIsLoading]=useState(false)
   let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   const getBanner = () => {
-    //	setIsLoading(true);
+    	setIsLoading(true);
     fetch(connector_base_url+"/banner", {
       method: "get",
       headers: {
@@ -38,7 +39,7 @@ const HeroBlock: React.FC = () => {
       })
       .then((data) => {
         setBanners(data.data);
-        //setIsLoading(false);
+        setIsLoading(false);
 
         // setSlider(data.data[0].banner_image);
         console.log(data.data, "slider");
@@ -74,6 +75,7 @@ const HeroBlock: React.FC = () => {
 
     // console.log(placeholder, "placehoder2");
   });
+  // console.log(isLoading,'test loading')
   return (
     <div className="heroBannerOne relative max-w-[1920px] mb-5 md:mb-12 lg:mb-14 2xl:mb-16 mx-auto overflow-hidden px-4 md:px-8 2xl:px-0">
       <Carousel
@@ -86,7 +88,7 @@ const HeroBlock: React.FC = () => {
           clickable: true,
         }}
       >
-        {placeholder?.length == 0
+        {isLoading
           ? Array.from({ length: 8 }).map((_, idx) => (
               <SwiperSlide key={`category-list-${idx}`}>
                 <CategoryListCardLoader uniqueKey={`category-list-${idx}`} />

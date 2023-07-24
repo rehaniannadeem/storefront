@@ -12,9 +12,10 @@ const HeroSlider: React.FC = () => {
   let token = domain.token;
   const [banners, setBanners] = useState<any>([]);
   const [placeholder, _setPlaceholder] = useState<any>([]);
+  const[isLoading,setIsLoading]=useState(false)
   let connector_base_url=process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   const getBanner = () => {
-    // setIsLoading(true);
+    setIsLoading(true);
     fetch(connector_base_url+"/banner", {
       method: "get",
       headers: {
@@ -28,10 +29,10 @@ const HeroSlider: React.FC = () => {
       })
       .then((data) => {
         setBanners(data.data);
-        //  setIsLoading(false);
+         setIsLoading(false);
 
         // setSlider(data.data[0].banner_image);
-        console.log(data.data, "slider");
+        // console.log(data.data, "slider");
       });
   };
 
@@ -74,8 +75,9 @@ const HeroSlider: React.FC = () => {
           clickable: true,
         }}
       >
-        {placeholder?.length == 0
-          ? Array.from({ length: 8 }).map((_, idx) => (
+        {isLoading
+          ? 
+          Array.from({ length: 8 }).map((_, idx) => (
               <SwiperSlide key={`category-list-${idx}`}>
                 <CategoryListCardLoader uniqueKey={`category-list-${idx}`} />
               </SwiperSlide>

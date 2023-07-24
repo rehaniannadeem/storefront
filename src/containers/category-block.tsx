@@ -3,10 +3,11 @@ import SectionHeader from "@components/common/section-header";
 import Carousel from "@components/ui/carousel/carousel";
 import CardLoader from "@components/ui/loaders/card-loader";
 import CardRoundedLoader from "@components/ui/loaders/card-rounded-loader";
-import { useCategoriesQuery } from "@framework/category/get-all-categories";
+// import { useCategoriesQuery } from "@framework/category/get-all-categories";
 import { ROUTES } from "@utils/routes";
-import Alert from "@components/ui/alert";
+// import Alert from "@components/ui/alert";
 import { SwiperSlide } from "swiper/react";
+import { useEffect, useState } from "react";
 
 interface CategoriesProps {
   sectionHeading: string;
@@ -73,53 +74,81 @@ const CategoryBlock: React.FC<CategoriesProps> = ({
   sectionHeading,
   type = "circle",
 }) => {
-  const { data, isLoading, error } = useCategoriesQuery({
-    limit: 10,
-  });
+  // const { data, isLoading, error } = useCategoriesQuery({
+  //   limit: 10,
+  // });
+  const [categories, setCategories] = useState<any>([])
+  const [isLoading, setIsLoading] = useState(false)
+  useEffect(() => {
+    setIsLoading(true)
+    let category: any = localStorage.getItem("categories")
+    if (category) {
+      setCategories(JSON.parse(category))
+      setIsLoading(false)
+    }
+  }, [])
 
   return (
     <div className={className}>
-      <SectionHeader sectionHeading={sectionHeading} />
-      {error ? (
+    
+      {/* {error ? (
         <Alert message={error?.message} />
-      ) : (
+      ) : ( */}
+
+      {isLoading
+        ?
+        <>
+        <SectionHeader sectionHeading={sectionHeading} /> 
         <Carousel
           breakpoints={type === "rounded" ? breakpoints : breakpointsCircle}
           buttonClassName="-mt-8 md:-mt-10"
         >
-          {isLoading && !data
-            ? Array.from({ length: 10 }).map((_, idx) => {
-                if (type === "rounded") {
-                  return (
-                    <SwiperSlide key={`card-rounded-${idx}`}>
-                      <CardRoundedLoader uniqueKey={`card-rounded-${idx}`} />
-                    </SwiperSlide>
-                  );
-                }
-                return (
-                  <SwiperSlide key={`card-circle-${idx}`}>
-                    <CardLoader uniqueKey={`card-circle-${idx}`} />
-                  </SwiperSlide>
-                );
-              })
-            : // data.categories?.data changed to data.data
-              data?.data?.map((category) => (
-                <SwiperSlide key={`category--key-${category.id}`}>
-                  <Card
-                    item={category}
-                    href={{
-                      pathname: ROUTES.SEARCH,
-                      query: { category: category.name },
-                    }}
-                    // href={`${ROUTES.CATEGORY}/${category.slug}`}
-                    variant={type}
-                    effectActive={true}
-                    size={type === "rounded" ? "medium" : "small"}
-                  />
+          {Array.from({ length: 10 }).map((_, idx) => {
+            if (type === "rounded") {
+              return (
+                <SwiperSlide key={`card-rounded-${idx}`}>
+                  <CardRoundedLoader uniqueKey={`card-rounded-${idx}`} />
                 </SwiperSlide>
-              ))}
+              );
+            }
+            return (
+              <SwiperSlide key={`card-circle-${idx}`}>
+                <CardLoader uniqueKey={`card-circle-${idx}`} />
+              </SwiperSlide>
+            );
+          })}
         </Carousel>
-      )}
+        </>
+        : // data.categories?.data changed to data.data
+       ( categories?.length!=0 && 
+        <>
+          <SectionHeader sectionHeading={sectionHeading} />
+        <Carousel
+        breakpoints={type === "rounded" ? breakpoints : breakpointsCircle}
+        buttonClassName="-mt-8 md:-mt-10"
+      >
+      {  categories?.map((category: any) => (
+        
+            <SwiperSlide key={`category--key-${category.id}`}>
+              <Card
+                item={category}
+                href={{
+                  pathname: ROUTES.SEARCH,
+                  query: { category: category.name },
+                }}
+                // href={`${ROUTES.CATEGORY}/${category.slug}`}
+                variant={type}
+                effectActive={true}
+                size={type === "rounded" ? "medium" : "small"}
+              />
+            </SwiperSlide>
+          
+        ))}
+        </Carousel>
+        </>
+        )}
+
+      {/* )} */}
     </div>
   );
 };

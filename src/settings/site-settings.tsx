@@ -2,6 +2,7 @@
 import { SAFlag } from "@components/icons/SAFlag";
 //import { CNFlag } from "@components/icons/CNFlag";
 import { USFlag } from "@components/icons/USFlag";
+import { PKFlag } from "@components/icons/PKFlag"
 //import { DEFlag } from "@components/icons/DEFlag";
 //import { ESFlag } from "@components/icons/ESFlag";
 
@@ -2788,6 +2789,12 @@ menu: [
         name: "English - EN",
         value: "en",
         icon: <USFlag width="20px" height="15px" />,
+      },
+	  {
+        id: "ur",
+        name: "اردو - UR",
+        value: "ur",
+        icon: <PKFlag width="20px" height="40px" />,
       },
       /*  {
         id: "zh",

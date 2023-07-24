@@ -43,7 +43,7 @@ const business_name=domain?.name
       additionalLinkTags={[
         {
           rel: "apple-touch-icon",
-          href: "/public/icon.png",
+          href: "../assets/cardImg.jpg",
         },
         {
           rel: "manifest",

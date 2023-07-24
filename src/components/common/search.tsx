@@ -180,6 +180,7 @@ export default function Search(token:any) {
                         <div
                           className=" p-5 border-b border-gray-150 relative last:border-b-0"
                           onClick={closeSearch}
+                          key={index}
                         >
                           <SearchProduct item={item} key={index} />
                         </div>

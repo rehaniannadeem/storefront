@@ -6,7 +6,8 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 //import { useUI } from "@contexts/ui.context";
 import "@fontsource/tajawal";
-import axios from "axios";
+// import axios from "axios";
+
 // interface GeolocationPosition {
 //   coords: {
 //     latitude: number;
@@ -32,70 +33,80 @@ export default function LanguageSwitcher() {
     // console.log(userLanguage, "userLang");
    
       
-    async function getUserLocation() {
-      axios({
+    // async function getUserLocation() {
+    //   axios({
     
-        method: "get",
-        url:'https://api.ipregistry.co/?key=7qsumd6hmu9lk9ns',
-        // data: bodyFormData,
-        headers: {
-          "Content-Type": "Application/json",
+    //     method: "get",
+    //     url:'https://api.ipregistry.co/?key=7qsumd6hmu9lk9ns',
+    //     // data: bodyFormData,
+    //     headers: {
+    //       "Content-Type": "Application/json",
           
-        },
-      })
-        .then((response) => {
-          //handle success
-          console.log(response.data,'location response');
-          const lang =response.data.location.language.code;
-          sessionStorage.setItem("countryCode", response.data.location.country.code);
-          if(lang==='ar'){
-            setSelectedItem(lang);
-          sessionStorage.setItem("language", lang);
+    //     },
+    //   })
+    //     .then((response) => {
+    //       //handle success
+    //       // console.log(response.data,'location response');
+    //       const lang =response.data.location.language.code;
+    //       sessionStorage.setItem("countryCode", response.data.location.country.code);
+    //       if(lang==='ar'){
+    //         setSelectedItem(lang);
+    //       sessionStorage.setItem("language", lang);
         
-            router.push(asPath, undefined, {
-              locale: lang,
-            });
-          }else{
-            setSelectedItem(currentSelectedItem);
-            sessionStorage.setItem("language", 'en');
-          }
+    //         router.push(asPath, undefined, {
+    //           locale: lang,
+    //         });
+    //       }else{
+    //         setSelectedItem(currentSelectedItem);
+    //         sessionStorage.setItem("language", 'en');
+    //       }
          
-          }
-        )
-      // try {
-      //   const { coords } = await new Promise<GeolocationPosition>(
-      //     (resolve, reject) => {
-      //       navigator.geolocation.getCurrentPosition(resolve, reject);
-      //     }
-      //   );
-      //   const isMiddleEast =
-      //     coords.latitude >= 12.0 &&
-      //     coords.latitude <= 42.0 &&
-      //     coords.longitude >= 26.0 &&
-      //     coords.longitude <= 56.0;
-         
-          
-      //   const lang = isMiddleEast ? "ar" : "en";
-      //   console.log(isMiddleEast,'isMiddle');
-      //   setSelectedItem(options.find((o) => o.value === lang)!);
-      //   sessionStorage.setItem("language", lang);
-      //   router.push(asPath, undefined, {
-      //     locale: lang,
-      //   });
-      // } catch (error) {
-      //   console.error(error);
-      // }
-    }
+    //       }
+    //     )
+   
+    // }
+    // const business=JSON.parse(localStorage.getItem('domainData')!)
+    // console.log(business,'business bb');
+    // if(business){
+    //   if(!sessionStorage.getItem("language")){
+        
+        
+    //     if(business?.primary_language){
+    //       router.push(asPath, undefined, {
+    //         locale: business?.primary_language,
+    //       });
+    //       sessionStorage.setItem("language",business?.primary_language )
+    //     }else{
+    //       if (!sessionStorage.getItem("language")) {
+    //         getUserLocation();
+    //       } else {
+    //         const lang = sessionStorage.getItem("language")!;
+    //         // setSelectedItem(options.find((o) => o.value === lang)!);
+    //         router.push(asPath, undefined, {
+    //           locale: lang,
+    //         });
+    //       }
+    //     }
+    //   }else{
+    //     const lang = sessionStorage.getItem("language")!;
+    //     // setSelectedItem(options.find((o) => o.value === lang)!);
+    //     router.push(asPath, undefined, {
+    //       locale: lang,
+    //     });
+    //   }
+  
+    // }
+    
 
-    if (!sessionStorage.getItem("language")) {
-      getUserLocation();
-    } else {
-      const lang = sessionStorage.getItem("language")!;
-      // setSelectedItem(options.find((o) => o.value === lang)!);
-      router.push(asPath, undefined, {
-        locale: lang,
-      });
-    }
+    // if (!sessionStorage.getItem("language")) {
+    //   getUserLocation();
+    // } else {
+    //   const lang = sessionStorage.getItem("language")!;
+    //   // setSelectedItem(options.find((o) => o.value === lang)!);
+    //   router.push(asPath, undefined, {
+    //     locale: lang,
+    //   });
+    // }
   }, []);
 
   function handleItemClick(values: any) {

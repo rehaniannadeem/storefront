@@ -8,7 +8,7 @@ export default function BestSellerProductFeed() {
     limit: 10,
   });
   const { products }: any = useContext(Context);
-  const topProduct = slice(products, 0, 11);
+  const topProduct = slice(products, 0, 8);
 
   return (
     <ProductsBlock

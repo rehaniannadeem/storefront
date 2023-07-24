@@ -6,9 +6,9 @@ import CardIconLoader from "@components/ui/loaders/card-icon-loader";
 import { ROUTES } from "@utils/routes";
 //import Alert from "@components/ui/alert";
 import { SwiperSlide } from "swiper/react";
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { Context } from "src/pages/_app";
+// import axios from "axios";
+import { useEffect, useState } from "react";
+// import { Context } from "src/pages/_app";
 
 interface CategoriesProps {
   sectionHeading: string;
@@ -49,69 +49,94 @@ const CategoryBlockIcon: React.FC<CategoriesProps> = ({
   /*  const { data, isLoading, error } = useCategoriesQuery({
     limit: 10,
   }); */
-  const { domain }: any = useContext(Context);
-  const [categories, setCategories] = useState<any>();
-  let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
-  const getCategory = () => {
-    //  setCategoryLoading(true);
-    axios({
-      method: "get",
-      url: storefront_base_url+"/categories",
-      // data: bodyFormData,
-      headers: {
-        "Content-Type": "Application/json",
-        Authorization: `Bearer ${domain.token}`,
-      },
-    })
-      .then((response: any) => {
-        // console.log(response.data, "this is product detail");
-        setCategories(response.data.data);
-      })
-      .catch(function (err: any) {
-        //handle error
-        console.log(err);
-      });
-    // setCategoryLoading(false);
-  };
+  // const { domain }: any = useContext(Context);
+  const [categories, setCategories] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState(false)
+  // let storefront_base_url=process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
+  // const getCategory = () => {
+  //   //  setCategoryLoading(true);
+  //   axios({
+  //     method: "get",
+  //     url: storefront_base_url+"/categories",
+  //     // data: bodyFormData,
+  //     headers: {
+  //       "Content-Type": "Application/json",
+  //       Authorization: `Bearer ${domain.token}`,
+  //     },
+  //   })
+  //     .then((response: any) => {
+  //       // console.log(response.data, "this is product detail");
+  //       setCategories(response.data.data);
+  //     })
+  //     .catch(function (err: any) {
+  //       //handle error
+  //       console.log(err);
+  //     });
+  //   // setCategoryLoading(false);
+  // };
+  // useEffect(() => {
+  //   {Object.keys(domain)?.length!=0 &&   getCategory();}
+
+  // }, [domain]);
   useEffect(() => {
-    {Object.keys(domain)?.length!=0 &&   getCategory();}
-  
-  }, [domain]);
+    setIsLoading(true)
+    let category: any = localStorage.getItem("categories")
+    if (category) {
+      setCategories(JSON.parse(category))
+      setIsLoading(false)
+    }
+  }, [])
 
   return (
     <div className={className}>
-      <SectionHeader sectionHeading={sectionHeading} />
+
       {/*  {error ? (
         <Alert message={error?.message} />
       ) : ( */}
-      <Carousel
-        autoplay={false}
-        breakpoints={breakpoints}
-        buttonClassName="-mt-2 md:-mt-2"
-      >
-        {!categories
-          ? Array.from({ length: 10 }).map((_, idx) => {
+
+      {isLoading
+        ?
+        <>
+          <SectionHeader sectionHeading={sectionHeading} />
+          <Carousel
+            autoplay={false}
+            breakpoints={breakpoints}
+            buttonClassName="-mt-2 md:-mt-2"
+          >
+            {Array.from({ length: 10 }).map((_, idx) => {
               return (
                 <SwiperSlide key={`card-rounded-${idx}`}>
                   <CardIconLoader uniqueKey={`card-rounded-${idx}`} />
                 </SwiperSlide>
               );
-            })
-          : //.categories?.data? changed to data
-            categories.map((category: any) => (
-              <SwiperSlide key={`category--key-${category.id}`}>
-                <IconCard
-                  item={category}
-                  href={{
-                    pathname: ROUTES.SEARCH,
-                    query: { category: category.name },
-                  }}
-                  // href={`${ROUTES.CATEGORY}/${category.slug}`}
-                  effectActive={true}
-                />
-              </SwiperSlide>
-            ))}
-      </Carousel>
+            })}
+          </Carousel>
+        </>
+        : //.categories?.data? changed to data
+        (categories?.length != 0 &&
+          <> <SectionHeader sectionHeading={sectionHeading} />
+            <Carousel
+              autoplay={false}
+              breakpoints={breakpoints}
+              buttonClassName="-mt-2 md:-mt-2"
+            >
+              {categories?.map((category: any) => (
+                <SwiperSlide key={`category--key-${category.id}`}>
+                  <IconCard
+                    item={category}
+                    href={{
+                      pathname: ROUTES.SEARCH,
+                      query: { category: category.name },
+                    }}
+                    // href={`${ROUTES.CATEGORY}/${category.slug}`}
+                    effectActive={true}
+                  />
+                </SwiperSlide>
+              ))}
+            </Carousel></>
+        )
+      }
+
       {/*  )} */}
     </div>
   );

@@ -1,5 +1,6 @@
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
+// import Router from "next/router";
 import { AnimatePresence } from "framer-motion";
 import { ManagedUIContext } from "@contexts/ui.context";
 import ManagedModal from "@components/common/modal/managed-modal";
@@ -81,37 +82,61 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   const [user, setUser] = useState({});
   const [order, setOrder] = useState({});
   const [domain, setDomain] = useState<any>({});
-  const [products, setProducts] = useState<any>({});
+  const [products, setProducts] = useState<any>([]);
   const [business, setBusiness] = useState<any>();
   const [isLoading, setIsLoading] = useState(false)
+ 
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
 
-  //  console.log(domain,'dddddd');
-  // useEffect(()=>{
-  //   console.log(domain?.google_analytics_id,'domaindomain');
-  //   if (domain?.google_analytics_id) {
-  //     ReactGA.initialize(domain?.google_analytics_id);
-  //   }
+  const getCategory = () => {
+    setIsLoading(true);
+    axios({
+      method: "get",
+      url: storefront_base_url + "/categories",
+      // data: bodyFormData,
+      headers: {
+        "Content-Type": "Application/json",
+        Authorization: `Bearer ${domain?.token}`,
+      },
+    })
+      .then((response: any) => {
+        // console.log(response.data, "this is product detail");
+        // setItems(response.data.data);
+        localStorage.setItem("categories", JSON.stringify(response.data.data));
+        setIsLoading(false);
+      })
+      .catch(function (err: any) {
+        //handle error
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
+  const getBrand = () => {
+    setIsLoading(true);
+    axios({
+      method: "get",
+      url: storefront_base_url + "/brands",
+      // data: bodyFormData,
+      headers: {
+        "Content-Type": "Application/json",
+        Authorization: `Bearer ${domain?.token}`,
+      },
+    })
+      .then((response: any) => {
+        //  console.log(response.data.brands, "this is brand detail");
+        //  setItems(response.data.brands);
+        setIsLoading(false);
 
-  // })
-  // useEffect(() => {
-  //   ReactGA.initialize('G-7WYQMCYF3R');
-  //   const handleRouteChange = (url: string) => {
-  //     ReactGA.gtag('event', 'page_view', {
-  //       page_location: url,
-  //     });
-  //   };
-
-  //   router.events.on('routeChangeComplete', handleRouteChange);
-
-  //   // Track initial page view
-  //   handleRouteChange(window.location.pathname);
-
-  //   return () => {
-  //     router.events.off('routeChangeComplete', handleRouteChange);
-  //   };
-  // }, []);
+        localStorage.setItem("brands", JSON.stringify(response.data.brands));
+      })
+      .catch(function (err: any) {
+        //handle error
+        console.log(err);
+        setIsLoading(false);
+      });
+    // setIsLoading(false);
+  };
 
   useEffect(() => {
 
@@ -129,9 +154,49 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
       }
 
     }
-
-
-
+    async function getUserLocation() {
+    
+    
+      setIsLoading(true)
+      axios({
+  
+        method: "get",
+        url: 'https://api.ipregistry.co/?key=7qsumd6hmu9lk9ns',
+        // data: bodyFormData,
+        headers: {
+          "Content-Type": "Application/json",
+  
+        },
+      })
+        .then((response) => {
+          //handle success
+          // console.log(response.data,'location response');
+          // const lang = response.data.location.language.code;
+          sessionStorage.setItem("countryCode", response.data.location.country.code);
+          // if (lang === 'ar') {
+          //   sessionStorage.setItem("language", lang);
+          //   setIsLoading(false)
+          // } else {        
+          //   sessionStorage.setItem("language", 'en');
+          //   setIsLoading(false)
+          // }
+          // if (businessData?.theme === ('minimal') && router?.asPath == "/") {
+          //   router.push(`${ROUTES.Home}`, undefined, {
+          //     locale: lang,
+          //   })
+  
+          // } else if (businessData?.theme && router?.asPath == "/") {
+          //   router.push(`/${businessData?.theme}`, undefined, {
+          //     locale: lang,
+          //   })
+  
+          // }
+  
+        }
+        )
+  
+    }
+    getUserLocation()
     // let parts = host.split(".");
     // setBusiness(parts[0]);
 
@@ -161,24 +226,54 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           return response.json();
         })
         .then((data) => {
-          // console.log(data,'this isdata');
-          if (data.status === false) {
-            router.push(`${ROUTES.NOTFOUND}`, undefined, {
-              locale: router.locale,
-            })
+          // setIsLoading(false)
 
+          if (data?.status === false) {
+            // router.push(`${ROUTES.NOTFOUND}`, undefined, {
+            //   locale: router.locale,
+            // })
+            router.push(ROUTES.NOTFOUND)
+            setIsLoading(false)
+          }else{
+            setTitle(data.data[0].name);
+            setFav_icon(data.data[0].fav_icon);
+            setDomain(data.data[0]);
+            localStorage.setItem("domainData", JSON.stringify(data.data[0]));
+            localStorage.setItem("user_token", data.data[0].token);
+            setIsLoading(false)
           }
-          setTitle(data.data[0].name);
-          setFav_icon(data.data[0].fav_icon);
-          setDomain(data.data[0]);
-          localStorage.setItem("domainData", JSON.stringify(data.data[0]));
-          localStorage.setItem("user_token", data.data[0].token);
+
+       
+          // setTimeout(() => {
+
+          // }, 1000);
+
         })
         .catch((_error) => {
           // console.log(error,'errror tesgt');
+          setIsLoading(false)
         });
-      setIsLoading(false)
+
     };
+
+    //  setTimeout(() => {
+    //   console.log(router,'rrrrr')
+    // if(businessDetail){
+    //   if(businessDetail.theme===('minimal') && router?.asPath=="/"){
+    //     router.push(`${ROUTES.Home}`, undefined, {
+    //       locale: router.locale,
+    //     })
+    //   }else if(businessDetail?.theme && router?.asPath=="/"){
+    //     Router.push(`/${businessDetail?.theme}`, undefined, {
+    //       locale: router.locale,
+    //     })
+    //   }else{
+    //     setIsLoading(false)
+    //   }
+    // }
+    // }, 1000);
+
+
     { business != undefined && fetchData(); }
 
 
@@ -209,7 +304,8 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
         });
     };
     { Object.keys(domain)?.length != 0 && getProduct(); }
-
+    { Object.keys(domain)?.length != 0 && getCategory(); }
+    { Object.keys(domain)?.length != 0 && getBrand(); }
 
   }, [domain]);
 

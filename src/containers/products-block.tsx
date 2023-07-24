@@ -24,6 +24,8 @@ const ProductsBlock: React.FC<ProductsProps> = ({
   error,
   uniqueKey,
 }) => {
+  
+  
   return (
     <div className={className}>
       <SectionHeader
@@ -38,7 +40,7 @@ const ProductsBlock: React.FC<ProductsProps> = ({
           {loading && !products?.length ? (
             <ProductFeedLoader limit={10} uniqueKey={uniqueKey} />
           ) : (
-            products?.map((product: Product) => {
+            products?.slice(0,8)?.map((product: Product) => {
               if (product.name.toLocaleLowerCase() === "open product") {
                 product.visibility = "hidden";
               } else {

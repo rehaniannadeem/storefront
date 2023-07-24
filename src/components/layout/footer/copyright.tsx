@@ -92,7 +92,7 @@ const Copyright: React.FC<CopyrightProps> = () => {
               style={{ color: domain.theme_color }}
             >
               {" "}
-              Ignite Commerce Cloud
+              Ignite Online
             </a>
           </Link>
         </div>
