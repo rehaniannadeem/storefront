@@ -127,7 +127,7 @@ const HeroWithCategory: React.FC<Props> = ({
             mobile: {
               url: item.banner_image,
               width: 450,
-              height: 275,
+              height: 250,
             },
             desktop: {
               url: item.banner_image,

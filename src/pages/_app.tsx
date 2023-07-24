@@ -30,7 +30,6 @@ import React from "react";
 import axios from "axios";
 import { ROUTES } from "@utils/routes";
 import Loader from "@components/ui/loaders/loader/loader";
-
 // import ReactGA from "react-ga4";
 
 // import Drift from "react-driftjs";
@@ -87,9 +86,32 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
   const [isLoading, setIsLoading] = useState(false)
   let connector_base_url = process.env.NEXT_PUBLIC_IGNITE_CONNECTOR_BASE_URL
   let storefront_base_url = process.env.NEXT_PUBLIC_IGNITE_STOREFRONT_BASE_URL
-  // const meta_title: string = domain?.meta_title;
-  // const meta_description: string = domain?.meta_description;
 
+  //  console.log(domain,'dddddd');
+  // useEffect(()=>{
+  //   console.log(domain?.google_analytics_id,'domaindomain');
+  //   if (domain?.google_analytics_id) {
+  //     ReactGA.initialize(domain?.google_analytics_id);
+  //   }
+
+  // })
+  // useEffect(() => {
+  //   ReactGA.initialize('G-7WYQMCYF3R');
+  //   const handleRouteChange = (url: string) => {
+  //     ReactGA.gtag('event', 'page_view', {
+  //       page_location: url,
+  //     });
+  //   };
+
+  //   router.events.on('routeChangeComplete', handleRouteChange);
+
+  //   // Track initial page view
+  //   handleRouteChange(window.location.pathname);
+
+  //   return () => {
+  //     router.events.off('routeChangeComplete', handleRouteChange);
+  //   };
+  // }, []);
 
   useEffect(() => {
 
@@ -139,36 +161,23 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
           return response.json();
         })
         .then((data) => {
-          if(data?.data[0]?.theme.includes('minimal') && router?.pathname=="/"){
-            router.push(`${ROUTES.Home}`, undefined, {
-              locale: router.locale,
-            })
-          }else if(data?.data[0]?.theme && router?.pathname=="/"){
-            console.log(`/${data?.data[0]?.theme}`,'this isdata');
-            // router.push(`/${data?.data[0]?.theme}`)
-            // Router.push(ROUTES.ORDER);
-            router.push(`/${data?.data[0]?.theme}`, undefined, {
-              locale: router.locale,
-            })
-          }
-          if (data?.status === false) {
+          // console.log(data,'this isdata');
+          if (data.status === false) {
             router.push(`${ROUTES.NOTFOUND}`, undefined, {
               locale: router.locale,
             })
+
           }
           setTitle(data.data[0].name);
           setFav_icon(data.data[0].fav_icon);
           setDomain(data.data[0]);
           localStorage.setItem("domainData", JSON.stringify(data.data[0]));
           localStorage.setItem("user_token", data.data[0].token);
-           setTimeout(() => {
-            setIsLoading(false)
-          }, 2000);
         })
         .catch((_error) => {
           // console.log(error,'errror tesgt');
         });
-      
+      setIsLoading(false)
     };
     { business != undefined && fetchData(); }
 
@@ -177,7 +186,6 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
 
     setDomain((prev) => ({ ...prev, ...localData })); */
   }, [business]);
-
 
 
   useEffect(() => {
@@ -259,9 +267,6 @@ const CustomApp = ({ Component, pageProps }: AppProps) => {
             }}
           /> */}
           <link rel="icon" href={fav_icon} />
-          <meta property="og:title" content={domain?.meta_title} />
-          <meta property="og:description" content={domain?.meta_description}/>
-          <meta property="og:image" content={"../../public/icon.png"} />
           <meta
             http-equiv="Content-Security-Policy"
             content="upgrade-insecure-requests"
